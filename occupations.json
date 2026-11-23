@@ -91,12 +91,36 @@
       "source": "Anthropic 2026-03 职业榜观测暴露 74.5% / M1 换算"
     },
     {
+      "name": "后端工程师",
+      "category": "技术",
+      "avgExposure": 73,
+      "dims": { "r": 75, "c": 37, "i": 27, "d": 22 },
+      "keySkills": ["接口开发", "系统设计", "数据库设计", "性能调优"],
+      "source": "估算(CRUD 与接口开发标准化程度高)"
+    },
+    {
       "name": "保险理赔专员",
       "category": "金融",
       "avgExposure": 72,
       "dims": { "r": 72, "c": 30, "i": 30, "d": 22 },
       "keySkills": ["查勘定损", "理赔审核", "条款解读", "客户沟通"],
       "source": "估算;Felten-Raj-Seamans AIOE 高位(理赔定损类)"
+    },
+    {
+      "name": "前端工程师",
+      "category": "技术",
+      "avgExposure": 72,
+      "dims": { "r": 74, "c": 36, "i": 28, "d": 22 },
+      "keySkills": ["页面开发", "组件封装", "性能优化", "跨端适配"],
+      "source": "估算(组件化与 AI 代码辅助提升 R)"
+    },
+    {
+      "name": "内容审核专员",
+      "category": "内容创作",
+      "avgExposure": 72,
+      "dims": { "r": 74, "c": 30, "i": 35, "d": 25 },
+      "keySkills": ["规则执行", "风险识别", "审核工具", "case 复盘"],
+      "source": "估算(AI 预筛+人工复审,流程高度标准化)"
     },
     {
       "name": "客服",
@@ -113,6 +137,14 @@
       "dims": { "r": 70, "c": 32, "i": 35, "d": 25 },
       "keySkills": ["供应商管理", "询价比价", "订单跟进", "成本核算"],
       "source": "估算;Felten-Raj-Seamans AIOE 高位(采购代理类)"
+    },
+    {
+      "name": "移动端开发",
+      "category": "技术",
+      "avgExposure": 69,
+      "dims": { "r": 70, "c": 38, "i": 28, "d": 27 },
+      "keySkills": ["App 开发", "SDK 集成", "上架发布", "兼容适配"],
+      "source": "估算"
     },
     {
       "name": "算法工程师",
@@ -195,6 +227,22 @@
       "source": "估算;Felten-Raj-Seamans AIOE 中高位(药剂师类)"
     },
     {
+      "name": "内容运营",
+      "category": "内容创作",
+      "avgExposure": 58,
+      "dims": { "r": 58, "c": 48, "i": 42, "d": 32 },
+      "keySkills": ["选题策划", "内容生产", "分发优化", "数据复盘"],
+      "source": "估算"
+    },
+    {
+      "name": "广告投放优化师",
+      "category": "市场",
+      "avgExposure": 58,
+      "dims": { "r": 53, "c": 46, "i": 38, "d": 27 },
+      "keySkills": ["投放策略", "素材测试", "出价优化", "ROI 复盘"],
+      "source": "估算(投放平台自动化程度高)"
+    },
+    {
       "name": "金融投资分析师",
       "category": "金融",
       "avgExposure": 57,
@@ -251,11 +299,43 @@
       "source": "估算"
     },
     {
+      "name": "短视频编导",
+      "category": "内容创作",
+      "avgExposure": 52,
+      "dims": { "r": 46, "c": 53, "i": 38, "d": 30 },
+      "keySkills": ["脚本策划", "拍摄指导", "剪辑把关", "爆款复盘"],
+      "source": "估算"
+    },
+    {
+      "name": "电商运营",
+      "category": "市场",
+      "avgExposure": 52,
+      "dims": { "r": 46, "c": 48, "i": 42, "d": 33 },
+      "keySkills": ["店铺运营", "活动报名", "库存管理", "转化优化"],
+      "source": "估算"
+    },
+    {
       "name": "视频剪辑师",
       "category": "内容创作",
       "avgExposure": 50,
       "dims": { "r": 41, "c": 52, "i": 34, "d": 32 },
       "keySkills": ["剪辑合成", "调色", "字幕包装", "节奏把控"],
+      "source": "估算"
+    },
+    {
+      "name": "视觉设计师",
+      "category": "设计",
+      "avgExposure": 50,
+      "dims": { "r": 42, "c": 56, "i": 38, "d": 30 },
+      "keySkills": ["视觉创意", "品牌视觉", "动效设计", "素材制作"],
+      "source": "估算"
+    },
+    {
+      "name": "直播运营",
+      "category": "市场",
+      "avgExposure": 50,
+      "dims": { "r": 44, "c": 48, "i": 46, "d": 36 },
+      "keySkills": ["直播策划", "场控执行", "投流配合", "数据复盘"],
       "source": "估算"
     },
     {
@@ -283,6 +363,22 @@
       "source": "估算;Felten-Raj-Seamans AIOE 中位(律师类)"
     },
     {
+      "name": "产品运营",
+      "category": "产品",
+      "avgExposure": 48,
+      "dims": { "r": 40, "c": 50, "i": 45, "d": 38 },
+      "keySkills": ["活动策划", "数据监控", "用户触达", "流程 SOP"],
+      "source": "估算"
+    },
+    {
+      "name": "商业分析师",
+      "category": "市场",
+      "avgExposure": 48,
+      "dims": { "r": 38, "c": 50, "i": 40, "d": 35 },
+      "keySkills": ["业务建模", "指标拆解", "专题分析", "战略报告"],
+      "source": "估算"
+    },
+    {
       "name": "计算机用户支持",
       "category": "技术",
       "avgExposure": 47,
@@ -291,19 +387,19 @@
       "source": "Anthropic 2026-03 职业榜观测暴露 46.8% / M1 换算"
     },
     {
+      "name": "用户运营",
+      "category": "产品",
+      "avgExposure": 46,
+      "dims": { "r": 37, "c": 48, "i": 49, "d": 37 },
+      "keySkills": ["用户分层", "生命周期管理", "召回策略", "活动运营"],
+      "source": "估算"
+    },
+    {
       "name": "数据分析师",
       "category": "技术",
       "avgExposure": 45,
       "dims": { "r": 32, "c": 52, "i": 34, "d": 35 },
       "keySkills": ["SQL 取数", "指标体系", "可视化", "业务洞察"],
-      "source": "估算"
-    },
-    {
-      "name": "UI/UX 设计师",
-      "category": "设计",
-      "avgExposure": 45,
-      "dims": { "r": 33, "c": 58, "i": 35, "d": 33 },
-      "keySkills": ["界面设计", "交互原型", "用户研究", "设计系统"],
       "source": "估算"
     },
     {
@@ -315,12 +411,36 @@
       "source": "估算"
     },
     {
+      "name": "增长产品经理",
+      "category": "产品",
+      "avgExposure": 45,
+      "dims": { "r": 35, "c": 50, "i": 45, "d": 40 },
+      "keySkills": ["增长实验", "漏斗分析", "A/B 测试", "渠道策略"],
+      "source": "估算"
+    },
+    {
+      "name": "UI 设计师",
+      "category": "设计",
+      "avgExposure": 45,
+      "dims": { "r": 33, "c": 58, "i": 35, "d": 33 },
+      "keySkills": ["界面设计", "设计系统", "图标绘制", "规范输出"],
+      "source": "估算(设计系统组件化提升 R,视觉创造力 C 高)"
+    },
+    {
       "name": "人力资源专员",
       "category": "人力",
       "avgExposure": 44,
       "dims": { "r": 33, "c": 48, "i": 52, "d": 33 },
       "keySkills": ["招聘执行", "员工关系", "薪酬核算", "制度流程"],
       "source": "估算;对齐 Felten-Raj-Seamans AIOE 中位(未取精确值)"
+    },
+    {
+      "name": "社区运营",
+      "category": "内容创作",
+      "avgExposure": 44,
+      "dims": { "r": 33, "c": 49, "i": 48, "d": 39 },
+      "keySkills": ["氛围建设", "用户激励", "话题策划", "舆情处理"],
+      "source": "估算"
     },
     {
       "name": "新闻记者",
@@ -339,6 +459,22 @@
       "source": "估算;Felten-Raj-Seamans AIOE 中位"
     },
     {
+      "name": "产品经理",
+      "category": "产品",
+      "avgExposure": 42,
+      "dims": { "r": 32, "c": 54, "i": 44, "d": 46 },
+      "keySkills": ["需求分析", "PRD 撰写", "原型设计", "跨团队协调"],
+      "source": "估算"
+    },
+    {
+      "name": "商务/BD",
+      "category": "销售",
+      "avgExposure": 42,
+      "dims": { "r": 30, "c": 48, "i": 52, "d": 39 },
+      "keySkills": ["客户开拓", "合作谈判", "资源置换", "合同跟进"],
+      "source": "估算"
+    },
+    {
       "name": "中小学教师",
       "category": "教育",
       "avgExposure": 40,
@@ -355,6 +491,22 @@
       "source": "估算;Felten-Raj-Seamans AIOE 中位(地产经纪类)"
     },
     {
+      "name": "用户研究员",
+      "category": "产品",
+      "avgExposure": 40,
+      "dims": { "r": 30, "c": 54, "i": 48, "d": 44 },
+      "keySkills": ["用户访谈", "问卷设计", "可用性测试", "洞察报告"],
+      "source": "估算"
+    },
+    {
+      "name": "品牌公关",
+      "category": "市场",
+      "avgExposure": 40,
+      "dims": { "r": 28, "c": 52, "i": 50, "d": 42 },
+      "keySkills": ["品牌策略", "媒体关系", "危机公关", "内容传播"],
+      "source": "估算"
+    },
+    {
       "name": "项目经理",
       "category": "管理",
       "avgExposure": 38,
@@ -368,6 +520,22 @@
       "avgExposure": 38,
       "dims": { "r": 24, "c": 62, "i": 34, "d": 44 },
       "keySkills": ["方案设计", "施工图绘制", "规范把控", "现场配合"],
+      "source": "估算"
+    },
+    {
+      "name": "UX 设计师",
+      "category": "设计",
+      "avgExposure": 38,
+      "dims": { "r": 25, "c": 60, "i": 44, "d": 41 },
+      "keySkills": ["用户研究", "交互原型", "可用性测试", "体验度量"],
+      "source": "估算"
+    },
+    {
+      "name": "游戏策划",
+      "category": "内容创作",
+      "avgExposure": 38,
+      "dims": { "r": 23, "c": 60, "i": 38, "d": 41 },
+      "keySkills": ["玩法设计", "数值配置", "关卡设计", "数据调优"],
       "source": "估算"
     },
     {
