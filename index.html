@@ -148,6 +148,7 @@ body {
 .group { border: 0; padding: 0; margin: 0 0 var(--sp5); }
 .group legend { font-size: 13px; font-weight: 600; color: var(--tx); padding: 0; margin-bottom: var(--sp2); }
 .grid2 { display: grid; grid-template-columns: 1fr; gap: var(--sp3); }
+.grid2 > * { min-width: 0; }
 @media (min-width: 768px) { .grid2 { grid-template-columns: 1fr 1fr; } }
 .span2 { grid-column: 1 / -1; }
 
@@ -182,6 +183,8 @@ select { appearance: none; -webkit-appearance: none; padding-right: 34px;
   backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
   max-height: 340px; overflow: auto; padding: 6px;
 }
+/* 下方空间不足(手机键盘弹出)时向上翻转,参照移动端组合框惯例 */
+.combo-list.up { top: auto; bottom: calc(100% + 6px); }
 .occ-grp {
   position: sticky; top: -6px; z-index: 1; background: var(--card2);
   padding: 10px 10px 6px; font-size: 12px; color: var(--dim); font-weight: 600;
@@ -346,17 +349,16 @@ input[type=range]::-moz-range-thumb:active { transform: scale(1.3); }
 .empty { padding: var(--sp5) var(--sp4); border: 1px dashed var(--line); border-radius: var(--r-s); font-size: 13px; color: var(--dim); text-align: center; margin-bottom: var(--sp4); line-height: 1.7; }
 
 /* ---------- 报告页(参照 16personalities 结果页:先结论后依据) ---------- */
-.hero { text-align: center; padding: var(--sp5) var(--sp4) var(--sp4); margin: var(--sp1) 0 var(--sp3); background: linear-gradient(180deg, var(--acc-soft), transparent); border: 1px solid var(--line); border-radius: var(--r-m); }
-.hero-badge { display: inline-flex; align-items: center; min-height: 30px; padding: 2px 14px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; }
+.hero { text-align: center; padding: 28px 20px 24px; margin: var(--sp1) 0 var(--sp3); background: linear-gradient(180deg, var(--acc-soft), transparent 55%); border: 1px solid var(--line); border-radius: var(--r-m); }
+.hook { font-size: 26px; font-weight: 700; line-height: 1.4; }
+.hook b { color: var(--acc); font-variant-numeric: tabular-nums; }
+.hero-badge { display: inline-flex; align-items: center; min-height: 30px; padding: 2px 14px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; margin-top: var(--sp3); }
 .hero-badge.risk0 { background: var(--ok-soft); color: var(--ok); }
 .hero-badge.risk1 { background: var(--warn-soft); color: var(--warn-strong); }
 .hero-badge.risk2 { background: var(--rsk-soft); color: var(--rsk); }
 .hero-badge.risk3 { background: var(--dgr-soft); color: var(--dgr); }
-.bignum { font-size: 56px; font-weight: 700; color: var(--acc); line-height: 1.12; margin: var(--sp2) 0 2px; font-variant-numeric: tabular-nums; }
-.bignum span { font-size: 18px; font-weight: 500; color: var(--dim); }
-.hlabel { font-size: 13px; color: var(--dim); }
 .hnote { font-size: 15px; margin-top: var(--sp2); }
-.hgoal { font-size: 12px; color: var(--dim); margin-top: var(--sp2); }
+.hmeta { font-size: 13px; color: var(--dim); margin-top: var(--sp2); }
 .hero-actions { display: flex; gap: var(--sp3); margin: var(--sp4) 0 var(--sp1); }
 .hero-actions .btn { flex: 1; padding: 10px 12px; }
 
@@ -370,6 +372,26 @@ input[type=range]::-moz-range-thumb:active { transform: scale(1.3); }
   font-style: normal; font-size: 12px; font-weight: 700;
   display: flex; align-items: center; justify-content: center; margin-top: 2px;
 }
+
+/* ---------- 四类资产读数(移动端卡片行,替代表格) ---------- */
+.assets { display: flex; flex-direction: column; gap: var(--sp2); margin-top: var(--sp2); }
+.asset { border: 1px solid var(--line); border-radius: var(--r-s); padding: var(--sp3); background: var(--card); }
+.a-top { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp2); }
+.a-name { font-size: 13px; color: var(--dim); }
+.a-val { font-size: 22px; font-weight: 700; color: var(--acc-strong); font-variant-numeric: tabular-nums; }
+.a-note { font-size: 12px; color: var(--dim); margin-top: 2px; }
+
+/* ---------- 换什么饭碗:四个推荐方向 ---------- */
+.dir { border: 1px solid var(--line); border-radius: var(--r-s); padding: var(--sp3); margin-top: var(--sp2); background: var(--card); }
+.dir-head { display: flex; gap: var(--sp2); align-items: baseline; font-size: 14px; }
+.dir-head i {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: var(--r-pill);
+  background: var(--acc-soft); color: var(--acc-strong);
+  font-style: normal; font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; align-self: center;
+}
+.dir-case { font-size: 12px; color: var(--dim); margin-top: 6px; }
+.dir-why { font-size: 13px; margin-top: 4px; }
 
 .cmpbar { display: flex; align-items: center; gap: var(--sp2); margin: 8px 0; font-size: 13px; }
 .cmpbar .t { width: 96px; flex-shrink: 0; color: var(--dim); font-size: 12px; line-height: 1.35; }
@@ -407,6 +429,13 @@ details.disclose .dbody { padding: 2px 14px 14px; }
 
 /* ---------- 雷达图 ---------- */
 svg { display: block; margin: 6px auto; max-width: 100%; height: auto; }
+svg.radar { width: 100%; max-width: 380px; }
+svg.gauge { width: 100%; max-width: 300px; }
+.g-seg { opacity: .9; }
+.g-needle { stroke: var(--tx); stroke-width: 4; stroke-linecap: round; }
+.g-pivot { fill: var(--acc); }
+.g-num { fill: var(--dim); font-size: 13px; }
+.g-lab { fill: var(--dim); font-size: 12px; }
 .rg-ring { stroke: var(--line); fill: none; }
 .rg-cross { stroke: var(--line); opacity: .55; fill: none; }
 .rg-sweep { fill: var(--acc-soft); }
@@ -786,26 +815,33 @@ function cleanSource(s) {
     .replace(new RegExp("《" + MW + "》", "g"), "")
     .replace(MW_R, "")
     .replace(/\u5f20\u4e39\u4e39\u7b49/g, "")
-    .replace(/\(/g, "（")
-    .replace(/\)/g, "）")
+    .replace(/（([^）]*)）/g, "，$1")
+    .replace(/\(([^)]*)\)/g, "，$1")
     .replace(/;/g, "；")
     .replace(/\s+/g, " ")
+    .replace(/^，/, "")
+    .replace(/，$/, "")
     .trim();
 }
 
 function loadOccupations() {
-  try {
-    fetch("occupations.json", { cache: "no-store" }).then(function (r) {
-      return r.ok ? r.json() : null;
-    }).then(function (d) {
-      OCCUPATIONS = normalizeOcc(d);
-      OCC_STATE = OCCUPATIONS ? "ready" : "none";
-      renderJobHint();
-    }).catch(function () {
-      OCC_STATE = "none";
-      renderJobHint();
+  function done(d) {
+    OCCUPATIONS = normalizeOcc(d);
+    OCC_STATE = OCCUPATIONS ? "ready" : "none";
+    renderJobHint();
+  }
+  function fail() { OCC_STATE = "none"; renderJobHint(); }
+  function fetchOnce() {
+    return fetch("occupations.json", { cache: "no-store" }).then(function (r) {
+      if (!r.ok) throw new Error("http " + r.status);
+      return r.json();
     });
-  } catch (e) { OCC_STATE = "none"; }
+  }
+  try {
+    fetchOnce().then(done).catch(function () {
+      fetchOnce().then(done).catch(fail); /* 一次重试(网络抖动/文件直开环境) */
+    });
+  } catch (e) { fail(); }
 }
 
 function renderJobHint(animate) {
@@ -840,7 +876,7 @@ function setupJobCombo() {
   var input = document.getElementById("in_job");
   var list = document.getElementById("job_list");
   if (!input || !list) return;
-  var open = false, active = -1, items = [];
+  var open = false, active = -1, items = [], lastKey = null;
 
   function close() {
     open = false; active = -1; items = [];
@@ -855,6 +891,7 @@ function setupJobCombo() {
   function openList(showAll) {
     if (!OCCUPATIONS) return;
     var q = showAll ? "" : (input.value || "").trim().toLowerCase();
+    if (open && !list.hidden && (showAll ? "ALL" : q) === lastKey) return;
     var matches = OCCUPATIONS.filter(function (o) {
       return !q || o.name.toLowerCase().indexOf(q) >= 0 || (o.category || "").toLowerCase().indexOf(q) >= 0;
     });
@@ -887,14 +924,21 @@ function setupJobCombo() {
         li.setAttribute("role", "option");
         li.setAttribute("data-idx", String(items.length));
         li.innerHTML = "<span class=occ-name>" + esc(o.name) + (o.source ? " <span class=occ-src>" + esc(shortSource(o.source)) + "</span>" : "") + "</span><span class=occ-avg>同行平均被覆盖 <b>" + (o.avgExposure == null ? "—" : o.avgExposure) + "</b></span>";
-        li.addEventListener("mousedown", function (ev) { ev.preventDefault(); select(o); });
+        li.addEventListener("click", function (ev) { ev.preventDefault(); select(o); });
         items.push(o);
         list.appendChild(li);
       });
     });
+    lastKey = showAll ? "ALL" : q;
     open = true; active = -1;
     list.hidden = false;
     input.setAttribute("aria-expanded", "true");
+    /* 手机键盘弹出、下方空间不足时,列表向上翻转 */
+    try {
+      var vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+      var spaceBelow = vh - input.getBoundingClientRect().bottom;
+      if (spaceBelow < 300) list.classList.add("up"); else list.classList.remove("up");
+    } catch (err) {}
   }
   function setActive(delta) {
     if (!items.length) return;
@@ -924,6 +968,10 @@ function setupJobCombo() {
   input.addEventListener("focus", function () {
     if (OCCUPATIONS) openList(input.value === S.job);
   });
+  /* 移动端兜底:已聚焦时再次点按也开列表;用 pointerdown 而非 click,避免 label 激活转发的合成 click 误开 */
+  input.addEventListener("pointerdown", function () {
+    if (OCCUPATIONS && !open) openList(input.value === S.job);
+  });
   input.addEventListener("keydown", function (ev) {
     if (!open || !OCCUPATIONS) {
       if (ev.key === "ArrowDown" || ev.key === "ArrowUp") openList(input.value === S.job);
@@ -939,6 +987,8 @@ function setupJobCombo() {
     var inside = false, t = ev.target;
     while (t && t !== document) {
       if (t === input || t === list) { inside = true; break; }
+      if (t.id === "job_relink") { inside = true; break; }
+      if (t.tagName === "LABEL" && t.contains && t.contains(input)) { inside = true; break; }
       t = t.parentNode;
     }
     if (!inside) close();
@@ -1153,12 +1203,17 @@ function emptyState(text) {
   var e = el("div", "empty", text);
   return e;
 }
-/* 全角标点清洗(仅展示层,不改数据;规则引擎字符串含半角标点,渲染时统一转全角) */
+/* 全角标点清洗(仅展示层,不改数据;规则引擎字符串含半角标点与括号,渲染时统一转全角、括号转逗号短语) */
 function fp(v) {
   return String(v == null ? "" : v)
     .replace(/\(/g, "（").replace(/\)/g, "）")
     .replace(/;/g, "；").replace(/!/g, "！").replace(/\?/g, "？")
-    .replace(/,/g, "，").replace(/:/g, "：");
+    .replace(/,/g, "，").replace(/:/g, "：")
+    .replace(/（([^）]*)）/g, "，$1，")
+    .replace(/。，/g, "。")
+    .replace(/，，/g, "，")
+    .replace(/^，/, "")
+    .replace(/，$/, "");
 }
 
 /* ---------- 第 1 步:基本信息(参照 Apple 表单:分组内嵌字段,标签在上) ---------- */
@@ -1171,11 +1226,11 @@ function pane1() {
   g1.appendChild(el("legend", "", "先填这些数"));
   var grid1 = el("div", "grid2");
   grid1.innerHTML =
-    "<label class=f>年龄（岁）<input id=in_age type=number min=18 max=70 inputmode=numeric value=" + S.age + "></label>" +
-    "<label class=f>当前月薪（元）<input id=in_salary type=number min=0 inputmode=numeric value=" + S.salary + "></label>" +
-    "<label class=f>可动用存款（元）<input id=in_savings type=number min=0 inputmode=numeric value=" + S.savings + "></label>" +
-    "<label class=f>每周可投入学习小时<input id=in_hours type=number min=0 max=100 inputmode=numeric value=" + S.hours + "></label>" +
-    "<label class=f>每月学习预算（元）<input id=in_budget type=number min=0 inputmode=numeric value=" + S.budget + "></label>";
+    "<label class=f>年龄（岁）<input id=in_age type=number min=18 max=70 inputmode=numeric value=\"" + S.age + "\"></label>" +
+    "<label class=f>当前月薪（元）<input id=in_salary type=number min=0 inputmode=numeric value=\"" + S.salary + "\"></label>" +
+    "<label class=f>可动用存款（元）<input id=in_savings type=number min=0 inputmode=numeric value=\"" + S.savings + "\"></label>" +
+    "<label class=f>每周可投入学习小时<input id=in_hours type=number min=0 max=100 inputmode=numeric value=\"" + S.hours + "\"></label>" +
+    "<label class=f>每月学习预算（元）<input id=in_budget type=number min=0 inputmode=numeric value=\"" + S.budget + "\"></label>";
   g1.appendChild(grid1);
   c.appendChild(g1);
 
@@ -1184,17 +1239,17 @@ function pane1() {
   var grid2 = el("div", "grid2");
   grid2.innerHTML =
     "<label class=f>目标（未来 3～12 个月）<select id=in_goal>" +
-    "<option value=grow" + (S.goal === "grow" ? " selected" : "") + ">涨薪、升职</option>" +
-    "<option value=pivot" + (S.goal === "pivot" ? " selected" : "") + ">转型新方向</option>" +
-    "<option value=side" + (S.goal === "side" ? " selected" : "") + ">副业、第二曲线</option>" +
-    "<option value=keep" + (S.goal === "keep" ? " selected" : "") + ">保住当前岗位</option></select></label>" +
+    "<option value=\"grow\"" + (S.goal === "grow" ? " selected" : "") + ">涨薪、升职</option>" +
+    "<option value=\"pivot\"" + (S.goal === "pivot" ? " selected" : "") + ">转型新方向</option>" +
+    "<option value=\"side\"" + (S.goal === "side" ? " selected" : "") + ">副业、第二曲线</option>" +
+    "<option value=\"keep\"" + (S.goal === "keep" ? " selected" : "") + ">保住当前岗位</option></select></label>" +
     "<label class=f>所在城市等级<select id=in_city>" +
-    "<option value=tier1" + (S.city === "tier1" ? " selected" : "") + ">一线、新一线</option>" +
-    "<option value=tier2" + (S.city === "tier2" ? " selected" : "") + ">二三线</option>" +
-    "<option value=tier3" + (S.city === "tier3" ? " selected" : "") + ">其他</option></select></label>" +
+    "<option value=\"tier1\"" + (S.city === "tier1" ? " selected" : "") + ">一线、新一线</option>" +
+    "<option value=\"tier2\"" + (S.city === "tier2" ? " selected" : "") + ">二三线</option>" +
+    "<option value=\"tier3\"" + (S.city === "tier3" ? " selected" : "") + ">其他</option></select></label>" +
     "<label class=f>去外地工作的自由度<select id=in_move>" +
-    "<option value=free" + (S.move === "free" ? " selected" : "") + ">可以搬家、异地求职</option>" +
-    "<option value=city_only" + (S.move === "city_only" ? " selected" : "") + ">只能留在本城</option></select></label>";
+    "<option value=\"free\"" + (S.move === "free" ? " selected" : "") + ">可以搬家、异地求职</option>" +
+    "<option value=\"city_only\"" + (S.move === "city_only" ? " selected" : "") + ">只能留在本城</option></select></label>";
   g2.appendChild(grid2);
   c.appendChild(g2);
 
@@ -1202,12 +1257,12 @@ function pane1() {
   g3.appendChild(el("legend", "", "行业与岗位"));
   var grid3 = el("div", "grid2");
   grid3.innerHTML =
-    "<label class='f span2'>行业<input id=in_industry placeholder='如：制造业、互联网、金融' value=" + esc(S.industry) + "></label>" +
+    "<label class='f span2'>行业<input id=in_industry placeholder=\"如：制造业、互联网、金融\" value=\"" + esc(S.industry) + "\"></label>" +
     "<label class='f span2'>岗位（可搜索、可手输）" +
-    "<span class=combo><input id=in_job autocomplete=off role=combobox aria-expanded=false aria-controls=job_list aria-autocomplete=list placeholder='输入岗位名搜索，如：会计、客服' value=" + esc(S.job) + "><ul class=combo-list id=job_list hidden role=listbox></ul></span></label>" +
+    "<span class=combo><input id=in_job autocomplete=off role=combobox aria-expanded=false aria-controls=job_list aria-autocomplete=list placeholder=\"输入岗位名搜索，如：会计、客服\" value=\"" + esc(S.job) + "\"><ul class=combo-list id=job_list hidden role=listbox></ul></span></label>" +
     "<div class='job-status span2' id=job_hint aria-live=polite></div>" +
-    "<label class=f>从业年限（年）<input id=in_years type=number min=0 max=60 inputmode=numeric value=" + S.years + "></label>" +
-    "<label class=f>昵称（报告页用，可不填）<input id=in_nick value=" + esc(S.nick) + "></label>";
+    "<label class=f>从业年限（年）<input id=in_years type=number min=0 max=60 inputmode=numeric value=\"" + S.years + "\"></label>" +
+    "<label class=f>昵称（报告页用，可不填）<input id=in_nick value=\"" + esc(S.nick) + "\"></label>";
   g3.appendChild(grid3);
   c.appendChild(g3);
 
@@ -1296,7 +1351,7 @@ function bindPane2() {
 function tierBtnHtml(v, on, idx) {
   var short = v === 30 ? "照着做" : v === 60 ? "独立做" : "定标准";
   var title = v === 30 ? "照着模板、别人指导才能交付" : v === 60 ? "能独立交付且被验收（岗位标配）" : "能定标准、带人、靠它赚钱";
-  return "<button class='tier" + (on ? " on" : "") + "' type=button data-role=tier data-v=" + v + " data-idx=" + idx + " title='" + title + "'><b>" + v + "</b><span>" + short + "</span></button>";
+  return "<button class='tier" + (on ? " on" : "") + "' type=button data-role=\"tier\" data-v=\"" + v + "\" data-idx=\"" + idx + "\" title=\"" + title + "\"><b>" + v + "</b><span>" + short + "</span></button>";
 }
 
 function skillStatusText(n) {
@@ -1326,18 +1381,18 @@ function skillRow(sk, idx) {
     tiers += tierBtnHtml(v, n.tier === v, idx);
   });
   r.innerHTML =
-    "<div class=skill-top><input placeholder='技能名（如：供应链谈判）' aria-label=技能名 value=" + esc(n.name) + " data-role=name data-idx=" + idx + "><button class='btn ghost' type=button data-del=" + idx + ">删除</button></div>" +
+    "<div class=skill-top><input placeholder=\"技能名，如：供应链谈判\" aria-label=\"技能名\" value=\"" + esc(n.name) + "\" data-role=\"name\" data-idx=\"" + idx + "\"><button class=\"btn ghost\" type=button data-del=\"" + idx + "\">删除</button></div>" +
     "<div class=skill-lab2>熟练档（三选一）</div>" +
     "<div class=tiers>" + tiers + "</div>" +
     "<label class=skill-field>拿得出手的证据" +
-    "<select data-role=ev data-idx=" + idx + " aria-label=证据题>" +
+    "<select data-role=\"ev\" data-idx=\"" + idx + "\" aria-label=\"证据题\">" +
     "<option value=''>还没答（按你自评算，没验证）</option>" +
     "<option value=none" + (n.evidence === "none" ? " selected" : "") + ">没做出过成型的东西（最高按 30 算）</option>" +
     "<option value=tpl" + (n.evidence === "tpl" ? " selected" : "") + ">做过，但靠模板、别人带（最高按 60 算）</option>" +
     "<option value=done" + (n.evidence === "done" ? " selected" : "") + ">独立做出过，且被认可（过审、上线、复用，按 70 起）</option>" +
     "<option value=paid" + (n.evidence === "paid" ? " selected" : "") + ">靠它赚过岗位外的钱（按 85 起）</option></select></label>" +
     "<label class=skill-field>市场信号" +
-    "<select data-role=sig data-idx=" + idx + " aria-label=稀缺信号>" +
+    "<select data-role=\"sig\" data-idx=\"" + idx + "\" aria-label=\"稀缺信号\">" +
     "<option value=''>未作答</option>" +
     "<option value=hunt" + (n.signal === "hunt" ? " selected" : "") + ">近一年有猎头、同行为这项技能找过我</option>" +
     "<option value=hire" + (n.signal === "hire" ? " selected" : "") + ">我公司、行业的招人周期明显变长</option>" +
@@ -1509,7 +1564,7 @@ function deriveBlockHtml() {
     var added = have[String(c.name).trim()];
     h += "<div class=derive-item><div class=derive-name>" + esc(c.name) + " <span class='src-chip' data-src=" + c.source + ">" + srcLabel(c.source) + "</span></div>" +
       "<div class=derive-meta>" + bandTxt + (added ? " <span class=unc>已在清单中</span>" : "") + "</div>" +
-      (added ? "" : "<button class='btn primary chip' type=button data-add-derive=" + i + ">添加 →</button>") + "</div>";
+      (added ? "" : "<button class='btn primary chip' type=button data-add-derive=\"" + i + "\">添加 →</button>") + "</div>";
   });
   h += "</div>";
   return h;
@@ -1519,14 +1574,14 @@ function learnRow(l, idx) {
   var band = (l.gainBand && l.gainBand.length === 2) ? l.gainBand : bandFor(l.name);
   var r = el("div", "learn-card");
   r.innerHTML =
-    "<div class=learn-top><input placeholder='学习项（如：AI 工作流改造）' aria-label=学习项 value=" + esc(l.name) + " data-role=name data-idx=" + idx + ">" +
-    (l.source ? "<span class=src-chip data-src=" + l.source + ">" + srcLabel(l.source) + "</span>" : "") +
-    "<button class='btn ghost' type=button data-del=" + idx + ">删除</button></div>" +
+    "<div class=learn-top><input placeholder=\"学习项，如：AI 工作流改造\" aria-label=\"学习项\" value=\"" + esc(l.name) + "\" data-role=\"name\" data-idx=\"" + idx + "\">" +
+    (l.source ? "<span class=src-chip data-src=\"" + l.source + "\">" + srcLabel(l.source) + "</span>" : "") +
+    "<button class=\"btn ghost\" type=button data-del=\"" + idx + "\">删除</button></div>" +
     "<div class=learn-grid>" +
-    "<label class=learn-lab>每月小时<input type=number min=1 inputmode=numeric placeholder=小时 aria-label=每月小时 value=" + l.hours + " data-role=hours data-idx=" + idx + "></label>" +
-    "<label class=learn-lab>成本（元）<input type=number min=0 inputmode=numeric placeholder=0 aria-label=金钱成本（元） value=" + l.cost + " data-role=cost data-idx=" + idx + "></label>" +
-    "<label class=learn-lab>预计一年多赚（元）<input type=number min=0 inputmode=numeric placeholder='如：24000' aria-label=预计一年多赚（元） value=" + l.gain + " data-role=gain data-idx=" + idx + "></label>" +
-    (band ? "<label class=learn-lab>收益依据（超上限需附）<input placeholder=可选 aria-label=收益依据 value=" + esc(l.gainNote || "") + " data-role=gainnote data-idx=" + idx + "></label>" : "") +
+    "<label class=learn-lab>每月小时<input type=number min=1 inputmode=numeric placeholder=\"小时\" aria-label=\"每月小时\" value=\"" + l.hours + "\" data-role=\"hours\" data-idx=\"" + idx + "\"></label>" +
+    "<label class=learn-lab>成本（元）<input type=number min=0 inputmode=numeric placeholder=\"0\" aria-label=\"金钱成本（元）\" value=\"" + l.cost + "\" data-role=\"cost\" data-idx=\"" + idx + "\"></label>" +
+    "<label class=learn-lab>预计一年多赚（元）<input type=number min=0 inputmode=numeric placeholder=\"如：24000\" aria-label=\"预计一年多赚（元）\" value=\"" + l.gain + "\" data-role=\"gain\" data-idx=\"" + idx + "\"></label>" +
+    (band ? "<label class=learn-lab>收益依据（超上限需附）<input placeholder=\"可选\" aria-label=\"收益依据\" value=\"" + esc(l.gainNote || "") + "\" data-role=\"gainnote\" data-idx=\"" + idx + "\"></label>" : "") +
     "</div>";
   return r;
 }
@@ -1597,20 +1652,44 @@ function radarSvg(dims) {
     var a3 = -Math.PI / 2 + m * 2 * Math.PI / N;
     var lx = cx + (R + 40) * Math.cos(a3);
     var ly = cy + (R + 40) * Math.sin(a3);
-    labels += "<text class=rg-lab x=" + lx.toFixed(0) + " y=" + ly.toFixed(0) + " font-size=12 text-anchor=middle>" + dims[m].k + "（<tspan data-count=" + dims[m].v + ">" + dims[m].v + "</tspan>）</text>";
+    labels += "<text class=rg-lab x=" + lx.toFixed(0) + " y=" + ly.toFixed(0) + " font-size=12 text-anchor=middle>" + dims[m].k + " <tspan data-count=" + dims[m].v + ">" + dims[m].v + "</tspan></text>";
   }
   var dots = "";
   for (var n = 0; n < pts.length; n++) dots += "<circle class='rg-dot d" + (n + 1) + "' cx=" + pts[n][0].toFixed(1) + " cy=" + pts[n][1].toFixed(1) + " r=3.5></circle>";
-  return "<svg width=380 height=340 viewBox='0 0 380 340' role=img aria-label=五维雷达图>" + rings + cross + sweep + "<polygon class=rg-poly pathLength=100 points=" + poly + "></polygon>" + dots + labels + "</svg>";
+  return "<svg class=radar viewBox='0 0 380 340' role=img aria-label=五维雷达图>" + rings + cross + sweep + "<polygon class=rg-poly pathLength=100 points=" + poly + "></polygon>" + dots + labels + "</svg>";
+}
+
+/* 悬指数仪表:半圆三段色弧 + 指针 + 稳/悬端点(读表器质感) */
+function gaugeSvg(v) {
+  var cx = 160, cy = 150, R = 120, sw = 14;
+  var f = Math.min(1, Math.max(0, Number(v) / 100));
+  function pt(frac, r) {
+    var a = Math.PI + frac * Math.PI;
+    return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+  }
+  function arc(f0, f1, col) {
+    var p0 = pt(f0, R), p1 = pt(f1, R);
+    var large = (f1 - f0) > 0.5 ? 1 : 0;
+    return "<path class=g-seg d='M" + p0[0].toFixed(1) + " " + p0[1].toFixed(1) + " A" + R + " " + R + " 0 " + large + " 1 " + p1[0].toFixed(1) + " " + p1[1].toFixed(1) + "' stroke='" + col + "' stroke-width=" + sw + " fill=none stroke-linecap=round></path>";
+  }
+  var segs = arc(0, 0.35, "var(--ok)") + arc(0.35, 0.75, "var(--warn)") + arc(0.75, 1, "var(--rsk)");
+  var tip = pt(f, R - 22);
+  var needle = "<line class=g-needle x1=" + cx + " y1=" + cy + " x2=" + tip[0].toFixed(1) + " y2=" + tip[1].toFixed(1) + "></line>";
+  var pivot = "<circle class=g-pivot cx=" + cx + " cy=" + cy + " r=8></circle>";
+  var l0 = pt(0, R + 24), l1 = pt(1, R + 24);
+  var lab = "<text class=g-lab x=" + l0[0].toFixed(0) + " y=" + l0[1].toFixed(0) + " text-anchor=middle>稳</text>" +
+    "<text class=g-lab x=" + l1[0].toFixed(0) + " y=" + l1[1].toFixed(0) + " text-anchor=middle>悬</text>";
+  var num = "<text class=g-num x=" + cx + " y=" + (cy + 24) + " text-anchor=middle>悬指数 " + Math.round(v) + "/100</text>";
+  return "<svg class=gauge viewBox='0 0 320 190' role=img aria-label='悬指数仪表，当前 " + Math.round(v) + " 分'>" + segs + needle + pivot + lab + num + "</svg>";
 }
 
 function roiTable(rows) {
   if (!rows.length) return "<div class=warn>未填写学习项：回到第 4 步，至少填一项。</div>";
-  var h = "<table><tr><th>排序</th><th>学习项</th><th>月小时</th><th>成本（元）</th><th>预计一年多赚（元）</th><th>每小时回报（元）</th><th>每投 1 元回报</th></tr>";
+  var h = "<table><tr><th>排序</th><th>学习项</th><th>月小时</th><th>成本 元</th><th>预计一年多赚 元</th><th>每小时回报 元</th><th>每投 1 元回报</th></tr>";
   for (var i = 0; i < rows.length; i++) {
     var r = rows[i];
-    var gainTxt = r.gain + (r.discounted ? " <span class=warn>→ 按 " + r.effGain + " 计（报太高没依据，按一半）</span>" : "");
-    h += "<tr><td>" + (i + 1) + "</td><td>" + esc(r.name) + (r.heavy ? " <span class=warn>（耗时偏重）</span>" : "") + "</td><td>" + r.hours + "</td><td>" + r.cost + "</td><td>" + gainTxt + "</td><td>" + r.timeRoi.toFixed(0) + "</td><td>" + (r.moneyRoi >= 0 ? r.moneyRoi.toFixed(1) : "负") + "</td></tr>";
+    var gainTxt = r.gain + (r.discounted ? " <span class=warn>→ 按 " + r.effGain + " 计，报太高没依据按一半算</span>" : "");
+    h += "<tr><td>" + (i + 1) + "</td><td>" + esc(r.name) + (r.heavy ? " <span class=warn>，耗时偏重</span>" : "") + "</td><td>" + r.hours + "</td><td>" + r.cost + "</td><td>" + gainTxt + "</td><td>" + r.timeRoi.toFixed(0) + "</td><td>" + (r.moneyRoi >= 0 ? r.moneyRoi.toFixed(1) : "负") + "</td></tr>";
   }
   return "<div class=tbl-scroll>" + h + "</table></div>";
 }
@@ -1625,23 +1704,26 @@ function pane5() {
   var top = rois[0];
   var weeks = genPlan(st, top);
   var eRound = Math.round(e);
-  var goalText = { grow: "涨薪、升职", pivot: "转型新方向", side: "副业、第二曲线", keep: "保住当前岗位" }[S.goal] || "综合提升";
+  var metaParts = [];
+  if (S.job) metaParts.push(esc(S.job));
+  if (Number(S.years) > 0) metaParts.push("从业 " + Number(S.years) + " 年");
 
   var c = el("div", "card report");
   c.appendChild(el("h2", "", "⑤ 饭碗扫描报告"));
 
-  /* 第 1 屏:一屏结论(信号徽章 + 一个数字 + 一句诊断,可截图,参照 16personalities 结果页) */
+  /* 第 1 屏:钩子 + 仪表 + 信号 + 诊断 + 职业与年限(可截图传播) */
   var hero = el("div", "hero");
-  hero.innerHTML = "<div class='hero-badge " + rk.cls + "'>" + fp(rk.t) + "</div>" +
-    "<div class=bignum><b data-count=" + eRound + ">" + eRound + "</b><span>/100</span></div>" +
-    "<div class=hlabel>饭碗被 AI 吃掉的程度（0~100，越高越悬）</div>" +
+  hero.innerHTML =
+    "<div class=hook>你的饭碗 <b data-count=" + eRound + ">" + eRound + "</b>% 会被 AI 吃掉</div>" +
+    gaugeSvg(eRound) +
+    "<div class='hero-badge " + rk.cls + "'>" + fp(rk.t) + "</div>" +
     "<div class=hnote>" + fp(rk.note) + "</div>" +
-    "<div class=hgoal>目标「" + goalText + "」 · 生成于 " + fmtTime(new Date().toISOString()) + "</div>";
+    (metaParts.length ? "<div class=hmeta>" + metaParts.join(" · ") + "</div>" : "");
   c.appendChild(hero);
 
   /* 主行动(第 1 屏):导出 / 分享 */
   var tools = el("div", "hero-actions");
-  tools.innerHTML = "<button class='btn primary' id=btn_save>导出我的报告</button><button class=btn id=btn_share>分享报告（脱敏）</button>";
+  tools.innerHTML = "<button class='btn primary' id=btn_save>导出我的报告</button><button class=btn id=btn_share>分享报告</button>";
   c.appendChild(tools);
 
   /* 第 1 屏:和同行比(对比条) */
@@ -1653,7 +1735,7 @@ function pane5() {
       ? "你的饭碗比「" + esc(S.job) + "」同行平均更悬：被覆盖程度高 " + delta + " 点，优先处理最容易被 AI 顶掉的活儿。"
       : delta < 0
       ? "你的饭碗比「" + esc(S.job) + "」同行平均更稳：被覆盖程度低 " + (-delta) + " 点。"
-      : "你的被覆盖程度和「" + esc(S.job) + "」同行平均持平（" + S.jobAvg + "）。";
+      : "你的被覆盖程度和「" + esc(S.job) + "」同行平均持平，都是 " + S.jobAvg + "。";
     var occ = OCCUPATIONS ? (function () { for (var oi = 0; oi < OCCUPATIONS.length; oi++) { if (OCCUPATIONS[oi].name === S.job) return OCCUPATIONS[oi]; } return null; })() : null;
     var row1 = el("div", "cmpbar");
     row1.appendChild(el("span", "t", "你"));
@@ -1683,31 +1765,35 @@ function pane5() {
   } else {
     cmp.appendChild(el("div", "planweek",
       S.job
-        ? "「" + esc(S.job) + "」暂无同行平均数据（岗位库未收录）：对比位已预留。"
+        ? "「" + esc(S.job) + "」暂无同行平均数据，岗位库未收录：对比位已预留。"
         : "在第 1 步选择岗位后，这里会显示你的分数与同行平均的对比。"));
   }
   c.appendChild(cmp);
 
   /* 第 2 层:建议路径(人话副标 + 编号动作) */
   var stbox = el("div", "strategy");
-  stbox.innerHTML = "<h3>接下来怎么走：" + st.name + "（" + pathGloss(st.code) + "）</h3><div class=why>" + fp(st.why) + "</div>" +
+  stbox.innerHTML = "<h3>接下来怎么走：" + st.name + "，" + pathGloss(st.code) + "</h3><div class=why>" + fp(st.why) + "</div>" +
     st.acts.map(function (a, i) { return "<div class=act><i>" + (i + 1) + "</i><span>" + fp(a) + "</span></div>"; }).join("");
   c.appendChild(stbox);
 
   /* 第 3 层:六个折叠详情块 */
+  function assetRow(name, valHtml, note) {
+    return "<div class=asset><div class=a-top><span class=a-name>" + name + "</span><span class=a-val>" + valHtml + "</span></div><div class=a-note>" + note + "</div></div>";
+  }
   var g1 = el("div", "grid2");
   var left = el("div", "");
   left.innerHTML = radarSvg(dims);
   var right = el("div", "");
-  right.innerHTML = "<h3 class=strat-title>四类资产读数</h3><div class=tbl-scroll><table><tr><th>资产</th><th>读数</th><th>解读</th></tr>" +
-    "<tr><td>你的看家本事（专业深度）</td><td><span data-count=" + dims[0].v + ">" + dims[0].v + "</span></td><td>" + (dims[0].v >= 60 ? "护城河较深" : "沉淀偏浅，先补深度") + "</td></tr>" +
-    "<tr><td>AI 用得怎么样（AI 杠杆）</td><td><span data-count=" + dims[1].v + ">" + dims[1].v + "</span></td><td>" + (dims[1].v >= 60 ? "AI 已在放大你" : "AI 还没成为你的杠杆") + "</td></tr>" +
-    "<tr><td>市场抢不抢手（稀缺度）</td><td><span data-count=" + dims[2].v + ">" + dims[2].v + "</span></td><td>" + (dims[2].v >= 60 ? "抢手，可吃溢价" : "可替代性偏高") + "</td></tr>" +
-    "<tr><td>扛风险的本钱（学习时间＋存款预算）</td><td><span data-count=" + dims[3].v + ">" + dims[3].v + "</span> / <span data-count=" + dims[4].v + ">" + dims[4].v + "</span></td><td>" + (dims[4].v >= 50 ? "缓冲足够，可上强度" : "缓冲偏薄，走稳路线") + "</td></tr></table></div>" +
-    "<div class=hint>分数怎么来的：财务缓冲＝0.6×存款可支撑月数（24 个月满分）＋0.4×每月学习预算（2000 元满分）；学习弹性＝0.5×每周小时（14 小时满分）＋0.3×年龄＋0.2×学习史；专业深度＝校准技能全额＋未校准技能×0.9 加权平均。</div>";
+  right.innerHTML = "<h3 class=strat-title>四类资产读数</h3><div class=assets>" +
+    assetRow("你的看家本事", "<span data-count=" + dims[0].v + ">" + dims[0].v + "</span>", dims[0].v >= 60 ? "护城河较深" : "沉淀偏浅，先补深度") +
+    assetRow("AI 用得怎么样", "<span data-count=" + dims[1].v + ">" + dims[1].v + "</span>", dims[1].v >= 60 ? "AI 已在放大你" : "AI 还没成为你的杠杆") +
+    assetRow("市场抢不抢手", "<span data-count=" + dims[2].v + ">" + dims[2].v + "</span>", dims[2].v >= 60 ? "抢手，可吃溢价" : "可替代性偏高") +
+    assetRow("扛风险的本钱", "<span data-count=" + dims[3].v + ">" + dims[3].v + "</span> / <span data-count=" + dims[4].v + ">" + dims[4].v + "</span>", dims[4].v >= 50 ? "缓冲足够，可上强度" : "缓冲偏薄，走稳路线") +
+    "</div>" +
+    "<div class=hint>分数怎么来的：财务缓冲＝0.6×存款可支撑月数＋0.4×每月学习预算，24 个月与 2000 元分别对应满分；学习弹性＝0.5×每周小时＋0.3×年龄＋0.2×学习史，14 小时对应满分；专业深度＝校准技能全额＋未校准技能×0.9 加权平均。</div>";
   g1.appendChild(left);
   g1.appendChild(right);
-  c.appendChild(detailsBlock("我的分数怎么来的？（雷达图与四类资产）", g1));
+  c.appendChild(detailsBlock("我的分数怎么来的？", g1));
 
   var skbox = el("div", "");
   var cal = [], unc = [];
@@ -1724,56 +1810,57 @@ function pane5() {
     });
     return "<div class=tbl-scroll>" + t + "</table></div>";
   }
-  skbox.innerHTML = "<h3 class=strat-title>已校准（有证据）</h3>" + skTable(cal) +
-    (unc.length ? "<h3 class=strat-title>没验证（自评）</h3><div class=planweek>以下没答证据题：显示保守默认分，算总分时按九折计入。</div>" + skTable(unc) : "");
+  skbox.innerHTML = "<h3 class=strat-title>已校准</h3>" + skTable(cal) +
+    (unc.length ? "<h3 class=strat-title>没验证</h3><div class=planweek>以下没答证据题：显示保守默认分，算总分时按九折计入。</div>" + skTable(unc) : "");
   c.appendChild(detailsBlock("技能打分明细", skbox));
 
   var learnbox = el("div", "");
   var warnBox = el("div", "");
   if (Number(S.hours) < 5) warnBox.innerHTML += "<div class=warn>⚠ 每周可投入不足 5 小时：先把改造现有工作流作为唯一重点，学习项压缩到 1 个。</div>";
-  if (Number(S.budget) < 100 && S.learns.some(function (x) { return Number(x.cost) > 0; })) warnBox.innerHTML += "<div class=warn>⚠ 预算近零：优先选择成本为 0 的学习项（免费工具、官方文档、开源社区）。</div>";
+  if (Number(S.budget) < 100 && S.learns.some(function (x) { return Number(x.cost) > 0; })) warnBox.innerHTML += "<div class=warn>⚠ 预算近零：优先选成本为 0 的学习项，比如免费工具、官方文档、开源社区。</div>";
   if (top && top.heavy) warnBox.innerHTML += "<div class=warn>⚠ 排序第一的学习项耗时超过全年可投入的 40%：建议拆成 2～3 个小里程碑分阶段投入。</div>";
   learnbox.appendChild(warnBox);
   var roinote = el("div", "hint");
-  roinote.innerHTML = "每小时回报＝（预计一年多赚−成本）÷（每月小时×12）；每投 1 元回报＝（预计一年多赚−成本）÷成本。收益报太高且没依据，按一半算（附依据按全额）。";
+  roinote.innerHTML = "每小时回报＝预计一年多赚与成本的差额 ÷ 每月小时 × 12；每投 1 元回报＝预计一年多赚与成本的差额 ÷ 成本。收益报太高且没依据，按一半算，附依据按全额。";
   learnbox.appendChild(roinote);
   var tbl = el("div", "");
   tbl.innerHTML = roiTable(rois);
   learnbox.appendChild(tbl);
-  c.appendChild(detailsBlock("我该学什么？（学习排序，按每小时回报）", learnbox));
+  c.appendChild(detailsBlock("我该学什么？", learnbox));
 
   var pl = el("div", "");
   for (var w = 0; w < weeks.length; w++) pl.innerHTML += "<div class=planweek><b>" + fp(weeks[w].w) + "</b>：" + fp(weeks[w].t) + "</div>";
-  c.appendChild(detailsBlock("第一步做什么？（90 天计划）", pl));
+  c.appendChild(detailsBlock("第一步做什么？", pl));
 
+  /* 换什么饭碗:四个推荐方向,结合 AI 最新进展,无公式 */
   var where = el("div", "");
-  var lowOcc = OCCUPATIONS
-    ? OCCUPATIONS.filter(function (o) { return o.avgExposure != null; }).slice().sort(function (a, b) { return a.avgExposure - b.avgExposure; }).slice(0, 5)
-    : [];
-  where.innerHTML = "<h3 class=strat-title>换什么饭碗？被 AI 覆盖少的岗位（" + (lowOcc.length ? "内置岗位库实测均值" : "内置小表，岗位库未加载") + "）</h3>" +
-    "<div class=planweek>参照 Anthropic（2026-03）与国内学术榜（2025）的低暴露职业方向，同信号人群常看的岗位：</div>" +
-    (lowOcc.length
-      ? lowOcc.map(function (o) { return "<div class=planweek>· " + esc(o.name) + "（被覆盖程度 <b>" + o.avgExposure + "</b>/100 · " + esc(o.category) + (o.source ? " · " + esc(shortSource(o.source)) : "") + "）</div>"; }).join("")
-      : "<div class=planweek>· 手艺人型：厨师 / 维修技工 / 美发 / 缝纫</div>" +
-        "<div class=planweek>· 照料与现场型：护理 / 家政 / 保育 / 健身教练</div>" +
-        "<div class=planweek>· 现场服务型：保安 / 物业 / 消防 / 驾驶员</div>") +
-    "<div class=planweek>提示：被 AI 覆盖少不等于高薪，动手前用「我该学什么」验证投入产出。</div>";
-  c.appendChild(detailsBlock("换什么饭碗？（被 AI 覆盖少的岗位）", where));
+  var dirs = [
+    { t: "创意与内容类：AI 放大审美与叙事", cases: "品牌内容策划、短视频编导", why: "AI 能快速出稿出图，但审美判断与叙事节奏仍然稀缺。" },
+    { t: "全流程个人化：一个人干一个团队的活", cases: "独立开发者、一人公司主理人", why: "产品、市场、交付全链路可流程化，AI 让超级个体真正跑通。" },
+    { t: "研究判断类：研究报告与复杂信息整合", cases: "行业研究员、咨询顾问", why: "AI 能检索与汇总，去伪存真、下判断仍靠人。" },
+    { t: "人机协作工程类：把 AI 编排进真实业务流程", cases: "AI 工作流工程师、企业 AI 落地顾问", why: "企业不缺模型，缺能把 AI 落进业务的人。" }
+  ];
+  where.innerHTML = "<h3 class=strat-title>换什么饭碗？</h3>" +
+    "<div class=planweek>AI 正在重排牌桌。结合最新进展，这四个方向更值得重点看：</div>" +
+    dirs.map(function (d, i) {
+      return "<div class=dir><div class=dir-head><i>" + (i + 1) + "</i><b>" + d.t + "</b></div><div class=dir-case>职业举例：" + d.cases + "</div><div class=dir-why>" + d.why + "</div></div>";
+    }).join("") +
+    "<div class=planweek>提醒：先最小成本验证，再谈全职投入。</div>";
+  c.appendChild(detailsBlock("换什么饭碗？", where));
 
   var src = el("div", "hint");
-  src.innerHTML = "数据与口径：暴露度权重（0.5/0.2/0.15/0.15）与阈值（35/55/75）为初版设定，参照 Anthropic《Labor market impacts of AI》（2026-03）任务暴露框架与国内学术岗位暴露榜（DWA 口径，2025）；岗位平均暴露度来自 occupations.json（条目级来源：国内学术榜 2025 DWA 法 / Anthropic 职业榜观测 / Felten 等 SMJ 2021 / IMF 2026），岗位库未加载时对比位留空。饭碗雷达只给概率与路径，不给预言。";
-  c.appendChild(detailsBlock("数据口径与来源（想较真可以看）", src));
+  src.innerHTML = "数据与口径：暴露度权重 0.5/0.2/0.15/0.15 与阈值 35/55/75 为初版设定，参照 Anthropic《Labor market impacts of AI》2026-03 任务暴露框架与国内学术岗位暴露榜 DWA 口径 2025；岗位平均暴露度来自 occupations.json，条目级来源为国内学术榜 2025 DWA 法、Anthropic 职业榜观测、Felten 等 SMJ 2021、IMF 2026，岗位库未加载时对比位留空。饭碗雷达只给概率与路径，不给预言。";
+  c.appendChild(detailsBlock("数据口径与来源", src));
 
   /* 收尾:导航(重新测一遍)+ 隐私与免责 */
   c.appendChild(navButtons());
   var priv = el("div", "hint");
-  priv.innerHTML = "分享报告为脱敏版：只含信号、路径与计划，不含收入、存款、年龄、岗位与昵称等任何个人信息。所有输入已自动保存在本机浏览器（仅本设备，换设备不互通）。4 周后重测对比，参数变化比绝对值更有意义。";
+  priv.innerHTML = "分享报告为脱敏版：只含信号、路径与计划，不含收入、存款、年龄、岗位与昵称等任何个人信息。所有输入已自动保存在本机浏览器，只在本设备，换设备不互通。4 周后重测对比，参数变化比绝对值更有意义。";
   c.appendChild(priv);
   c.appendChild(el("div", "hint", "本报告基于你的自评，仅供参考，不构成职业决策依据。"));
   animateCounts(c);
   return c;
 }
-
 function reportObj() {
   var e = calcExposure();
   var rk = riskLevel(e);
@@ -1792,20 +1879,20 @@ var EXPORT_THEME = {
 
 function reportHtml(stripped) {
   var o = reportObj();
-  var title = stripped ? "饭碗雷达 · 分享页（脱敏）" : ((S.nick || "朋友") + "，你的饭碗扫描报告");
-  var h = "<!DOCTYPE html><html lang=zh-CN><head><meta charset=utf-8><title>" + title + "</title><style>:root{" + EXPORT_THEME[currentTheme()] + "}body{background:var(--bg);color:var(--tx);font-family:PingFang SC,sans-serif;padding:28px;max-width:720px;margin:0 auto;line-height:1.7;font-variant-numeric:tabular-nums}h1{font-size:22px}.sig{color:var(--acc-strong);font-size:18px;margin:10px 0}table{width:100%;border-collapse:collapse;margin:10px 0}td,th{border:1px solid var(--line);padding:6px 10px;font-size:14px}.t{overflow-x:auto}.note{color:var(--dim);font-size:12px;margin-top:16px}svg{display:block;margin:10px auto}.rg-ring{stroke:var(--line)}.rg-cross{stroke:var(--line);opacity:.55}.rg-sweep{fill:var(--acc-soft)}.rg-poly{fill:var(--acc-fill);stroke:var(--acc);stroke-dashoffset:0;fill-opacity:1}.rg-dot{fill:var(--acc);opacity:1}.rg-lab{fill:var(--dim)}@media print{body{background:#fff;color:#111;print-color-adjust:exact;-webkit-print-color-adjust:exact}td,th{border-color:#999}svg{max-width:320px}}</style></head><body>";
+  var title = stripped ? "饭碗雷达 · 脱敏分享页" : ((S.nick || "朋友") + "，你的饭碗扫描报告");
+  var h = "<!DOCTYPE html><html lang=zh-CN><head><meta charset=utf-8><title>" + title + "</title><style>:root{" + EXPORT_THEME[currentTheme()] + "}body{background:var(--bg);color:var(--tx);font-family:PingFang SC,sans-serif;padding:28px;max-width:720px;margin:0 auto;line-height:1.7;font-variant-numeric:tabular-nums}h1{font-size:22px}.sig{color:var(--acc-strong);font-size:18px;margin:10px 0}table{width:100%;border-collapse:collapse;margin:10px 0}td,th{border:1px solid var(--line);padding:6px 10px;font-size:14px}.t{overflow-x:auto}.note{color:var(--dim);font-size:12px;margin-top:16px}svg{display:block;margin:10px auto;width:100%;max-width:380px;height:auto}.rg-ring{stroke:var(--line)}.rg-cross{stroke:var(--line);opacity:.55}.rg-sweep{fill:var(--acc-soft)}.rg-poly{fill:var(--acc-fill);stroke:var(--acc);stroke-dashoffset:0;fill-opacity:1}.rg-dot{fill:var(--acc);opacity:1}.rg-lab{fill:var(--dim)}@media print{body{background:#fff;color:#111;print-color-adjust:exact;-webkit-print-color-adjust:exact}td,th{border-color:#999}svg{max-width:320px}}</style></head><body>";
   h += "<h1>" + title + "</h1>";
   h += "<div class=sig>" + fp(o.risk) + " · 饭碗被 AI 吃掉的程度 " + o.exposure + "/100</div>";
   if (!stripped && S.job) {
     h += S.jobAvg != null
-      ? "<div class=note>岗位对比：你的暴露度 " + o.exposure + "，与「" + esc(S.job) + "」岗位平均 " + S.jobAvg + " 相比（数据：occupations.json）。</div>"
+      ? "<div class=note>岗位对比：你的暴露度 " + o.exposure + "，与「" + esc(S.job) + "」岗位平均 " + S.jobAvg + " 相比，数据来自 occupations.json。</div>"
       : "<div class=note>岗位对比：「" + esc(S.job) + "」未在职业库中，对比位预留。</div>";
   }
   h += "<div><b>路径：" + fp(o.strategy.name) + "</b> · " + fp(o.strategy.why) + "</div>";
   o.strategy.acts.forEach(function (a) { h += "<div>· " + fp(a) + "</div>"; });
   h += radarSvg(o.radar);
   if (!stripped) {
-    h += "<h3>已校准（有证据）</h3>";
+    h += "<h3>已校准</h3>";
     var cal = [], unc = [];
     S.skills.forEach(function (sk) {
       var n = normSkill(sk);
@@ -1821,17 +1908,17 @@ function reportHtml(stripped) {
       return "<div class=t>" + t + "</table></div>";
     }
     h += cal.length ? expSkillTable(cal) : "<div class=note>未填写技能。</div>";
-    if (unc.length) h += "<h3>没验证（自评）</h3>" + expSkillTable(unc);
+    if (unc.length) h += "<h3>没验证</h3>" + expSkillTable(unc);
   }
-  h += "<h3>我该学什么？（按每小时回报排序）</h3><div class=note>每小时回报＝（预计一年多赚−成本）÷（每月小时×12）；每投 1 元回报＝（预计一年多赚−成本）÷成本。收益报太高且没依据，按一半算。</div>";
-  h += "<div class=t><table><tr><th>#</th><th>学习项</th><th>月小时</th>" + (stripped ? "" : "<th>成本</th><th>预计一年多赚</th>") + "<th>每小时回报（元）</th></tr>";
+  h += "<h3>我该学什么？</h3><div class=note>每小时回报＝预计一年多赚与成本的差额 ÷ 每月小时 × 12；每投 1 元回报＝预计一年多赚与成本的差额 ÷ 成本。收益报太高且没依据，按一半算。</div>";
+  h += "<div class=t><table><tr><th>#</th><th>学习项</th><th>月小时</th>" + (stripped ? "" : "<th>成本</th><th>预计一年多赚</th>") + "<th>每小时回报 元</th></tr>";
   o.roi.forEach(function (r, i) {
     h += "<tr><td>" + (i + 1) + "</td><td>" + esc(r.name) + "</td><td>" + r.hours + "</td>" + (stripped ? "" : "<td>" + r.cost + "</td><td>" + r.gain + "</td>") + "<td>" + r.timeRoi.toFixed(0) + "</td></tr>";
   });
   h += "</table></div>";
-  h += "<h3>第一步做什么？（90 天计划）</h3>";
+  h += "<h3>第一步做什么？</h3>";
   o.plan.forEach(function (w) { h += "<div><b>" + fp(w.w) + "</b> " + fp(w.t) + "</div>"; });
-  h += "<div class=note>生成时间：" + fmtTime(o.generatedAt) + "。公式：0.5×重复任务 + 0.2×（100−创造性） + 0.15×（100−人际信任） + 0.15×（100−自主决策）。口径与来源：暴露度权重与阈值参照 Anthropic《Labor market impacts of AI》（2026-03）任务暴露框架；岗位平均暴露度来自 occupations.json（条目级来源：国内学术榜 2025 DWA 法 / Anthropic 职业榜观测 / Felten 等 SMJ 2021 / IMF 2026）。饭碗雷达只给概率与路径，不给预言。" + (stripped ? " 本页为脱敏分享版，不含任何收入、存款、年龄、岗位与昵称等个人信息。" : "") + "</div>";
+  h += "<div class=note>生成时间：" + fmtTime(o.generatedAt) + "。公式：0.5×重复任务＋0.2×100 减创造性＋0.15×100 减人际信任＋0.15×100 减自主决策。口径与来源：暴露度权重与阈值参照 Anthropic《Labor market impacts of AI》2026-03 任务暴露框架；岗位平均暴露度来自 occupations.json，条目级来源为国内学术榜 2025 DWA 法、Anthropic 职业榜观测、Felten 等 SMJ 2021、IMF 2026。饭碗雷达只给概率与路径，不给预言。" + (stripped ? " 本页为脱敏分享版，不含收入、存款、年龄、岗位与昵称等个人信息。" : "") + "</div>";
   return h + "</body></html>";
 }
 
