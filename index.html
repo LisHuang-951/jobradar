@@ -28,9 +28,9 @@
     --tx:#1D1D1F;
     --dim:#6E6E73;
     --acc:#E4572E;
-    --acc-ink:#FFFFFF;
-    --acc-strong:#0062C6;
-    --acc-soft:rgba(0,122,255,.10);
+    --acc-ink:#1A1715;
+    --acc-strong:#A63D12;
+    --acc-soft:rgba(228,87,46,.08);
     --acc-fill:rgba(228,87,46,.16);
     --ok:#2E7D32; --warn:#9A6700; --warn-strong:#7A5400; --rsk:#C93400; --dgr:#B42318;
     --sh1:0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.08);
@@ -50,9 +50,9 @@
     --tx:#EDEFF2;
     --dim:#8B93A7;
     --acc:#E4572E;
-    --acc-ink:#FFFFFF;
-    --acc-strong:#8C96F0;
-    --acc-soft:rgba(94,106,210,.14);
+    --acc-ink:#1A1715;
+    --acc-strong:#FF8A5C;
+    --acc-soft:rgba(228,87,46,.12);
     --acc-fill:rgba(228,87,46,.22);
     --ok:#8FBF6F; --warn:#E8A33D; --warn-strong:#E8A33D; --rsk:#F08A5D; --dgr:#F0615A;
     --sh1:0 1px 2px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.4);
@@ -198,6 +198,45 @@
   .planweek b { color: var(--tx); font-weight: 600; }
   .warn { color: var(--warn); font-size: 13px; }
 
+  /* 第 2 步实时结论卡(人话结论先行) */
+  .concl {
+    margin: 14px 0 10px; padding: 14px 16px; border-radius: 16px;
+    background: var(--card2); border: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px;
+  }
+  .concl .n { font-size: 30px; font-weight: 700; color: var(--acc); }
+  .concl .n small { font-size: 14px; font-weight: 500; color: var(--dim); }
+  .concl .sig { font-weight: 600; font-size: 15px; }
+  .concl .note { font-size: 13px; color: var(--dim); flex-basis: 100%; }
+
+  /* 渐进式披露折叠块(原生 details,键盘可用) */
+  details.disclose { border: 1px solid var(--line); border-radius: 12px; margin: 10px 0; background: var(--card); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass); }
+  details.disclose summary {
+    cursor: pointer; list-style: none; padding: 12px 14px; font-size: 14px; font-weight: 600; color: var(--tx);
+    display: flex; align-items: center; gap: 8px; border-radius: 12px;
+    transition: background-color var(--t-fast) var(--ease-std);
+  }
+  details.disclose summary::-webkit-details-marker { display: none; }
+  details.disclose summary:hover { background: var(--acc-soft); }
+  details.disclose summary::before { content: "▸"; color: var(--acc-strong); font-weight: 700; transition: transform var(--t-mid) var(--ease-std); }
+  details.disclose[open] summary::before { transform: rotate(90deg); }
+  details.disclose .dbody { padding: 2px 14px 14px; }
+
+  /* 报告 hero:一屏结论 */
+  .hero {
+    text-align: center; padding: 20px 16px 16px; margin: 4px 0 12px;
+    background: linear-gradient(180deg, var(--acc-soft), transparent);
+    border: 1px solid var(--line); border-radius: 16px;
+  }
+  .hero .bignum { font-size: 52px; font-weight: 700; color: var(--acc); line-height: 1.15; }
+  .hero .bignum small { font-size: 16px; font-weight: 500; color: var(--dim); }
+  .hero .hlabel { font-size: 13px; color: var(--dim); margin-top: 2px; }
+  .hero .hsig { font-size: 17px; font-weight: 700; margin-top: 8px; }
+  .hero .hnote { font-size: 14px; color: var(--dim); margin-top: 6px; }
+  .hero .hgoal { font-size: 12px; color: var(--dim); margin-top: 8px; }
+  .hero-actions { text-align: center; margin: 0 0 14px; }
+  footer .btn { margin-top: 0; margin-left: 12px; }
+
   /* 岗位对比条:你的分数 vs 岗位平均 */
   .cmpbar { display: flex; align-items: center; gap: 10px; margin: 7px 0; font-size: 13px; }
   .cmpbar .t { width: 96px; flex-shrink: 0; color: var(--dim); }
@@ -308,6 +347,9 @@
     .rg-poly { stroke-dashoffset: 0; fill-opacity: 1; }
     .rg-dot { opacity: 1; }
     svg { max-width: 320px; }
+    details.disclose { border: none; }
+    details.disclose:not([open]) > .dbody { display: block; }
+    details.disclose summary::before { display: none; }
   }
 </style>
 </head>
@@ -320,10 +362,10 @@
     </div>
     <button id="theme_toggle" class="theme-btn" type="button" title="切换浅色/深色主题" aria-label="切换主题">深色模式</button>
   </header>
-  <div class="banner">五步扫一遍你的饭碗:基本信息 → 暴露度体检 → 技能资产 → 学习选项 → 报告与计划。暴露度 = 你的岗位任务被 AI 覆盖的程度(0~100)。饭碗雷达只给概率与路径,不给预言。</div>
+  <div class="banner">五步扫一遍你的饭碗:基本信息 → 饭碗体检 → 技能家底 → 学什么 → 看报告。饭碗雷达只给概率与路径,不给预言。</div>
   <div class="steps" id="steps"></div>
   <div id="pane"></div>
-  <footer>饭碗雷达 JobRadar · 数据只在本机计算,不上传。</footer>
+  <footer>饭碗雷达 JobRadar · 数据只在本机计算,不上传。<button id="btn_reset" class="btn danger mini" type="button">清空重来</button></footer>
 </div>
 <script>
 "use strict";
@@ -350,10 +392,10 @@ function blankLearn() { return { name: "", hours: 100, cost: 1000, gain: 20000, 
 /* 证据档 → 熟练度封顶(第 2.2 节):无交付物 30 / 依赖模板 60 / 独立交付被认可 ≥70 / 变现 ≥85 */
 var EV_TIER = { "none": 30, "tpl": 60, "done": 70, "paid": 85 };
 var EV_LABEL = {
-  "none": "无成型交付物(封顶 30)",
-  "tpl": "依赖模板/他人交付(封顶 60)",
-  "done": "独立交付且被认可(≥70)",
-  "paid": "赚过岗位外钱(允许 ≥85,稀缺 ≥70 成立)"
+  "none": "没做出过成型的东西(最高按 30 算)",
+  "tpl": "做过,但靠模板/别人带(最高按 60 算)",
+  "done": "独立做出过,且被认可(≥70)",
+  "paid": "靠它赚过岗位外的钱(≥85,抢手度 ≥70 才成立)"
 };
 
 /* 预设降级为示例:新默认分(未验证保守值)+ 一句依据(第 5 节全表 12 项) */
@@ -467,9 +509,9 @@ function evidenceLabel(sk) { var n = normSkill(sk); return n.calibrated ? (EV_LA
 function scarcityLabel(sk) {
   var n = normSkill(sk);
   if (n.signal === "hunt") return "近一年有猎头/同行找过(≥60)";
-  if (n.signal === "hire") return "我司/我行招人周期明显长(基准上浮)";
-  if (n.signal === "none") return "无市场信号,取岗位族基准(保守下限)";
-  return "岗位族基准(未验证)";
+  if (n.signal === "hire") return "公司/行业招人明显变难(上浮)";
+  if (n.signal === "none") return "没收到市场信号,按行业一般水平估(偏保守)";
+  return "按行业一般水平估(没验证)";
 }
 /* 收益参考区间:名称精确/包含匹配(长键优先);无表 → null(不设上限) */
 function bandFor(name) {
@@ -649,15 +691,15 @@ function renderJobHint(animate) {
   if (!h) return;
   var html = "";
   if (OCC_STATE === "loading") {
-    html = "职业库加载中…";
+    html = "岗位库加载中…";
   } else if (S.job && S.jobAvg != null) {
-    html = "「" + esc(S.job) + "」平均暴露度:<b data-count=" + S.jobAvg + ">" + S.jobAvg + "</b> / 100(occupations.json 样本)· 报告页将给出你的分数与岗位平均对比。";
+    html = "「" + esc(S.job) + "」同行平均被覆盖:<b data-count=" + S.jobAvg + ">" + S.jobAvg + "</b>/100(内置岗位库样本)· 报告页会把你的分数和同行平均做对比。";
   } else if (S.job) {
-    html = "「" + esc(S.job) + "」" + (OCC_STATE === "ready" ? "未收录平均暴露度:已按手输记录," : "已记录,") + "报告页对比位已预留。";
+    html = "「" + esc(S.job) + "」" + (OCC_STATE === "ready" ? "没收录同行平均数据:已按手输记录," : "已记录,") + "报告页对比位预留。";
   } else {
     html = OCC_STATE === "none"
-      ? "可直接手输岗位;接入 occupations.json 后支持搜索选择与岗位平均对比。"
-      : "输入岗位名可搜索职业库(支持手输);岗位用于报告中的平均暴露度对比与缺口技能推导。";
+      ? "可直接手输岗位;接入内置岗位库后支持搜索选择与同行平均对比。"
+      : "输入岗位名可搜索内置岗位库(支持手输);选中后报告里会和同行平均对比。";
   }
   h.innerHTML = html;
   if (animate) animateCounts(h);
@@ -684,14 +726,14 @@ function setupJobCombo() {
     if (!shown.length) {
       var empty = document.createElement("li");
       empty.className = "combo-empty";
-      empty.textContent = "职业库中没有匹配项:直接手输即可。";
+      empty.textContent = "岗位库中没有匹配项:直接手输即可。";
       list.appendChild(empty);
     } else {
       shown.forEach(function (o, idx) {
         var li = document.createElement("li");
         li.setAttribute("role", "option");
         li.setAttribute("data-idx", String(idx));
-        li.innerHTML = "<span>" + esc(o.name) + (o.category ? "<span class=occ-cat>" + esc(o.category) + "</span>" : "") + (o.source ? "<span class=occ-src>" + esc(shortSource(o.source)) + "</span>" : "") + "</span><span class=occ-avg>平均暴露度 <b>" + (o.avgExposure == null ? "—" : o.avgExposure) + "</b></span>";
+        li.innerHTML = "<span>" + esc(o.name) + (o.category ? "<span class=occ-cat>" + esc(o.category) + "</span>" : "") + (o.source ? "<span class=occ-src>" + esc(shortSource(o.source)) + "</span>" : "") + "</span><span class=occ-avg>同行平均被覆盖 <b>" + (o.avgExposure == null ? "—" : o.avgExposure) + "</b></span>";
         li.addEventListener("mousedown", function (ev) { ev.preventDefault(); select(shown[idx]); });
         list.appendChild(li);
       });
@@ -886,7 +928,7 @@ function genPlan(strategy, topLearn) {
 }
 
 /* ---------- 视图 ---------- */
-var STEP_NAMES = ["基本信息", "暴露度体检", "技能资产", "学习选项", "报告与计划"];
+var STEP_NAMES = ["基本信息", "饭碗体检", "技能家底", "学什么", "看报告"];
 var cur = 0;
 
 function $(id) { return document.getElementById(id); }
@@ -918,11 +960,28 @@ function dateTag() {
   function p(n) { return (n < 10 ? "0" : "") + n; }
   return "" + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate());
 }
+/* 学习项来源 chip 的人话标签(规则值不变,仅显示翻译) */
+var SRC_LABEL = { "缺口": "补缺口", "迁移": "换方向", "回补": "补基本功", "默认": "兜底推荐" };
+function srcLabel(s) { return SRC_LABEL[s] || s; }
+/* 建议路径的人话副标 */
+function pathGloss(code) {
+  return { pivot: "换个赛道", steady: "稳住再扩", leverage: "吃懂行溢价", deepen: "加深护城河", expand: "加宽技能面" }[code] || "";
+}
+/* 折叠详情块(渐进式披露) */
+function detailsBlock(title, node) {
+  var d = el("details", "disclose");
+  var s = el("summary", "", title);
+  d.appendChild(s);
+  var b = el("div", "dbody");
+  b.appendChild(node);
+  d.appendChild(b);
+  return d;
+}
 
 function pane1() {
   var c = el("div", "card");
   c.appendChild(el("h2", "", "① 基本信息"));
-  c.appendChild(el("div", "hint", "为什么问这些:年龄/时间/预算决定学习弹性与财务缓冲;岗位/行业用于报告中的平均暴露度对比与缺口技能推导;月薪与存款只用于本机计算缓冲,不上传。"));
+  c.appendChild(el("div", "hint", "为什么问这些:这些数字只在本机计算、不上传。年龄/时间/预算决定你能学多快、能扛多久;岗位/行业用来和同行对比,并推导该补什么。"));
   var g = el("div", "grid2");
   g.innerHTML =
     "<div><label class=f for=in_age>年龄(岁)</label><input id=in_age type=number min=18 max=70 value=" + S.age + "></div>" +
@@ -934,7 +993,7 @@ function pane1() {
     "<option value=grow>涨薪 / 升职</option><option value=pivot>转型新方向</option><option value=side>副业 / 第二曲线</option><option value=keep>保住当前岗位</option></select></div>" +
     "<div><label class=f for=in_city>所在城市等级</label><select id=in_city>" +
     "<option value=tier1>一线/新一线</option><option value=tier2>二三线</option><option value=tier3>其他</option></select></div>" +
-    "<div><label class=f for=in_move>可迁移性</label><select id=in_move>" +
+    "<div><label class=f for=in_move>去外地工作的自由度</label><select id=in_move>" +
     "<option value=free>可以搬家/异地求职</option><option value=city_only>只能留在本城</option></select></div>" +
     "<div><label class=f for=in_industry>行业</label><input id=in_industry placeholder='如:制造业、互联网、金融' value=" + esc(S.industry) + "></div>" +
     "<div><label class=f for=in_job>岗位(可搜索/可手输)</label>" +
@@ -985,16 +1044,19 @@ document.addEventListener("click", function (ev) {
 
 function pane2() {
   var c = el("div", "card");
-  c.appendChild(el("h2", "", "② 暴露度体检"));
-  c.appendChild(el("div", "hint", "为什么问这个:暴露度 = 你的岗位任务被 AI 覆盖的程度(0~100)。公式 E = 0.5×重复任务 R + 0.2×(100−创造性 C) + 0.15×(100−人际信任 I) + 0.15×(100−自主决策 D):重复越多暴露越高,创造/人际/决策越强越稳。锚定参考:30 = 少量 / 60 = 约一半 / 85 = 大部分。权重与框架参照 Anthropic《Labor market impacts of AI》(2026-03) 与 IMF(2026) 全球约 40% 岗位受 AI 显著影响的估算;阈值 35/55/75 为初版设定,与内置职业库口径一致,随研究数据迭代。"));
-  c.appendChild(sliderRow("重复性 / 可标准化任务占比(越高,暴露度越高)", "r", 100));
-  c.appendChild(sliderRow("创造性 / 判断类任务占比(越高越稳)", "c", 100));
-  c.appendChild(sliderRow("需深度人际信任的任务占比(越高越稳)", "i", 100));
-  c.appendChild(sliderRow("自主决策权重(越高越难被替代)", "d", 100));
-  var live = el("div", "live");
+  c.appendChild(el("h2", "", "② 饭碗体检"));
+  c.appendChild(el("div", "hint", "拖四个滑块,看下方结论怎么变:重复活儿越多越悬;动脑、处人、拍板越多越稳。"));
+  c.appendChild(sliderRow("重复活儿占比(照着流程就能干的事,越高越悬)", "r", 100));
+  c.appendChild(sliderRow("动脑活儿占比(要出新主意、做判断的事,越高越稳)", "c", 100));
+  c.appendChild(sliderRow("处人活儿占比(靠信任关系才能干的事,越高越稳)", "i", 100));
+  c.appendChild(sliderRow("拍板权(你能拍板的事越多越稳)", "d", 100));
+  var live = el("div", "concl");
   live.id = "expo_live";
   live.setAttribute("aria-live", "polite");
   c.appendChild(live);
+  var det = el("details", "disclose");
+  det.innerHTML = "<summary>怎么算的?(公式与来源)</summary><div class=dbody><div class=hint style=margin-top:10px>暴露度 = 0.5×重复任务 R + 0.2×(100−创造性 C) + 0.15×(100−人际信任 I) + 0.15×(100−自主决策 D)。锚定参考:30=少量 / 60=约一半 / 85=大部分。权重与框架参照 Anthropic《Labor market impacts of AI》(2026-03) 与 IMF(2026) 全球约 40% 岗位受 AI 显著影响的估算;阈值 35/55/75 为初版设定,与内置岗位库口径一致,随研究数据迭代。</div></div>";
+  c.appendChild(det);
   c.appendChild(navButtons());
   return c;
 }
@@ -1002,7 +1064,7 @@ function pane2() {
 function updateExpo() {
   var e = calcExposure();
   var rk = riskLevel(e);
-  $("expo_live").innerHTML = "暴露度:<b>" + Math.round(e) + "</b> / 100 · 信号:<b class=" + rk.cls + ">" + rk.t + "</b> · " + rk.note;
+  $("expo_live").innerHTML = "<span class=n><b>" + Math.round(e) + "</b>%<small> 的饭碗会被 AI 吃掉</small></span><span class='sig " + rk.cls + "'>" + rk.t + "</span><span class=note>" + rk.note + "</span>";
 }
 
 function bindPane2() {
@@ -1020,8 +1082,8 @@ function bindPane2() {
 
 function pane3() {
   var c = el("div", "card");
-  c.appendChild(el("h2", "", "③ 技能资产(档位锚点 + 证据校准)"));
-  c.appendChild(el("div", "hint", "为什么问这些:它们合成你的专业深度与市场稀缺。熟练度只给三档行为描述,证据题校准「自评虚高」;稀缺度不看自评,看市场信号(猎头/招人周期)。预设按钮只是示例,默认分是未验证保守值。"));
+  c.appendChild(el("h2", "", "③ 技能家底(自己会什么,用事实校准)"));
+  c.appendChild(el("div", "hint", "为什么问这些:它们合成你的看家本事和抢手度。每样技能回答两问:熟练到什么程度(三选一)、有没有拿得出手的证据;分数旁边会显示它怎么来的。预设只是示例,默认分是保守值。"));
   var pc = el("div", "hint");
   pc.id = "skill_presets";
   c.appendChild(pc);
@@ -1050,14 +1112,14 @@ function skillRow(sk, idx) {
   r.setAttribute("data-idx", String(idx));
   var tiers = "";
   [30, 60, 85].forEach(function (v) {
-    tiers += "<button class='tier" + (n.tier === v ? " on" : "") + "' data-role=tier data-v=" + v + " data-idx=" + idx + " title='" + (v === 30 ? "按模板/他人指导才能交付" : v === 60 ? "独立交付且被验收(岗位标配)" : "定标准/带人/岗位外变现") + "'>" + v + "</button>";
+    tiers += "<button class='tier" + (n.tier === v ? " on" : "") + "' data-role=tier data-v=" + v + " data-idx=" + idx + " title='" + (v === 30 ? "照着模板/别人指导才能交付" : v === 60 ? "能独立交付且被验收(岗位标配)" : "能定标准/带人/靠它赚钱") + "'>" + v + "</button>";
   });
   r.innerHTML =
     "<div class=skill-head><input placeholder=技能名(如:供应链谈判) aria-label=技能名 value=" + esc(n.name) + " style=flex:1 data-role=name data-idx=" + idx + "><button class=btn mini danger data-del=" + idx + ">删除</button></div>" +
-    "<div class=skill-line><span class=skill-lab>熟练度(自评档)</span>" + tiers + "</div>" +
-    "<div class=skill-line><span class=skill-lab>证据题</span><select data-role=ev data-idx=" + idx + " aria-label=证据题><option value=''>未作答(按自评,未校准)</option><option value=none" + (n.evidence === "none" ? " selected" : "") + ">无成型交付物(封顶 30)</option><option value=tpl" + (n.evidence === "tpl" ? " selected" : "") + ">有交付但依赖模板/他人(封顶 60)</option><option value=done" + (n.evidence === "done" ? " selected" : "") + ">独立交付且被认可(过审/上线/复用,≥70)</option><option value=paid" + (n.evidence === "paid" ? " selected" : "") + ">赚过岗位外的钱(≥85,稀缺 ≥70 成立)</option></select>" +
+    "<div class=skill-line><span class=skill-lab>熟练到什么程度(三选一)</span>" + tiers + "</div>" +
+    "<div class=skill-line><span class=skill-lab>拿得出手的证据</span><select data-role=ev data-idx=" + idx + " aria-label=证据题><option value=''>还没答(按你自评算,没验证)</option><option value=none" + (n.evidence === "none" ? " selected" : "") + ">没做出过成型的东西(最高按 30 算)</option><option value=tpl" + (n.evidence === "tpl" ? " selected" : "") + ">做过,但靠模板/别人带(最高按 60 算)</option><option value=done" + (n.evidence === "done" ? " selected" : "") + ">独立做出过,且被认可(过审/上线/复用,≥70)</option><option value=paid" + (n.evidence === "paid" ? " selected" : "") + ">靠它赚过岗位外的钱(≥85,抢手度 ≥70 才成立)</option></select>" +
     "<input placeholder=一句证据(可选,如:独立交付 3 次、2 次过审) aria-label=一句证据 value=" + esc(n.evidenceNote) + " style=flex:1 data-role=evnote data-idx=" + idx + "></div>" +
-    "<div class=skill-line><span class=skill-lab>稀缺信号</span><select data-role=sig data-idx=" + idx + " aria-label=稀缺信号><option value=''>未作答</option><option value=hunt" + (n.signal === "hunt" ? " selected" : "") + ">近一年有猎头/同行为这项技能找过我</option><option value=hire" + (n.signal === "hire" ? " selected" : "") + ">我司/我行的招人周期明显长</option><option value=none" + (n.signal === "none" ? " selected" : "") + ">都没有</option></select></div>" +
+    "<div class=skill-line><span class=skill-lab>市场信号</span><select data-role=sig data-idx=" + idx + " aria-label=稀缺信号><option value=''>未作答</option><option value=hunt" + (n.signal === "hunt" ? " selected" : "") + ">近一年有猎头/同行为这项技能找过我</option><option value=hire" + (n.signal === "hire" ? " selected" : "") + ">我公司/行业的招人周期明显变长</option><option value=none" + (n.signal === "none" ? " selected" : "") + ">都没有</option></select></div>" +
     "<div class=skill-calc id=skill_calc_" + idx + "></div>";
   return r;
 }
@@ -1066,21 +1128,21 @@ function skillCalcText(sk) {
   var n = normSkill(sk);
   var p = profOf(n);
   var s = scarcityOf(n);
-  var parts = ["熟练度 <b>" + p + "</b>", "稀缺度 <b>" + s + "</b>"];
+  var parts = ["熟练度 <b>" + p + "</b>", "抢手度 <b>" + s + "</b>"];
   if (n.calibrated) {
-    parts.push("依据:" + evidenceLabel(n) + " · 稀缺:" + scarcityLabel(n));
-    if (n.evidence !== "paid" && (n.signal === "hunt" ? 60 : n.signal === "hire" ? Math.min(100, n.scarce + 10) : n.scarce) >= 70) parts.push("(稀缺 ≥70 需赚过岗位外钱,已封顶 69)");
+    parts.push("依据:" + evidenceLabel(n) + " · 抢手度依据:" + scarcityLabel(n));
+    if (n.evidence !== "paid" && (n.signal === "hunt" ? 60 : n.signal === "hire" ? Math.min(100, n.scarce + 10) : n.scarce) >= 70) parts.push("(抢手度 ≥70 需赚过岗位外钱,已按 69 封顶)");
   } else if (n.preset && PRESET_BY_NAME[n.preset]) {
-    parts.push("默认值,未校准(预设示例:" + PRESET_BY_NAME[n.preset].note + ")");
+    parts.push("示例默认分,没验证(示例:" + PRESET_BY_NAME[n.preset].note + ")");
   } else {
-    parts.push("自评,未校准(进专业深度按 0.9 折)");
+    parts.push("自己估的,没验证(算总分时按九折算)");
   }
   return parts.join(" · ");
 }
 
 function bindPane3() {
   var pc = $("skill_presets");
-  pc.innerHTML = "示例按钮(点一下填入名字+保守默认分,答证据题后由规则覆盖):";
+  pc.innerHTML = "点一下填入示例(默认分是保守值,答了证据题会被规则覆盖):";
   PRESET_SKILLS.forEach(function (p) {
     var b = el("button", "btn mini", p.name);
     b.title = p.note;
@@ -1166,13 +1228,13 @@ function bindPane3() {
 
 function pane4() {
   var c = el("div", "card");
-  c.appendChild(el("h2", "", "④ 学习选项(规则推导 + 双 ROI 排序)"));
-  c.appendChild(el("div", "hint", "待学清单由规则引擎推导:(暴露度缺口 ∪ 迁移方向)− 已会(证据 ≥60),「假会」优先回补,不足 2 项时自动补默认项(已全齐时以现有项为准)。填好月小时/成本/预期年增收后按双 ROI 排序;收益超参考区间上限且未附来源 → 按 0.5 折计入。"));
+  c.appendChild(el("h2", "", "④ 学什么(雷达推荐,按值不值排序)"));
+  c.appendChild(el("div", "hint", "这是雷达根据你的饭碗缺口和方向自动推荐的学习项,点「添加」收下,再填每月小时、成本、预计一年多赚多少;报告里会按「值不值」排序。收益报太高且没依据 → 按一半算(附上依据按全额)。"));
   var dv = el("div", "derive");
   dv.id = "learn_derive";
   c.appendChild(dv);
   var hd = el("div", "learn-hd");
-  hd.innerHTML = "<span class=lh-name>学习项</span><span class=lh-num style=width:80px>月小时</span><span class=lh-num style=width:90px>成本(元)</span><span class=lh-num style=width:100px>预期年增收(元/年)</span><span class=lh-num style=width:150px>收益依据(超参考上限必填)</span><span style=margin-left:auto>操作</span>";
+  hd.innerHTML = "<span class=lh-name>学习项</span><span class=lh-num style=width:80px>月小时</span><span class=lh-num style=width:90px>成本(元)</span><span class=lh-num style=width:100px>预计一年多赚(元)</span><span class=lh-num style=width:150px>收益依据(报太高必填)</span><span style=margin-left:auto>操作</span>";
   c.appendChild(hd);
   var box = el("div", "", "");
   box.id = "learn_rows";
@@ -1188,17 +1250,17 @@ function deriveBlockHtml() {
   var cands = deriveLearnCandidates();
   var have = {};
   S.learns.forEach(function (l) { if (l.name) have[String(l.name).trim()] = 1; });
-  var h = "<h3>待学推导(规则引擎)</h3>";
+  var h = "<h3>雷达推荐(点「添加」收下)</h3>";
   if (!cands.length) {
-    h += "<div class=hint>当前无推导项:暴露度缺口与迁移方向均已被证据 ≥60 的技能覆盖。</div>";
+    h += "<div class=hint>暂时没有要补的:你的缺口和换方向所需技能,都已有拿得出手的证据(≥60)。</div>";
     return h;
   }
   h += "<div class=derive-list>";
   cands.forEach(function (c, i) {
     var band = bandFor(c.name);
-    var bandTxt = band ? "参考收益 " + band[0] + "~" + band[1] + " 元/年" : "无参考区间(按手填计)";
+    var bandTxt = band ? "参考一年多赚 " + band[0] + "~" + band[1] + " 元" : "没有参考数据(按你填的算)";
     var added = have[String(c.name).trim()];
-    h += "<div class=derive-item><div class=derive-name>" + esc(c.name) + " <span class='src-chip' data-src=" + c.source + ">" + c.source + "</span></div>" +
+    h += "<div class=derive-item><div class=derive-name>" + esc(c.name) + " <span class='src-chip' data-src=" + c.source + ">" + srcLabel(c.source) + "</span></div>" +
       "<div class=derive-meta>" + bandTxt + (added ? " <span class=unc>已在清单中</span>" : "") + "</div>" +
       (added ? "" : "<button class='btn mini' data-add-derive=" + i + ">添加 →</button>") + "</div>";
   });
@@ -1212,10 +1274,10 @@ function learnRow(l, idx) {
   r.innerHTML = "<input placeholder=学习项(如:AI 工作流改造) aria-label=学习项 value=" + esc(l.name) + " style=flex:1 data-role=name data-idx=" + idx + ">" +
     "<input type=number min=1 placeholder=月小时 aria-label=每月小时 value=" + l.hours + " style=width:80px data-role=hours data-idx=" + idx + " title=每月小时>" +
     "<input type=number min=0 placeholder=成本(元) aria-label=金钱成本(元) value=" + l.cost + " style=width:90px data-role=cost data-idx=" + idx + " title=金钱成本>" +
-    "<input type=number min=0 placeholder=年增收(元) aria-label=预期年增收(元) value=" + l.gain + " style=width:100px data-role=gain data-idx=" + idx + " title=预期年增收>" +
+    "<input type=number min=0 placeholder=一年多赚(元) aria-label=预计一年多赚(元) value=" + l.gain + " style=width:100px data-role=gain data-idx=" + idx + " title=预期年增收>" +
     (band ? "<input placeholder=收益依据(超上限需附,可选) aria-label=收益依据 value=" + esc(l.gainNote || "") + " style=width:150px data-role=gainnote data-idx=" + idx + " title=收益依据>" : "") +
     "<button class=btn mini danger style=margin-left:auto data-del=" + idx + ">删除</button>" +
-    (l.source ? "<span class=src-chip data-src=" + l.source + ">" + l.source + "</span>" : "");
+    (l.source ? "<span class=src-chip data-src=" + l.source + ">" + srcLabel(l.source) + "</span>" : "");
   return r;
 }
 
@@ -1291,10 +1353,10 @@ function radarSvg(dims) {
 
 function roiTable(rows) {
   if (!rows.length) return "<div class=warn>未填写学习项:回到第 4 步,至少填一项。</div>";
-  var h = "<table><tr><th>排序</th><th>学习项</th><th>月小时</th><th>成本(元)</th><th>预期年增收(元)</th><th>时间 ROI(元/小时)</th><th>金钱 ROI</th></tr>";
+  var h = "<table><tr><th>排序</th><th>学习项</th><th>月小时</th><th>成本(元)</th><th>预计一年多赚(元)</th><th>每小时回报(元)</th><th>每投 1 元回报</th></tr>";
   for (var i = 0; i < rows.length; i++) {
     var r = rows[i];
-    var gainTxt = r.gain + (r.discounted ? " <span class=warn>→ 按 " + r.effGain + " 计(超参考上限未附来源,0.5 折)</span>" : "");
+    var gainTxt = r.gain + (r.discounted ? " <span class=warn>→ 按 " + r.effGain + " 计(报太高没依据,按一半)</span>" : "");
     h += "<tr><td>" + (i + 1) + "</td><td>" + esc(r.name) + (r.heavy ? " <span class=warn>(耗时偏重)</span>" : "") + "</td><td>" + r.hours + "</td><td>" + r.cost + "</td><td>" + gainTxt + "</td><td>" + r.timeRoi.toFixed(0) + "</td><td>" + (r.moneyRoi >= 0 ? r.moneyRoi.toFixed(1) : "负") + "</td></tr>";
   }
   return "<div class=tbl-scroll>" + h + "</table></div>";
@@ -1310,53 +1372,69 @@ function pane5() {
   var top = rois[0];
   var weeks = genPlan(st, top);
   var eRound = Math.round(e);
+  var goalText = { grow: "涨薪/升职", pivot: "转型新方向", side: "副业/第二曲线", keep: "保住当前岗位" }[S.goal] || "综合提升";
 
   var c = el("div", "card report");
   c.appendChild(el("h2", "", "⑤ " + (S.nick ? S.nick + ",你的" : "你的") + "饭碗扫描报告"));
-  var diag = el("div", "diag");
-  var goalText = { grow: "涨薪/升职", pivot: "转型新方向", side: "副业/第二曲线", keep: "保住当前岗位" }[S.goal] || "综合提升";
-  diag.innerHTML = "目标:「" + goalText + "」 · 信号:<b class=" + rk.cls + ">" + rk.t + "</b>(暴露度 <b data-count=" + eRound + ">" + eRound + "</b>/100) · 建议路径:<b>" + st.name + "</b>。扫描结论:" + rk.note;
-  c.appendChild(diag);
 
-  /* 报告对比位:你的分数 vs 岗位平均(occupations.json) */
+  /* 第 1 屏:一屏结论(信号 + 一个数字 + 一句诊断) */
+  var hero = el("div", "hero");
+  hero.innerHTML = "<div class=bignum><b data-count=" + eRound + ">" + eRound + "</b><small>/100</small></div>" +
+    "<div class=hlabel>你的饭碗被 AI 吃掉的程度(暴露度)</div>" +
+    "<div class='hsig " + rk.cls + "'>" + rk.t + "</div>" +
+    "<div class=hnote>" + rk.note + "</div>" +
+    "<div class=hgoal>目标:「" + goalText + "」 · 生成于 " + fmtTime(new Date().toISOString()) + "</div>";
+  c.appendChild(hero);
+
+  /* 主行动(第 1 屏):导出 / 分享 */
+  var tools = el("div", "hero-actions");
+  tools.innerHTML = "<button class=btn-primary id=btn_save>导出我的报告</button><button class=btn id=btn_share>分享报告(脱敏)</button>";
+  c.appendChild(tools);
+
+  /* 第 1 屏:和同行比(对比条保留) */
   var cmp = el("div", "strategy");
   if (S.job && S.jobAvg != null) {
     var delta = eRound - S.jobAvg;
     var deltaTxt = delta > 0
-      ? "你的暴露度比岗位平均高 " + delta + " 点:同岗位人群中,你的任务结构更易被 AI 覆盖,优先处理高暴露任务簇。"
+      ? "你的饭碗比「" + esc(S.job) + "」同行平均更悬:被覆盖程度高 " + delta + " 点,优先处理最容易被 AI 顶掉的活儿。"
       : delta < 0
-      ? "你的暴露度比岗位平均低 " + (-delta) + " 点:在「" + esc(S.job) + "」人群中,你的任务结构暴露面更小。"
-      : "你的暴露度与岗位平均持平(" + S.jobAvg + "):参考同岗位人群的应对策略即可。";
+      ? "你的饭碗比「" + esc(S.job) + "」同行平均更稳:被覆盖程度低 " + (-delta) + " 点。"
+      : "你的被覆盖程度和「" + esc(S.job) + "」同行平均持平(" + S.jobAvg + ")。";
     var occ = OCCUPATIONS ? (function () { for (var oi = 0; oi < OCCUPATIONS.length; oi++) { if (OCCUPATIONS[oi].name === S.job) return OCCUPATIONS[oi]; } return null; })() : null;
-    cmp.innerHTML = "<h3>你的分数 vs 岗位平均</h3>" +
+    cmp.innerHTML = "<h3>和同行比</h3>" +
       "<div class=cmpbar><span class=t>你</span><span class=tr><i class=you style='--w:" + Math.min(100, eRound) + "%'></i></span><span class=v><b data-count=" + eRound + ">" + eRound + "</b>/100</span></div>" +
       "<div class=cmpbar><span class=t>「" + esc(S.job) + "」平均</span><span class=tr><i class=avg style='--w:" + Math.min(100, S.jobAvg) + "%;animation-delay:180ms'></i></span><span class=v><b data-count=" + S.jobAvg + ">" + S.jobAvg + "</b>/100</span></div>" +
       "<div class=planweek style=color:var(--dim)>" + deltaTxt + "</div>" +
-      (occ && occ.source ? "<div class=planweek style=color:var(--dim)>岗位口径:" + esc(occ.source) + "</div>" : "");
+      (occ && occ.source ? "<div class=planweek style=color:var(--dim)>口径:" + esc(occ.source) + "</div>" : "");
   } else {
-    cmp.innerHTML = "<h3>你的分数 vs 岗位平均</h3><div class=planweek style=color:var(--dim)>" +
+    cmp.innerHTML = "<h3>和同行比</h3><div class=planweek style=color:var(--dim)>" +
       (S.job
-        ? "「" + esc(S.job) + "」暂无岗位平均数据(未在职业库中或均值未收录):对比位已预留,接入 occupations.json 后自动显示。"
-        : "在第 1 步选择岗位后,这里将显示你的暴露度与该岗位平均暴露度的对比。") + "</div>";
+        ? "「" + esc(S.job) + "」暂无同行平均数据(岗位库未收录):对比位已预留。"
+        : "在第 1 步选择岗位后,这里会显示你的分数与同行平均的对比。") + "</div>";
   }
   c.appendChild(cmp);
 
+  /* 第 2 层:建议路径(人话副标) */
+  var stbox = el("div", "strategy");
+  stbox.innerHTML = "<h3>接下来怎么走:" + st.name + "(" + pathGloss(st.code) + ")</h3><div>" + st.why + "</div><div style=margin-top:8px>" + st.acts.map(function (a) { return "<div class=planweek>· " + a + "</div>"; }).join("") + "</div>";
+  c.appendChild(stbox);
+
+  /* 第 3 层:六个折叠详情块 */
   var g1 = el("div", "grid2");
   var left = el("div", "");
   left.innerHTML = radarSvg(dims);
   var right = el("div", "");
   right.innerHTML = "<h3 style=color:var(--acc-strong)>四类资产读数</h3><div class=tbl-scroll><table><tr><th>资产</th><th>读数</th><th>解读</th></tr>" +
-    "<tr><td>技能资产(专业深度)</td><td><span data-count=" + dims[0].v + ">" + dims[0].v + "</span></td><td>" + (dims[0].v >= 60 ? "护城河较深" : "沉淀偏浅,先补深度") + "</td></tr>" +
-    "<tr><td>技术资产(AI 杠杆)</td><td><span data-count=" + dims[1].v + ">" + dims[1].v + "</span></td><td>" + (dims[1].v >= 60 ? "AI 已在放大你" : "AI 尚未成为你的杠杆") + "</td></tr>" +
-    "<tr><td>行业认知(市场稀缺)</td><td><span data-count=" + dims[2].v + ">" + dims[2].v + "</span></td><td>" + (dims[2].v >= 60 ? "认知稀缺,可吃溢价" : "可替代性偏高") + "</td></tr>" +
-    "<tr><td>关系网络/缓冲(学习弹性+财务)</td><td><span data-count=" + dims[3].v + ">" + dims[3].v + "</span> / <span data-count=" + dims[4].v + ">" + dims[4].v + "</span></td><td>" + (dims[4].v >= 50 ? "缓冲足够,可上强度" : "缓冲偏薄,走稳路线") + "</td></tr></table></div>" +
-    "<div class=hint>财务缓冲 = 0.6 × 存款可支撑月数(存款÷月薪,24 个月计满分)+ 0.4 × 每月学习预算(2000 元/月计满分)。学习弹性 = 0.5×每周小时(14 小时满分)+ 0.3×年龄(25 岁满分起线性衰减)+ 0.2×学习史。专业深度 = 校准技能全额 + 未校准技能 ×0.9 加权平均。</div>";
+    "<tr><td>你的看家本事(专业深度)</td><td><span data-count=" + dims[0].v + ">" + dims[0].v + "</span></td><td>" + (dims[0].v >= 60 ? "护城河较深" : "沉淀偏浅,先补深度") + "</td></tr>" +
+    "<tr><td>AI 用得怎么样(AI 杠杆)</td><td><span data-count=" + dims[1].v + ">" + dims[1].v + "</span></td><td>" + (dims[1].v >= 60 ? "AI 已在放大你" : "AI 还没成为你的杠杆") + "</td></tr>" +
+    "<tr><td>市场抢不抢手(稀缺度)</td><td><span data-count=" + dims[2].v + ">" + dims[2].v + "</span></td><td>" + (dims[2].v >= 60 ? "抢手,可吃溢价" : "可替代性偏高") + "</td></tr>" +
+    "<tr><td>扛风险的本钱(学习时间+存款预算)</td><td><span data-count=" + dims[3].v + ">" + dims[3].v + "</span> / <span data-count=" + dims[4].v + ">" + dims[4].v + "</span></td><td>" + (dims[4].v >= 50 ? "缓冲足够,可上强度" : "缓冲偏薄,走稳路线") + "</td></tr></table></div>" +
+    "<div class=hint>分数怎么来的:财务缓冲 = 0.6×存款可支撑月数(24 个月满分)+ 0.4×每月学习预算(2000 元满分);学习弹性 = 0.5×每周小时(14 小时满分)+ 0.3×年龄 + 0.2×学习史;专业深度 = 校准技能全额 + 未校准技能×0.9 加权平均。</div>";
   g1.appendChild(left);
   g1.appendChild(right);
-  c.appendChild(g1);
+  c.appendChild(detailsBlock("我的分数怎么来的?(雷达图与四类资产)", g1));
 
-  /* 技能清单:已会(校准后) + 未校准分组,每项带依据(评估稿第 3 节) */
-  var skbox = el("div", "strategy");
+  var skbox = el("div", "");
   var cal = [], unc = [];
   S.skills.forEach(function (sk) {
     var n = normSkill(sk);
@@ -1365,65 +1443,60 @@ function pane5() {
   });
   function skTable(rows) {
     if (!rows.length) return "<div class=planweek style=color:var(--dim)>未填写技能:回到第 3 步补充。</div>";
-    var t = "<table><tr><th>技能</th><th>熟练度</th><th>稀缺度</th><th>依据</th></tr>";
+    var t = "<table><tr><th>技能</th><th>熟练度</th><th>抢手度</th><th>依据</th></tr>";
     rows.forEach(function (n) {
       var basis = n.calibrated
-        ? esc(evidenceLabel(n)) + " · 稀缺:" + esc(scarcityLabel(n))
-        : "<span class=unc>" + (n.preset && PRESET_BY_NAME[n.preset] ? "默认值,未校准(示例:" + esc(PRESET_BY_NAME[n.preset].note) + ")" : "自评,未校准") + "</span>";
+        ? esc(evidenceLabel(n)) + " · 抢手度:" + esc(scarcityLabel(n))
+        : "<span class=unc>" + (n.preset && PRESET_BY_NAME[n.preset] ? "示例默认分,没验证(示例:" + esc(PRESET_BY_NAME[n.preset].note) + ")" : "自己估的,没验证") + "</span>";
       t += "<tr><td>" + esc(n.name) + "</td><td>" + profOf(n) + "</td><td>" + scarcityOf(n) + "</td><td>" + basis + "</td></tr>";
     });
     return "<div class=tbl-scroll>" + t + "</table></div>";
   }
-  skbox.innerHTML = "<h3>已会(校准后)</h3>" + skTable(cal) +
-    (unc.length ? "<h3 style='margin-top:12px'>未校准(自评)</h3><div class=planweek style=color:var(--dim)>以下未做证据题:显示保守默认分,进专业深度时按 0.9 折计入。</div>" + skTable(unc) : "");
-  c.appendChild(skbox);
+  skbox.innerHTML = "<h3 style='margin-top:10px'>已会(有证据)</h3>" + skTable(cal) +
+    (unc.length ? "<h3 style='margin-top:12px'>没验证(自评)</h3><div class=planweek style=color:var(--dim)>以下没答证据题:显示保守默认分,算总分时按九折算。</div>" + skTable(unc) : "");
+  c.appendChild(detailsBlock("技能打分明细(每个分数旁边有依据)", skbox));
 
-  var stbox = el("div", "strategy");
-  stbox.innerHTML = "<h3>建议路径:" + st.name + "</h3><div>" + st.why + "</div><div style=margin-top:8px>" + st.acts.map(function (a) { return "<div class=planweek>· " + a + "</div>"; }).join("") + "</div>";
-  c.appendChild(stbox);
-  var where = el("div", "strategy");
-  var lowOcc = OCCUPATIONS
-    ? OCCUPATIONS.filter(function (o) { return o.avgExposure != null; }).slice().sort(function (a, b) { return a.avgExposure - b.avgExposure; }).slice(0, 5)
-    : [];
-  where.innerHTML = "<h3>转去哪:低暴露参照岗位(" + (lowOcc.length ? "内置职业库实测均值" : "内置小表,职业库未加载") + ")</h3>" +
-    "<div class=planweek>参照 Anthropic《Labor market impacts of AI》(2026-03) 与张丹丹等《管理世界》(2025) 的低暴露职业方向,同信号人群常看的岗位:</div>" +
-    (lowOcc.length
-      ? lowOcc.map(function (o) { return "<div class=planweek>· " + esc(o.name) + "(平均暴露度 <b>" + o.avgExposure + "</b>/100 · " + esc(o.category) + (o.source ? " · " + esc(shortSource(o.source)) : "") + ")</div>"; }).join("")
-      : "<div class=planweek>· 手艺人型:厨师 / 维修技工 / 美发 / 缝纫</div>" +
-        "<div class=planweek>· 照料与现场型:护理 / 家政 / 保育 / 健身教练</div>" +
-        "<div class=planweek>· 现场服务型:保安 / 物业 / 消防 / 驾驶员</div>") +
-    "<div class=planweek style=color:var(--dim)>提示:低暴露不等于高薪,动手前用第 4 步学习排序验证投入产出。</div>";
-  c.appendChild(where);
-
-  c.appendChild(el("h3", "", "学习排序(按时间 ROI)"));
-  var roinote = el("div", "hint");
-  roinote.innerHTML = "时间 ROI =(预期年增收 − 金钱成本)÷(每月小时 × 12);金钱 ROI =(预期年增收 − 金钱成本)÷ 金钱成本。收益超出参考区间上限且未附来源 → 按 0.5 折计入(附收益依据后按全额)。";
-  c.appendChild(roinote);
-  var tbl = el("div", "");
-  tbl.innerHTML = roiTable(rois);
-  c.appendChild(tbl);
-
-  c.appendChild(el("h3", "", "90 天实验计划"));
-  var pl = el("div", "");
-  for (var w = 0; w < weeks.length; w++) pl.innerHTML += "<div class=planweek><b>" + weeks[w].w + "</b>:<span style=color:var(--dim)> " + weeks[w].t + "</span></div>";
-  c.appendChild(pl);
-
+  var learnbox = el("div", "");
   var warnBox = el("div", "");
   if (Number(S.hours) < 5) warnBox.innerHTML += "<div class=warn>⚠ 每周可投入不足 5 小时:先把改造现有工作流作为唯一重点,学习项压缩到 1 个。</div>";
   if (Number(S.budget) < 100 && S.learns.some(function (x) { return Number(x.cost) > 0; })) warnBox.innerHTML += "<div class=warn>⚠ 预算近零:优先选择成本为 0 的学习项(免费工具/官方文档/开源社区)。</div>";
   if (top && top.heavy) warnBox.innerHTML += "<div class=warn>⚠ 排序第一的学习项耗时超过全年可投入的 40%:建议拆成 2~3 个小里程碑分阶段投入。</div>";
-  c.appendChild(warnBox);
+  learnbox.appendChild(warnBox);
+  var roinote = el("div", "hint");
+  roinote.innerHTML = "每小时回报 =(预计一年多赚 − 成本)÷(每月小时 × 12);每投 1 元回报 =(预计一年多赚 − 成本)÷ 成本。收益报太高且没依据 → 按一半算(附依据按全额)。";
+  learnbox.appendChild(roinote);
+  var tbl = el("div", "");
+  tbl.innerHTML = roiTable(rois);
+  learnbox.appendChild(tbl);
+  c.appendChild(detailsBlock("我该学什么?(学习排序,按每小时回报)", learnbox));
+
+  var pl = el("div", "");
+  for (var w = 0; w < weeks.length; w++) pl.innerHTML += "<div class=planweek><b>" + weeks[w].w + "</b>:<span style=color:var(--dim)> " + weeks[w].t + "</span></div>";
+  c.appendChild(detailsBlock("第一步做什么?(90 天计划)", pl));
+
+  var where = el("div", "");
+  var lowOcc = OCCUPATIONS
+    ? OCCUPATIONS.filter(function (o) { return o.avgExposure != null; }).slice().sort(function (a, b) { return a.avgExposure - b.avgExposure; }).slice(0, 5)
+    : [];
+  where.innerHTML = "<h3>换什么饭碗?被 AI 覆盖少的岗位(" + (lowOcc.length ? "内置岗位库实测均值" : "内置小表,岗位库未加载") + ")</h3>" +
+    "<div class=planweek>参照 Anthropic《Labor market impacts of AI》(2026-03) 与张丹丹等《管理世界》(2025) 的低暴露职业方向,同信号人群常看的岗位:</div>" +
+    (lowOcc.length
+      ? lowOcc.map(function (o) { return "<div class=planweek>· " + esc(o.name) + "(被覆盖程度 <b>" + o.avgExposure + "</b>/100 · " + esc(o.category) + (o.source ? " · " + esc(shortSource(o.source)) : "") + ")</div>"; }).join("")
+      : "<div class=planweek>· 手艺人型:厨师 / 维修技工 / 美发 / 缝纫</div>" +
+        "<div class=planweek>· 照料与现场型:护理 / 家政 / 保育 / 健身教练</div>" +
+        "<div class=planweek>· 现场服务型:保安 / 物业 / 消防 / 驾驶员</div>") +
+    "<div class=planweek style=color:var(--dim)>提示:被 AI 覆盖少不等于高薪,动手前用「我该学什么」验证投入产出。</div>";
+  c.appendChild(detailsBlock("换什么饭碗?(被 AI 覆盖少的岗位)", where));
+
   var src = el("div", "hint");
-  src.innerHTML = "数据与口径:暴露度权重(0.5/0.2/0.15/0.15)与阈值(35/55/75)为初版设定,参照 Anthropic《Labor market impacts of AI》(2026-03) 任务暴露框架;岗位平均暴露度来自 occupations.json(条目级来源:张丹丹等《管理世界》2025 DWA 法 / Anthropic 职业榜观测 / Felten 等 SMJ 2021 / IMF 2026),职业库未加载时对比位留空。饭碗雷达只给概率与路径,不给预言。";
-  c.appendChild(src);
+  src.innerHTML = "数据与口径:暴露度权重(0.5/0.2/0.15/0.15)与阈值(35/55/75)为初版设定,参照 Anthropic《Labor market impacts of AI》(2026-03) 任务暴露框架;岗位平均暴露度来自 occupations.json(条目级来源:张丹丹等《管理世界》2025 DWA 法 / Anthropic 职业榜观测 / Felten 等 SMJ 2021 / IMF 2026),岗位库未加载时对比位留空。饭碗雷达只给概率与路径,不给预言。";
+  c.appendChild(detailsBlock("数据口径与来源(想较真可以看)", src));
 
-  var tools = el("div", "");
-  tools.innerHTML = "<button class=btn-primary id=btn_save>保存报告</button><button class=btn id=btn_share>分享报告(脱敏)</button><button class=btn-danger id=btn_reset>清空重来</button>";
-  c.appendChild(tools);
+  /* 收尾:导航(重新测一遍)+ 隐私与免责 */
+  c.appendChild(navButtons());
   var priv = el("div", "hint");
-  priv.innerHTML = "分享报告为脱敏版:只含信号、路径与计划,不含收入、存款、年龄、岗位与昵称等任何个人信息。本报告生成于 " + fmtTime(new Date().toISOString()) + ",所有输入已自动保存在本机浏览器(仅本设备,换设备不互通)。4 周后重测对比,参数变化比绝对值更有意义。";
+  priv.innerHTML = "分享报告为脱敏版:只含信号、路径与计划,不含收入、存款、年龄、岗位与昵称等任何个人信息。所有输入已自动保存在本机浏览器(仅本设备,换设备不互通)。4 周后重测对比,参数变化比绝对值更有意义。";
   c.appendChild(priv);
-
   c.appendChild(el("div", "hint", "本报告基于你的自评,仅供参考,不构成职业决策依据。"));
   animateCounts(c);
   return c;
@@ -1441,16 +1514,16 @@ function reportObj() {
 
 /* 导出页 token(与主样式同源,导出跟随当前主题) */
 var EXPORT_THEME = {
-  apple: "--bg:#F5F5F7;--line:#D2D2D7;--tx:#1D1D1F;--dim:#6E6E73;--acc:#E4572E;--acc-soft:rgba(0,122,255,.10);--acc-fill:rgba(228,87,46,.16);",
-  linear: "--bg:#08090A;--line:#262B33;--tx:#EDEFF2;--dim:#8B93A7;--acc:#E4572E;--acc-soft:rgba(94,106,210,.14);--acc-fill:rgba(228,87,46,.22);"
+  apple: "--bg:#F5F5F7;--line:#D2D2D7;--tx:#1D1D1F;--dim:#6E6E73;--acc:#E4572E;--acc-strong:#A63D12;--acc-soft:rgba(228,87,46,.08);--acc-fill:rgba(228,87,46,.16);",
+  linear: "--bg:#08090A;--line:#262B33;--tx:#EDEFF2;--dim:#8B93A7;--acc:#E4572E;--acc-strong:#FF8A5C;--acc-soft:rgba(228,87,46,.12);--acc-fill:rgba(228,87,46,.22);"
 };
 
 function reportHtml(stripped) {
   var o = reportObj();
   var title = stripped ? "饭碗雷达 · 分享页(脱敏)" : ((S.nick || "朋友") + ",你的饭碗扫描报告");
-  var h = "<!DOCTYPE html><html lang=zh-CN><head><meta charset=utf-8><title>" + title + "</title><style>:root{" + EXPORT_THEME[currentTheme()] + "}body{background:var(--bg);color:var(--tx);font-family:PingFang SC,sans-serif;padding:28px;max-width:720px;margin:0 auto;line-height:1.7;font-variant-numeric:tabular-nums}h1{font-size:22px}.sig{color:var(--acc);font-size:18px;margin:10px 0}table{width:100%;border-collapse:collapse;margin:10px 0}td,th{border:1px solid var(--line);padding:6px 10px;font-size:14px}.t{overflow-x:auto}.note{color:var(--dim);font-size:12px;margin-top:16px}svg{display:block;margin:10px auto}.rg-ring{stroke:var(--line)}.rg-cross{stroke:var(--line);opacity:.55}.rg-sweep{fill:var(--acc-soft)}.rg-poly{fill:var(--acc-fill);stroke:var(--acc);stroke-dashoffset:0;fill-opacity:1}.rg-dot{fill:var(--acc)}.rg-lab{fill:var(--dim)}@media print{body{background:#fff;color:#111;print-color-adjust:exact;-webkit-print-color-adjust:exact}td,th{border-color:#999}svg{max-width:320px}}</style></head><body>";
+  var h = "<!DOCTYPE html><html lang=zh-CN><head><meta charset=utf-8><title>" + title + "</title><style>:root{" + EXPORT_THEME[currentTheme()] + "}body{background:var(--bg);color:var(--tx);font-family:PingFang SC,sans-serif;padding:28px;max-width:720px;margin:0 auto;line-height:1.7;font-variant-numeric:tabular-nums}h1{font-size:22px}.sig{color:var(--acc-strong);font-size:18px;margin:10px 0}table{width:100%;border-collapse:collapse;margin:10px 0}td,th{border:1px solid var(--line);padding:6px 10px;font-size:14px}.t{overflow-x:auto}.note{color:var(--dim);font-size:12px;margin-top:16px}svg{display:block;margin:10px auto}.rg-ring{stroke:var(--line)}.rg-cross{stroke:var(--line);opacity:.55}.rg-sweep{fill:var(--acc-soft)}.rg-poly{fill:var(--acc-fill);stroke:var(--acc);stroke-dashoffset:0;fill-opacity:1}.rg-dot{fill:var(--acc)}.rg-lab{fill:var(--dim)}@media print{body{background:#fff;color:#111;print-color-adjust:exact;-webkit-print-color-adjust:exact}td,th{border-color:#999}svg{max-width:320px}}</style></head><body>";
   h += "<h1>" + title + "</h1>";
-  h += "<div class=sig>信号:" + o.risk + "(暴露度 " + o.exposure + "/100)</div>";
+  h += "<div class=sig>" + o.risk + " · 饭碗被 AI 吃掉的程度 " + o.exposure + "/100</div>";
   if (!stripped && S.job) {
     h += S.jobAvg != null
       ? "<div class=note>岗位对比:你的暴露度 " + o.exposure + " vs 「" + esc(S.job) + "」岗位平均 " + S.jobAvg + "(数据:occupations.json)。</div>"
@@ -1460,7 +1533,7 @@ function reportHtml(stripped) {
   o.strategy.acts.forEach(function (a) { h += "<div>· " + a + "</div>"; });
   h += radarSvg(o.radar);
   if (!stripped) {
-    h += "<h3>已会(校准后)</h3>";
+    h += "<h3>已会(有证据)</h3>";
     var cal = [], unc = [];
     S.skills.forEach(function (sk) {
       var n = normSkill(sk);
@@ -1468,27 +1541,27 @@ function reportHtml(stripped) {
       (n.calibrated ? cal : unc).push(n);
     });
     function expSkillTable(rows) {
-      var t = "<table><tr><th>技能</th><th>熟练度</th><th>稀缺度</th><th>依据</th></tr>";
+      var t = "<table><tr><th>技能</th><th>熟练度</th><th>抢手度</th><th>依据</th></tr>";
       rows.forEach(function (n) {
         var basis = n.calibrated
           ? esc(evidenceLabel(n)) + " · 稀缺:" + esc(scarcityLabel(n))
-          : (n.preset && PRESET_BY_NAME[n.preset] ? "默认值,未校准" : "自评,未校准");
+          : (n.preset && PRESET_BY_NAME[n.preset] ? "示例默认分,没验证" : "自己估的,没验证");
         t += "<tr><td>" + esc(n.name) + "</td><td>" + profOf(n) + "</td><td>" + scarcityOf(n) + "</td><td>" + basis + "</td></tr>";
       });
       return "<div class=t>" + t + "</table></div>";
     }
     h += cal.length ? expSkillTable(cal) : "<div class=note>未填写技能。</div>";
-    if (unc.length) h += "<h3>未校准(自评)</h3>" + expSkillTable(unc);
+    if (unc.length) h += "<h3>没验证(自评)</h3>" + expSkillTable(unc);
   }
-  h += "<h3>学习排序(按时间 ROI)</h3><div class=note>时间 ROI =(预期年增收 − 金钱成本)÷(每月小时 × 12);金钱 ROI =(预期年增收 − 金钱成本)÷ 金钱成本。</div>";
-  h += "<div class=t><table><tr><th>#</th><th>学习项</th><th>月小时</th>" + (stripped ? "" : "<th>成本</th><th>预期年增收</th>") + "<th>时间ROI(元/小时)</th></tr>";
+  h += "<h3>我该学什么?(按每小时回报排序)</h3><div class=note>每小时回报 =(预计一年多赚 − 成本)÷(每月小时 × 12);每投 1 元回报 =(预计一年多赚 − 成本)÷ 成本。收益报太高且没依据 → 按一半算。</div>";
+  h += "<div class=t><table><tr><th>#</th><th>学习项</th><th>月小时</th>" + (stripped ? "" : "<th>成本</th><th>预计一年多赚</th>") + "<th>每小时回报(元)</th></tr>";
   o.roi.forEach(function (r, i) {
     h += "<tr><td>" + (i + 1) + "</td><td>" + esc(r.name) + "</td><td>" + r.hours + "</td>" + (stripped ? "" : "<td>" + r.cost + "</td><td>" + r.gain + "</td>") + "<td>" + r.timeRoi.toFixed(0) + "</td></tr>";
   });
   h += "</table></div>";
-  h += "<h3>90 天计划</h3>";
+  h += "<h3>第一步做什么?(90 天计划)</h3>";
   o.plan.forEach(function (w) { h += "<div><b>" + w.w + "</b> " + w.t + "</div>"; });
-  h += "<div class=note>生成时间:" + fmtTime(o.generatedAt) + "。口径与来源:暴露度权重与阈值参照 Anthropic《Labor market impacts of AI》(2026-03) 任务暴露框架;岗位平均暴露度来自 occupations.json(条目级来源:张丹丹等《管理世界》2025 DWA 法 / Anthropic 职业榜观测 / Felten 等 SMJ 2021 / IMF 2026)。饭碗雷达只给概率与路径,不给预言。" + (stripped ? " 本页为脱敏分享版,不含任何收入、存款、年龄、岗位与昵称等个人信息。" : "") + "</div>";
+  h += "<div class=note>生成时间:" + fmtTime(o.generatedAt) + "。公式:0.5×重复任务 + 0.2×(100−创造性) + 0.15×(100−人际信任) + 0.15×(100−自主决策)。口径与来源:暴露度权重与阈值参照 Anthropic《Labor market impacts of AI》(2026-03) 任务暴露框架;岗位平均暴露度来自 occupations.json(条目级来源:张丹丹等《管理世界》2025 DWA 法 / Anthropic 职业榜观测 / Felten 等 SMJ 2021 / IMF 2026)。饭碗雷达只给概率与路径,不给预言。" + (stripped ? " 本页为脱敏分享版,不含任何收入、存款、年龄、岗位与昵称等个人信息。" : "") + "</div>";
   return h + "</body></html>";
 }
 
@@ -1506,18 +1579,13 @@ function bindPane5() {
   if (typeof window !== "undefined" && window.beacon) { try { window.beacon("report_generated"); } catch (e) {} }
   $("btn_save").onclick = function () { download("饭碗雷达-报告-" + dateTag() + ".html", reportHtml(false)); if (typeof window !== "undefined" && window.beacon) { try { window.beacon("report_saved"); } catch (e) {} } };
   $("btn_share").onclick = function () { download("饭碗雷达-分享页-" + dateTag() + ".html", reportHtml(true)); if (typeof window !== "undefined" && window.beacon) { try { window.beacon("share_clicked"); } catch (e) {} } };
-  $("btn_reset").onclick = function () {
-    if (!window.confirm("确定清空所有输入并重新开始吗?本机保存的数据将被删除,且无法恢复。")) return;
-    try { localStorage.removeItem("gyz_planner_v1"); } catch (e) {}
-    location.reload();
-  };
 }
 
 function navButtons() {
   var n = el("div", "navbtns");
   var prev = el("button", "btn", "上一步");
   prev.onclick = function () { if (cur > 0) { cur--; render(); } };
-  var next = el("button", "btn primary", cur === STEP_NAMES.length - 1 ? "回到开头" : "下一步 →");
+  var next = el("button", "btn primary", cur === STEP_NAMES.length - 1 ? "重新测一遍" : "下一步 →");
   next.onclick = function () { if (cur < STEP_NAMES.length - 1) { cur++; render(); } else { cur = 0; render(); } };
   n.appendChild(prev);
   n.appendChild(next);
@@ -1554,6 +1622,13 @@ function render() {
 initTheme();
 loadOccupations();
 load();
+/* 危险操作移出报告页:清空重来固定在页脚 */
+var resetBtn = document.getElementById("btn_reset");
+if (resetBtn) resetBtn.onclick = function () {
+  if (!window.confirm("确定清空所有输入并重新开始吗?本机保存的数据将被删除,且无法恢复。")) return;
+  try { localStorage.removeItem("gyz_planner_v1"); } catch (e) {}
+  location.reload();
+};
 render();
 </script>
 </body>
