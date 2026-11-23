@@ -2,9 +2,9 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F5F5F7">
-<title>饭碗雷达 · AI 职业体检(JobRadar)</title>
+<title>饭碗雷达 · AI 职业体检</title>
 <script>
 /* 首屏防闪烁:主脚本前先按记忆/系统偏好设主题 */
 (function () {
@@ -18,357 +18,466 @@
 })();
 </script>
 <style>
-  /* ===== 双主题 token(苹果浅色为默认,Linear 深色覆写) ===== */
-  :root, [data-theme="apple"] {
-    color-scheme: light;
-    --bg:#F5F5F7;
-    --card:rgba(255,255,255,.72);
-    --card2:rgba(255,255,255,.92);
-    --line:#D2D2D7;
-    --tx:#1D1D1F;
-    --dim:#6E6E73;
-    --acc:#E4572E;
-    --acc-ink:#1A1715;
-    --acc-strong:#A63D12;
-    --acc-soft:rgba(228,87,46,.08);
-    --acc-fill:rgba(228,87,46,.16);
-    --ok:#2E7D32; --warn:#9A6700; --warn-strong:#7A5400; --rsk:#C93400; --dgr:#B42318;
-    --sh1:0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.08);
-    --sh2:0 16px 40px rgba(0,0,0,.14);
-    --sh3:0 24px 60px rgba(0,0,0,.20);
-    --glass:blur(20px) saturate(180%);
-    --ease-spring:cubic-bezier(.34,1.56,.64,1);
-    --ease-std:cubic-bezier(.2,.8,.2,1);
-    --t-fast:150ms; --t-mid:250ms; --t-slow:350ms;
-  }
-  [data-theme="linear"] {
-    color-scheme: dark;
-    --bg:#08090A;
-    --card:rgba(22,24,28,.70);
-    --card2:rgba(28,30,34,.85);
-    --line:#262B33;
-    --tx:#EDEFF2;
-    --dim:#8B93A7;
-    --acc:#E4572E;
-    --acc-ink:#1A1715;
-    --acc-strong:#FF8A5C;
-    --acc-soft:rgba(228,87,46,.12);
-    --acc-fill:rgba(228,87,46,.22);
-    --ok:#8FBF6F; --warn:#E8A33D; --warn-strong:#E8A33D; --rsk:#F08A5D; --dgr:#F0615A;
-    --sh1:0 1px 2px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.4);
-    --sh2:0 16px 40px rgba(0,0,0,.6);
-    --sh3:0 24px 60px rgba(0,0,0,.7);
-    --glass:blur(20px) saturate(160%);
-  }
+/* ================= 设计系统 =================
+   主视口:390px 移动端优先,桌面为放大版。
+   网格:8pt(4/8/12/16/24/32) · 圆角三级 12/16/999 · 字阶四级 17/15/13/12 + 数字展示 56/40
+   触控目标:全部 ≥44px · 表单模式:全站唯一(标签在上、输入 44px 高、圆角 12、聚焦橙环)
+   品牌色:朱砂橙 #E4572E(按钮配墨字 #1A1715) */
+:root, [data-theme="apple"] {
+  color-scheme: light;
+  --bg:#F5F5F7;
+  --card:rgba(255,255,255,.72);
+  --card2:rgba(255,255,255,.92);
+  --line:#D2D2D7;
+  --tx:#1D1D1F;
+  --dim:#6E6E73;
+  --acc:#E4572E;
+  --acc-ink:#1A1715;
+  --acc-strong:#A63D12;
+  --acc-soft:rgba(228,87,46,.08);
+  --acc-fill:rgba(228,87,46,.16);
+  --ok:#2E7D32; --ok-soft:rgba(46,125,50,.12);
+  --warn:#9A6700; --warn-strong:#7A5400; --warn-soft:rgba(154,103,0,.12);
+  --rsk:#C93400; --rsk-soft:rgba(201,52,0,.12);
+  --dgr:#B42318; --dgr-soft:rgba(180,35,24,.12);
+  --sh1:0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.08);
+  --sh2:0 16px 40px rgba(0,0,0,.14);
+  --sh3:0 24px 60px rgba(0,0,0,.20);
+  --glass:blur(20px) saturate(180%);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --ease-std:cubic-bezier(.2,.8,.2,1);
+  --t-fast:150ms; --t-mid:250ms; --t-slow:350ms;
+  --sp1:4px; --sp2:8px; --sp3:12px; --sp4:16px; --sp5:24px; --sp6:32px;
+  --r-s:12px; --r-m:16px; --r-pill:999px;
+  --h-touch:44px;
+}
+[data-theme="linear"] {
+  color-scheme: dark;
+  --bg:#08090A;
+  --card:rgba(22,24,28,.70);
+  --card2:rgba(28,30,34,.85);
+  --line:#262B33;
+  --tx:#EDEFF2;
+  --dim:#8B93A7;
+  --acc:#E4572E;
+  --acc-ink:#1A1715;
+  --acc-strong:#FF8A5C;
+  --acc-soft:rgba(228,87,46,.12);
+  --acc-fill:rgba(228,87,46,.22);
+  --ok:#8FBF6F; --ok-soft:rgba(143,191,111,.14);
+  --warn:#E8A33D; --warn-strong:#E8A33D; --warn-soft:rgba(232,163,61,.14);
+  --rsk:#F08A5D; --rsk-soft:rgba(240,138,93,.14);
+  --dgr:#F0615A; --dgr-soft:rgba(240,97,90,.14);
+  --sh1:0 1px 2px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.4);
+  --sh2:0 16px 40px rgba(0,0,0,.6);
+  --sh3:0 24px 60px rgba(0,0,0,.7);
+  --glass:blur(20px) saturate(160%);
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: radial-gradient(1100px 520px at 85% -12%, var(--acc-soft), transparent 62%), var(--bg);
-    color: var(--tx);
-    font-family: "SF Pro Text","PingFang SC","Inter","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    line-height: 1.65;
-    font-variant-numeric: tabular-nums;
-    transition: background-color var(--t-mid) var(--ease-std), color var(--t-mid) var(--ease-std);
-  }
-  .wrap { max-width: 960px; margin: 0 auto; padding: 28px 20px 80px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: radial-gradient(1100px 520px at 85% -12%, var(--acc-soft), transparent 62%), var(--bg);
+  color: var(--tx);
+  font-family: "SF Pro Text","PingFang SC","Inter","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+  transition: background-color var(--t-mid) var(--ease-std), color var(--t-mid) var(--ease-std);
+}
+.wrap { max-width: 100%; margin: 0 auto; padding: var(--sp4) var(--sp4) 88px; }
+@media (min-width: 768px) { .wrap { max-width: 720px; padding: var(--sp6) var(--sp5) 96px; } }
 
-  header.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
-  header.top h1 { font-size: 26px; letter-spacing: 1px; }
-  header.top .tag { color: var(--dim); font-size: 13px; margin-top: 6px; }
-  .theme-btn {
-    flex-shrink: 0; margin-top: 4px; border-radius: 999px; padding: 8px 16px;
-    background: var(--card); border: 1px solid var(--line); color: var(--tx);
-    backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
-    box-shadow: var(--sh1); cursor: pointer; font-size: 13px;
-    transition: transform var(--t-fast) var(--ease-std), box-shadow var(--t-fast) var(--ease-std);
-  }
-  .theme-btn:hover { transform: translateY(-1px); box-shadow: var(--sh2); }
-  .theme-btn:active { transform: scale(.97); }
+/* ---------- 品牌区 ---------- */
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp3); margin-bottom: var(--sp4); }
+.top h1 { font-size: 26px; font-weight: 700; letter-spacing: 1px; }
+.tagline { font-size: 15px; margin-top: var(--sp1); }
+.sub { font-size: 12px; color: var(--dim); margin-top: 2px; }
+.theme-btn {
+  flex-shrink: 0; width: var(--h-touch); height: var(--h-touch); border-radius: var(--r-pill);
+  display: flex; align-items: center; justify-content: center;
+  background: var(--card); border: 1px solid var(--line); color: var(--tx);
+  backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
+  box-shadow: var(--sh1); cursor: pointer; font-size: 17px;
+  transition: transform var(--t-fast) var(--ease-std), box-shadow var(--t-fast) var(--ease-std);
+}
+.theme-btn:hover { transform: translateY(-1px); box-shadow: var(--sh2); }
+.theme-btn:active { transform: scale(.97); }
 
-  .banner {
-    background: linear-gradient(90deg, var(--acc-soft), transparent 70%);
-    border: 1px solid var(--line); border-radius: 16px; padding: 12px 16px;
-    font-size: 13px; color: var(--dim); margin-bottom: 18px;
-    backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
-    box-shadow: var(--sh1);
-  }
+.banner {
+  background: linear-gradient(90deg, var(--acc-soft), transparent 70%);
+  border: 1px solid var(--line); border-radius: var(--r-s); padding: var(--sp3) 14px;
+  font-size: 13px; color: var(--dim); margin-bottom: var(--sp4); line-height: 1.6;
+  backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
+  box-shadow: var(--sh1);
+}
 
-  .steps { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
-  .steps button {
-    flex: 1; min-width: 96px; background: var(--card); color: var(--dim);
-    border: 1px solid var(--line); border-radius: 12px; padding: 10px 6px;
-    cursor: pointer; font-size: 13px;
-    backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
-    box-shadow: var(--sh1);
-    transition: transform var(--t-fast) var(--ease-std), box-shadow var(--t-fast) var(--ease-std), background-color var(--t-fast) var(--ease-std), color var(--t-fast) var(--ease-std), border-color var(--t-fast) var(--ease-std);
-  }
-  .steps button:hover { transform: translateY(-1px); box-shadow: var(--sh2); }
-  .steps button:active { transform: scale(.97); }
-  .steps button.on { background: var(--acc); border-color: var(--acc); color: var(--acc-ink); }
-  .steps button.done { color: var(--acc-strong); font-weight: 600; }
+/* ---------- 步骤条(移动端:5 个圆点 + 进度说明;任意步可点击跳转) ---------- */
+.steps { margin-bottom: var(--sp4); }
+.stepper-row { display: flex; align-items: center; gap: 6px; }
+.sdot {
+  width: var(--h-touch); height: var(--h-touch); flex-shrink: 0; border-radius: var(--r-pill);
+  border: 1px solid var(--line); background: var(--card); color: var(--dim);
+  font-size: 15px; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
+  box-shadow: var(--sh1);
+  transition: transform var(--t-fast) var(--ease-std), background-color var(--t-fast) var(--ease-std), color var(--t-fast) var(--ease-std), border-color var(--t-fast) var(--ease-std);
+}
+.sdot i { font-style: normal; }
+.sdot:hover { transform: translateY(-1px); }
+.sdot:active { transform: scale(.97); }
+.sdot.on { background: var(--acc); border-color: var(--acc); color: var(--acc-ink); }
+.sdot.done { border-color: var(--acc); color: var(--acc-strong); background: var(--acc-soft); }
+.sline { flex: 1; height: 2px; border-radius: var(--r-pill); background: var(--line); }
+.sline.done { background: var(--acc); }
+.scaption { font-size: 12px; color: var(--dim); margin-top: var(--sp2); }
 
-  .card {
-    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
-    padding: 20px; margin-bottom: 16px;
-    backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
-    box-shadow: var(--sh1);
-    transition: transform var(--t-fast) var(--ease-std), box-shadow var(--t-fast) var(--ease-std);
-  }
-  .card:hover:not(:focus-within) { transform: translateY(-2px); box-shadow: var(--sh2); }
-  .card h2 { font-size: 17px; margin-bottom: 6px; }
-  .card .hint { color: var(--dim); font-size: 13px; margin-bottom: 14px; }
+/* ---------- 卡片与表单(唯一表单模式) ---------- */
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--r-m);
+  padding: var(--sp5) var(--sp4); margin-bottom: var(--sp4);
+  backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
+  box-shadow: var(--sh1);
+  transition: transform var(--t-fast) var(--ease-std), box-shadow var(--t-fast) var(--ease-std);
+}
+@media (min-width: 768px) { .card { padding: var(--sp5); } .card:hover:not(:focus-within) { transform: translateY(-2px); box-shadow: var(--sh2); } }
+.card h2 { font-size: 17px; margin-bottom: var(--sp1); }
+.hint { font-size: 13px; color: var(--dim); margin-bottom: var(--sp4); line-height: 1.6; }
 
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  @media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } }
-  @media (max-width: 640px) { header.top { flex-wrap: wrap; } header.top h1 { font-size: 22px; } header.top .tag { font-size: 12px; } }
+.group { border: 0; padding: 0; margin: 0 0 var(--sp5); }
+.group legend { font-size: 13px; font-weight: 600; color: var(--tx); padding: 0; margin-bottom: var(--sp2); }
+.grid2 { display: grid; grid-template-columns: 1fr; gap: var(--sp3); }
+@media (min-width: 768px) { .grid2 { grid-template-columns: 1fr 1fr; } }
+.span2 { grid-column: 1 / -1; }
 
-  label.f { display: block; font-size: 13px; color: var(--dim); margin-bottom: 4px; }
+label.f { display: block; font-size: 13px; color: var(--dim); }
+input[type=text], input[type=number], input:not([type]), select {
+  display: block; width: 100%; min-height: var(--h-touch);
+  background: var(--card); color: var(--tx);
+  border: 1px solid var(--line); border-radius: var(--r-s);
+  padding: 10px 12px; font-size: 16px; /* 16px 防止 iOS 聚焦自动缩放 */
+  margin-top: 6px; font-family: inherit;
+  backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
+  transition: border-color var(--t-fast) var(--ease-std), box-shadow var(--t-fast) var(--ease-std);
+}
+input::placeholder { color: var(--dim); opacity: .65; }
+input:focus, select:focus { outline: none; border-color: var(--acc); box-shadow: 0 0 0 3px var(--acc-soft); }
+:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+select { appearance: none; -webkit-appearance: none; padding-right: 34px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--dim) 50%), linear-gradient(135deg, var(--dim) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 19px, calc(100% - 13px) 19px;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
 
-  input, select {
-    width: 100%; background: var(--card); color: var(--tx);
-    border: 1px solid var(--line); border-radius: 12px; padding: 9px 12px; font-size: 14px;
-    backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
-    transition: border-color var(--t-fast) var(--ease-std), box-shadow var(--t-fast) var(--ease-std);
-  }
-  input::placeholder { color: var(--dim); opacity: .7; }
-  input:focus, select:focus { outline: none; border-color: var(--acc); }
-  :focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+/* ---------- 岗位组合框(按分类分组 + 搜索,参照夸克分组结果) ---------- */
+.combo { position: relative; margin-top: 6px; }
+.combo::after { content: "▾"; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--dim); pointer-events: none; font-size: 12px; }
+.combo input { padding-right: 36px; }
+.combo-list {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 60;
+  list-style: none; background: var(--card2); border: 1px solid var(--line);
+  border-radius: var(--r-s); box-shadow: var(--sh3);
+  backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
+  max-height: 340px; overflow: auto; padding: 6px;
+}
+.occ-grp {
+  position: sticky; top: -6px; z-index: 1; background: var(--card2);
+  padding: 10px 10px 6px; font-size: 12px; color: var(--dim); font-weight: 600;
+}
+.combo-list li { display: flex; justify-content: space-between; align-items: center; gap: var(--sp2); min-height: var(--h-touch); padding: 8px 10px; border-radius: 8px; font-size: 15px; cursor: pointer; }
+.combo-list li:not(.occ-grp):not(.combo-empty):hover, .combo-list li.on { background: var(--acc-soft); }
+.combo-list li.on { outline: 2px solid var(--acc); outline-offset: -2px; }
+.occ-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.occ-avg { color: var(--dim); font-size: 12px; white-space: nowrap; flex-shrink: 0; }
+.occ-avg b { color: var(--tx); }
+.occ-src { color: var(--dim); font-size: 11px; opacity: .85; }
+.combo-empty { padding: 10px; font-size: 13px; color: var(--dim); }
+.job-status { font-size: 12px; color: var(--dim); margin-top: var(--sp2); display: flex; align-items: center; gap: var(--sp2); flex-wrap: wrap; }
+.relink {
+  min-height: var(--h-touch); padding: 0 14px; border-radius: var(--r-pill); border: 0;
+  background: var(--acc-soft); color: var(--acc-strong); font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: transform var(--t-fast) var(--ease-std);
+}
+.relink:active { transform: scale(.97); }
 
-  /* 滑块:20px 白圆 + 3px 强调环,hover/active 回弹放大 */
-  input[type=range] {
-    -webkit-appearance: none; appearance: none;
-    height: 22px; background: transparent; border: none; padding: 0;
-    box-shadow: none; cursor: pointer;
-  }
-  input[type=range]::-webkit-slider-runnable-track { height: 6px; background: var(--line); border-radius: 999px; }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none; appearance: none;
-    width: 20px; height: 20px; border-radius: 50%;
-    background: #fff; border: 3px solid var(--acc);
-    margin-top: -7px; box-shadow: var(--sh1);
-    transition: transform var(--t-fast) var(--ease-spring);
-  }
-  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
-  input[type=range]::-webkit-slider-thumb:active { transform: scale(1.35); }
-  input[type=range]::-moz-range-track { height: 6px; background: var(--line); border-radius: 999px; }
-  input[type=range]::-moz-range-thumb {
-    width: 20px; height: 20px; border-radius: 50%;
-    background: #fff; border: 3px solid var(--acc);
-    box-shadow: var(--sh1);
-    transition: transform var(--t-fast) var(--ease-spring);
-  }
-  input[type=range]::-moz-range-thumb:hover { transform: scale(1.15); }
-  input[type=range]::-moz-range-thumb:active { transform: scale(1.35); }
+/* ---------- 按钮(全站 ≥44px) ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: var(--h-touch); padding: 10px 18px;
+  background: var(--card); color: var(--tx);
+  border: 1px solid var(--line); border-radius: var(--r-s);
+  cursor: pointer; font-size: 15px; font-family: inherit;
+  backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
+  box-shadow: var(--sh1);
+  transition: transform var(--t-fast) var(--ease-std), box-shadow var(--t-fast) var(--ease-std), filter var(--t-fast) var(--ease-std);
+}
+.btn:hover { transform: translateY(-1px); box-shadow: var(--sh2); }
+.btn:active { transform: scale(.97); }
+.btn.primary { background: var(--acc); border-color: var(--acc); color: var(--acc-ink); font-weight: 600; }
+.btn.primary:hover { filter: brightness(1.05); }
+.btn.chip { border-radius: var(--r-pill); padding: 0 16px; font-size: 13px; box-shadow: none; }
+.btn.ghost { background: transparent; border-color: transparent; box-shadow: none; color: var(--dgr); font-size: 13px; padding: 0 10px; }
+.btn.danger { color: var(--dgr); border-color: var(--dgr); box-shadow: none; }
 
-  .row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
-  .row .lab { width: 200px; font-size: 13px; color: var(--dim); flex-shrink: 0; }
-  @media (max-width: 640px) { .row .lab { width: 100%; } }
-  .row input[type=range] { flex: 1 1 200px; }
-  .row .val { width: 56px; text-align: right; font-size: 14px; color: var(--acc-strong); font-weight: 600; }
-  .row .live { margin-left: auto; }
-  .live { font-size: 13px; color: var(--dim); margin-top: 4px; }
-  .live b { color: var(--tx); }
+.navbtns { display: flex; gap: var(--sp3); margin-top: var(--sp5); }
+.navbtns .btn { flex: 1; }
+.navbtns .btn:last-child { flex: 1.4; }
 
-  .risk0 { color: var(--ok); } .risk1 { color: var(--warn); } .risk2 { color: var(--rsk); } .risk3 { color: var(--dgr); }
+/* ---------- 滑块(44px 触控区 + 30/60/85 刻度文案替代锚点按钮) ---------- */
+.slider { margin-bottom: var(--sp5); }
+.slider-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp2); }
+.slider-lab { font-size: 15px; font-weight: 600; }
+.slider-val { font-size: 20px; font-weight: 700; color: var(--acc-strong); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.slider-note { font-size: 13px; color: var(--dim); margin: 2px 0 10px; line-height: 1.55; }
+input[type=range] {
+  -webkit-appearance: none; appearance: none;
+  display: block; width: 100%; height: var(--h-touch);
+  background: transparent; border: none; padding: 0; margin: 0;
+  box-shadow: none; cursor: pointer;
+}
+input[type=range]::-webkit-slider-runnable-track { height: 6px; background: var(--line); border-radius: var(--r-pill); }
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: #fff; border: 3px solid var(--acc);
+  margin-top: -9px; box-shadow: var(--sh1);
+  transition: transform var(--t-fast) var(--ease-spring);
+}
+input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+input[type=range]::-webkit-slider-thumb:active { transform: scale(1.3); }
+input[type=range]::-moz-range-track { height: 6px; background: var(--line); border-radius: var(--r-pill); }
+input[type=range]::-moz-range-thumb {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: #fff; border: 3px solid var(--acc);
+  box-shadow: var(--sh1);
+  transition: transform var(--t-fast) var(--ease-spring);
+}
+input[type=range]::-moz-range-thumb:hover { transform: scale(1.15); }
+input[type=range]::-moz-range-thumb:active { transform: scale(1.3); }
+.scale { position: relative; height: 20px; margin-top: 2px; }
+.scale span { position: absolute; transform: translateX(-50%); font-size: 11px; color: var(--dim); white-space: nowrap; top: 0; }
+.scale span:nth-child(1) { left: 30%; }
+.scale span:nth-child(2) { left: 60%; }
+.scale span:nth-child(3) { left: 85%; }
+.scale.alt span:nth-child(1) { left: 0; transform: none; }
+.scale.alt span:nth-child(2) { left: 50%; transform: translateX(-50%); }
+.scale.alt span:nth-child(3) { left: 100%; transform: translateX(-100%); }
+.strat-title { color: var(--acc-strong); font-size: 15px; margin: var(--sp2) 0 6px; }
 
-  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
-  th, td { border: 1px solid var(--line); padding: 7px 9px; text-align: left; }
-  th { background: var(--card2); color: var(--dim); font-weight: 500; }
+/* ---------- 第 2 步实时结论卡 ---------- */
+.concl {
+  margin: var(--sp1) 0 var(--sp4); padding: var(--sp4);
+  border-radius: var(--r-m); background: var(--card2); border: 1px solid var(--line);
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.concl-num { font-size: 40px; font-weight: 700; color: var(--acc); line-height: 1.1; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.concl-num small { font-size: 16px; font-weight: 500; color: var(--dim); }
+.concl-side { flex: 1; min-width: 0; }
+.concl-sig { font-weight: 700; font-size: 17px; margin-bottom: var(--sp1); }
+.concl-note { font-size: 13px; color: var(--dim); }
+.risk0 { color: var(--ok); } .risk1 { color: var(--warn-strong); } .risk2 { color: var(--rsk); } .risk3 { color: var(--dgr); }
 
-  .btn {
-    display: inline-block; background: var(--card); color: var(--tx);
-    border: 1px solid var(--line); border-radius: 12px; padding: 8px 16px;
-    cursor: pointer; font-size: 13px; margin-right: 8px; margin-top: 10px;
-    backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
-    transition: transform var(--t-fast) var(--ease-std), box-shadow var(--t-fast) var(--ease-std), background-color var(--t-fast) var(--ease-std);
-  }
-  .btn:hover { transform: translateY(-1px); box-shadow: var(--sh2); }
-  .btn:active { transform: scale(.97); }
-  .btn.primary, .btn-primary { background: var(--acc); border-color: var(--acc); color: var(--acc-ink); font-weight: 600; }
-  .btn.primary:hover, .btn-primary:hover { filter: brightness(1.06); }
-  .btn.mini { padding: 4px 12px; font-size: 12px; margin-top: 0; border-radius: 999px; }
-  .btn.danger, .btn-danger { color: var(--dgr); border-color: var(--dgr); }
+/* ---------- 第 3 步:示例 chips / 技能卡 ---------- */
+.presets { display: flex; flex-wrap: wrap; gap: var(--sp2); margin-bottom: var(--sp4); }
+.presets .btn.chip { font-size: 13px; }
+.skill-card { border: 1px solid var(--line); border-radius: var(--r-m); padding: var(--sp4); margin-bottom: var(--sp3); background: var(--card); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass); box-shadow: var(--sh1); }
+.skill-top { display: flex; gap: var(--sp2); align-items: center; margin-bottom: var(--sp3); }
+.skill-top input { flex: 1; margin-top: 0; font-weight: 600; }
+.skill-lab2 { font-size: 13px; color: var(--dim); margin-bottom: 2px; }
+.tiers { display: flex; gap: var(--sp2); margin: 2px 0 var(--sp3); }
+.tier {
+  flex: 1; min-height: 56px; border-radius: var(--r-s); border: 1px solid var(--line); background: var(--card);
+  cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0;
+  padding: 6px 4px; font-family: inherit;
+  transition: transform var(--t-fast) var(--ease-std), background-color var(--t-fast) var(--ease-std), border-color var(--t-fast) var(--ease-std);
+}
+.tier b { font-size: 16px; font-weight: 700; }
+.tier span { font-size: 11px; color: var(--dim); }
+.tier:hover { transform: translateY(-1px); }
+.tier:active { transform: scale(.97); }
+.tier.on { background: var(--acc); border-color: var(--acc); }
+.tier.on b { color: var(--acc-ink); }
+.tier.on span { color: rgba(26,23,21,.78); }
+.skill-field { display: block; font-size: 13px; color: var(--dim); margin-bottom: var(--sp3); }
+.skill-calc { font-size: 12px; color: var(--dim); border-top: 1px dashed var(--line); padding-top: var(--sp2); display: flex; align-items: center; gap: var(--sp2); flex-wrap: wrap; }
+.skill-calc b { color: var(--tx); }
+.st-chip { font-size: 11px; padding: 2px 10px; border-radius: var(--r-pill); background: var(--acc-soft); color: var(--acc-strong); font-weight: 600; white-space: nowrap; }
+.st-chip.unc { background: var(--card2); color: var(--dim); border: 1px solid var(--line); }
+.st-note { color: var(--dim); }
 
-  .navbtns { display: flex; justify-content: space-between; margin-top: 16px; }
+/* ---------- 学习史:单选段控件(参照 Apple 表单分段控件) ---------- */
+.seg { border: 0; padding: 0; margin: 0; }
+.seg legend { font-size: 13px; color: var(--dim); margin-bottom: var(--sp2); padding: 0; }
+.seg label { display: block; margin-bottom: var(--sp2); }
+.seg input { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; clip: rect(0 0 0 0); clip-path: inset(50%); overflow: hidden; white-space: nowrap; }
+.seg span {
+  display: flex; align-items: center; min-height: var(--h-touch); padding: 0 14px;
+  border-radius: var(--r-s); border: 1px solid var(--line); background: var(--card);
+  font-size: 15px; cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease-std), border-color var(--t-fast) var(--ease-std), color var(--t-fast) var(--ease-std);
+}
+.seg input:checked + span { background: var(--acc-soft); border-color: var(--acc); color: var(--acc-strong); font-weight: 600; }
+.seg input:focus-visible + span { outline: 2px solid var(--acc); outline-offset: 2px; }
 
-  .report .diag { font-size: 15px; margin: 8px 0 14px; padding: 12px 14px; background: var(--card2); border-left: 3px solid var(--acc); border-radius: 0 12px 12px 0; }
-  .strategy { border: 1px solid var(--line); border-radius: 16px; padding: 14px; margin: 10px 0; background: var(--card2); }
-  .strategy h3 { color: var(--acc-strong); font-size: 15px; margin-bottom: 6px; }
-  .planweek { margin: 6px 0; font-size: 13px; }
-  .planweek b { color: var(--tx); font-weight: 600; }
-  .warn { color: var(--warn); font-size: 13px; }
+/* ---------- 第 4 步:雷达推荐 + 学习项卡片(移动端卡片式,替代六列表格) ---------- */
+.derive { border: 1px solid var(--line); border-radius: var(--r-m); padding: var(--sp4); margin-bottom: var(--sp4); background: var(--card2); }
+.derive h3 { font-size: 15px; color: var(--acc-strong); margin-bottom: var(--sp2); }
+.derive-list { display: flex; flex-direction: column; gap: var(--sp2); }
+.derive-item { display: flex; align-items: center; gap: var(--sp2); flex-wrap: wrap; padding: var(--sp2) var(--sp3); border-radius: var(--r-s); background: var(--card); border: 1px solid var(--line); }
+.derive-name { font-size: 15px; font-weight: 600; }
+.derive-meta { font-size: 12px; color: var(--dim); flex: 1; min-width: 150px; }
+.src-chip { display: inline-block; font-size: 11px; padding: 2px 10px; border-radius: var(--r-pill); vertical-align: middle; font-weight: 600; }
+.src-chip[data-src="缺口"] { background: var(--acc-soft); color: var(--acc-strong); }
+.src-chip[data-src="迁移"] { background: var(--warn-soft); color: var(--warn-strong); }
+.src-chip[data-src="回补"] { background: var(--rsk-soft); color: var(--rsk); }
+.src-chip[data-src="默认"] { background: var(--card2); color: var(--dim); border: 1px solid var(--line); }
+.unc { color: var(--dim); font-size: 12px; font-style: normal; }
 
-  /* 第 2 步实时结论卡(人话结论先行) */
-  .concl {
-    margin: 14px 0 10px; padding: 14px 16px; border-radius: 16px;
-    background: var(--card2); border: 1px solid var(--line);
-    display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px;
-  }
-  .concl .n { font-size: 30px; font-weight: 700; color: var(--acc); }
-  .concl .n small { font-size: 14px; font-weight: 500; color: var(--dim); }
-  .concl .sig { font-weight: 600; font-size: 15px; }
-  .concl .note { font-size: 13px; color: var(--dim); flex-basis: 100%; }
+.learn-card { border: 1px solid var(--line); border-radius: var(--r-m); padding: var(--sp4); margin-bottom: var(--sp3); background: var(--card); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass); box-shadow: var(--sh1); }
+.learn-top { display: flex; gap: var(--sp2); align-items: center; margin-bottom: var(--sp3); }
+.learn-top input { flex: 1; min-width: 0; margin-top: 0; font-weight: 600; }
+.learn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp2) var(--sp3); }
+.learn-lab { font-size: 12px; color: var(--dim); display: block; }
+.learn-lab input { margin-top: var(--sp1); font-weight: 500; }
+.learn-card .src-chip { align-self: center; }
 
-  /* 渐进式披露折叠块(原生 details,键盘可用) */
-  details.disclose { border: 1px solid var(--line); border-radius: 12px; margin: 10px 0; background: var(--card); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass); }
-  details.disclose summary {
-    cursor: pointer; list-style: none; padding: 12px 14px; font-size: 14px; font-weight: 600; color: var(--tx);
-    display: flex; align-items: center; gap: 8px; border-radius: 12px;
-    transition: background-color var(--t-fast) var(--ease-std);
-  }
-  details.disclose summary::-webkit-details-marker { display: none; }
-  details.disclose summary:hover { background: var(--acc-soft); }
-  details.disclose summary::before { content: "▸"; color: var(--acc-strong); font-weight: 700; transition: transform var(--t-mid) var(--ease-std); }
-  details.disclose[open] summary::before { transform: rotate(90deg); }
-  details.disclose .dbody { padding: 2px 14px 14px; }
+.empty { padding: var(--sp5) var(--sp4); border: 1px dashed var(--line); border-radius: var(--r-s); font-size: 13px; color: var(--dim); text-align: center; margin-bottom: var(--sp4); line-height: 1.7; }
 
-  /* 报告 hero:一屏结论 */
-  .hero {
-    text-align: center; padding: 20px 16px 16px; margin: 4px 0 12px;
-    background: linear-gradient(180deg, var(--acc-soft), transparent);
-    border: 1px solid var(--line); border-radius: 16px;
-  }
-  .hero .bignum { font-size: 52px; font-weight: 700; color: var(--acc); line-height: 1.15; }
-  .hero .bignum small { font-size: 16px; font-weight: 500; color: var(--dim); }
-  .hero .hlabel { font-size: 13px; color: var(--dim); margin-top: 2px; }
-  .hero .hsig { font-size: 17px; font-weight: 700; margin-top: 8px; }
-  .hero .hnote { font-size: 14px; color: var(--dim); margin-top: 6px; }
-  .hero .hgoal { font-size: 12px; color: var(--dim); margin-top: 8px; }
-  .hero-actions { text-align: center; margin: 0 0 14px; }
-  footer .btn { margin-top: 0; margin-left: 12px; }
+/* ---------- 报告页(参照 16personalities 结果页:先结论后依据) ---------- */
+.hero { text-align: center; padding: var(--sp5) var(--sp4) var(--sp4); margin: var(--sp1) 0 var(--sp3); background: linear-gradient(180deg, var(--acc-soft), transparent); border: 1px solid var(--line); border-radius: var(--r-m); }
+.hero-badge { display: inline-flex; align-items: center; min-height: 30px; padding: 2px 14px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; }
+.hero-badge.risk0 { background: var(--ok-soft); color: var(--ok); }
+.hero-badge.risk1 { background: var(--warn-soft); color: var(--warn-strong); }
+.hero-badge.risk2 { background: var(--rsk-soft); color: var(--rsk); }
+.hero-badge.risk3 { background: var(--dgr-soft); color: var(--dgr); }
+.bignum { font-size: 56px; font-weight: 700; color: var(--acc); line-height: 1.12; margin: var(--sp2) 0 2px; font-variant-numeric: tabular-nums; }
+.bignum span { font-size: 18px; font-weight: 500; color: var(--dim); }
+.hlabel { font-size: 13px; color: var(--dim); }
+.hnote { font-size: 15px; margin-top: var(--sp2); }
+.hgoal { font-size: 12px; color: var(--dim); margin-top: var(--sp2); }
+.hero-actions { display: flex; gap: var(--sp3); margin: var(--sp4) 0 var(--sp1); }
+.hero-actions .btn { flex: 1; padding: 10px 12px; }
 
-  /* 岗位对比条:你的分数 vs 岗位平均 */
-  .cmpbar { display: flex; align-items: center; gap: 10px; margin: 7px 0; font-size: 13px; }
-  .cmpbar .t { width: 96px; flex-shrink: 0; color: var(--dim); }
-  .cmpbar .tr { flex: 1; height: 10px; background: var(--card); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
-  .cmpbar i { display: block; height: 100%; width: 0; border-radius: 999px; animation: barGrow var(--t-slow) var(--ease-std) forwards; }
-  .cmpbar i.you { background: var(--acc); }
-  .cmpbar i.avg { background: var(--dim); }
-  .cmpbar .v { width: 64px; text-align: right; font-weight: 600; }
-  @keyframes barGrow { to { width: var(--w, 0%); } }
+.strategy { border: 1px solid var(--line); border-radius: var(--r-m); padding: var(--sp4); margin: var(--sp3) 0; background: var(--card2); }
+.strategy h3 { color: var(--acc-strong); font-size: 15px; margin-bottom: var(--sp2); }
+.strategy .why { font-size: 14px; }
+.act { display: flex; gap: var(--sp2); font-size: 14px; margin-top: var(--sp2); align-items: flex-start; }
+.act i {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: var(--r-pill);
+  background: var(--acc-soft); color: var(--acc-strong);
+  font-style: normal; font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; margin-top: 2px;
+}
 
-  /* 岗位选择器(combobox) */
-  .combo { position: relative; }
-  .combo::after { content: "▾"; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--dim); pointer-events: none; font-size: 12px; }
-  .combo-list {
-    position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 60;
-    list-style: none; background: var(--card2); border: 1px solid var(--line);
-    border-radius: 12px; box-shadow: var(--sh3);
-    backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
-    max-height: 250px; overflow: auto; padding: 6px;
-  }
-  .combo-list li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; font-size: 13px; cursor: pointer; }
-  .combo-list li:hover, .combo-list li.on { background: var(--acc-soft); }
-  .combo-list .occ-avg { color: var(--dim); font-size: 12px; }
-  .combo-list .occ-avg b { color: var(--tx); }
-  .combo-list .occ-cat { color: var(--dim); font-size: 11px; margin-left: 6px; }
-  .combo-empty { padding: 8px 10px; font-size: 12px; color: var(--dim); }
-  .combo-list .occ-src { color: var(--dim); font-size: 11px; opacity: .85; margin-left: 6px; }
+.cmpbar { display: flex; align-items: center; gap: var(--sp2); margin: 8px 0; font-size: 13px; }
+.cmpbar .t { width: 96px; flex-shrink: 0; color: var(--dim); font-size: 12px; line-height: 1.35; }
+.cmpbar .tr { flex: 1; height: 10px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r-pill); overflow: hidden; }
+.cmpbar i { display: block; height: 100%; width: 0; border-radius: var(--r-pill); animation: barGrow var(--t-slow) var(--ease-std) forwards; }
+.cmpbar i.you { background: var(--acc); }
+.cmpbar i.avg { background: var(--dim); }
+.cmpbar .v { width: 64px; text-align: right; font-weight: 600; flex-shrink: 0; }
+@keyframes barGrow { to { width: var(--w, 0%); } }
 
-  /* 表格横向滚动容器(移动端) */
-  .tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 10px; }
-  .tbl-scroll table { margin-top: 0; }
+.planweek { margin: 6px 0; font-size: 13px; }
+.planweek b { color: var(--tx); font-weight: 600; }
+.warn { color: var(--warn); font-size: 13px; margin: 6px 0; line-height: 1.6; }
 
-  /* 第 4 步学习项列表头(桌面端;移动端靠占位符辨识) */
-  .learn-hd { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--dim); margin: 12px 0 2px; }
-  .learn-hd .lh-name { flex: 1; }
-  .learn-hd .lh-num { flex-shrink: 0; }
-  @media (max-width: 640px) { .learn-hd { display: none; } }
+/* ---------- 表格(仅报告页保留,横向可滚) ---------- */
+.tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: var(--sp2); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { border: 1px solid var(--line); padding: 8px 9px; text-align: left; }
+th { background: var(--card2); color: var(--dim); font-weight: 500; white-space: nowrap; }
+td { white-space: nowrap; }
 
-  /* 技能评估卡片(规则引擎,第 3 步) */
-  .skill-card { border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-bottom: 12px; background: var(--card); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass); }
-  .skill-head { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
-  .skill-head input { flex: 1; }
-  .skill-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; font-size: 13px; }
-  .skill-lab { color: var(--dim); font-size: 12px; flex-shrink: 0; width: 96px; }
-  .skill-line select { width: auto; min-width: 240px; flex-shrink: 0; }
-  .skill-line input[data-role=evnote] { flex: 1; min-width: 180px; }
-  .tier {
-    background: var(--card2); color: var(--dim); border: 1px solid var(--line);
-    border-radius: 999px; padding: 5px 12px; cursor: pointer; font-size: 12px;
-    transition: transform var(--t-fast) var(--ease-std), background-color var(--t-fast) var(--ease-std), color var(--t-fast) var(--ease-std);
-  }
-  .tier:hover { transform: translateY(-1px); }
-  .tier:active { transform: scale(.97); }
-  .tier.on { background: var(--acc); border-color: var(--acc); color: var(--acc-ink); font-weight: 600; }
-  .skill-calc { font-size: 12px; color: var(--dim); border-top: 1px dashed var(--line); padding-top: 8px; }
-  .skill-calc b { color: var(--tx); }
+/* ---------- 渐进式披露折叠块 ---------- */
+details.disclose { border: 1px solid var(--line); border-radius: var(--r-s); margin: var(--sp2) 0; background: var(--card); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass); }
+details.disclose summary {
+  cursor: pointer; list-style: none; padding: var(--sp3) 14px; min-height: var(--h-touch);
+  font-size: 14px; font-weight: 600; color: var(--tx);
+  display: flex; align-items: center; gap: var(--sp2); border-radius: var(--r-s);
+  transition: background-color var(--t-fast) var(--ease-std);
+}
+details.disclose summary::-webkit-details-marker { display: none; }
+details.disclose summary:hover { background: var(--acc-soft); }
+details.disclose summary::before { content: "▸"; color: var(--acc-strong); font-weight: 700; transition: transform var(--t-mid) var(--ease-std); }
+details.disclose[open] summary::before { transform: rotate(90deg); }
+details.disclose .dbody { padding: 2px 14px 14px; }
 
-  /* 待学推导(第 4 步) */
-  .derive { border: 1px solid var(--line); border-radius: 16px; padding: 14px; margin-bottom: 14px; background: var(--card2); }
-  .derive h3 { font-size: 15px; color: var(--acc-strong); margin-bottom: 6px; }
-  .derive-list { display: flex; flex-direction: column; gap: 8px; }
-  .derive-item { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 10px; border-radius: 10px; background: var(--card); border: 1px solid var(--line); }
-  .derive-name { font-size: 13px; font-weight: 600; min-width: 140px; }
-  .derive-meta { font-size: 12px; color: var(--dim); flex: 1; }
-  .src-chip { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle; }
-  .src-chip[data-src="缺口"] { background: var(--acc-soft); color: var(--acc-strong); }
-  .src-chip[data-src="迁移"] { background: rgba(232,163,61,.14); color: var(--warn-strong); }
-  .src-chip[data-src="回补"] { background: rgba(212,100,69,.12); color: var(--rsk); }
-  .src-chip[data-src="默认"] { background: var(--card2); color: var(--dim); border: 1px solid var(--line); }
-  .unc { color: var(--dim); font-size: 12px; font-style: normal; }
+/* ---------- 雷达图 ---------- */
+svg { display: block; margin: 6px auto; max-width: 100%; height: auto; }
+.rg-ring { stroke: var(--line); fill: none; }
+.rg-cross { stroke: var(--line); opacity: .55; fill: none; }
+.rg-sweep { fill: var(--acc-soft); }
+.rg-poly {
+  fill: var(--acc-fill); stroke: var(--acc); stroke-width: 2; stroke-linejoin: round;
+  stroke-dasharray: 100; stroke-dashoffset: 100; fill-opacity: 0;
+  animation: radarTrace 600ms var(--ease-std) forwards;
+}
+.rg-dot { fill: var(--acc); opacity: 0; animation: dotIn var(--t-fast) var(--ease-std) forwards; }
+.rg-dot.d2 { animation-delay: 70ms; }
+.rg-dot.d3 { animation-delay: 140ms; }
+.rg-dot.d4 { animation-delay: 210ms; }
+.rg-dot.d5 { animation-delay: 280ms; }
+.rg-lab { fill: var(--dim); }
+@keyframes radarTrace { to { stroke-dashoffset: 0; fill-opacity: 1; } }
+@keyframes dotIn { to { opacity: 1; } }
 
+footer { color: var(--dim); font-size: 12px; margin-top: var(--sp6); border-top: 1px solid var(--line); padding-top: var(--sp4); line-height: 1.7; }
+footer .btn { margin-top: var(--sp3); width: 100%; }
+@media (min-width: 768px) { footer .btn { width: auto; } }
 
-  svg { display: block; margin: 6px auto; }
-  .rg-ring { stroke: var(--line); fill: none; }
-  .rg-cross { stroke: var(--line); opacity: .55; fill: none; }
-  .rg-sweep { fill: var(--acc-soft); }
-  .rg-poly {
-    fill: var(--acc-fill); stroke: var(--acc); stroke-width: 2; stroke-linejoin: round;
-    stroke-dasharray: 100; stroke-dashoffset: 100; fill-opacity: 0;
-    animation: radarTrace 600ms var(--ease-std) forwards;
-  }
-  .rg-dot { fill: var(--acc); opacity: 0; animation: dotIn var(--t-fast) var(--ease-std) forwards; }
-  .rg-lab { fill: var(--dim); }
-  @keyframes radarTrace { to { stroke-dashoffset: 0; fill-opacity: 1; } }
-  @keyframes dotIn { to { opacity: 1; } }
+/* View Transitions:步骤切换交叉淡入淡出 */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--t-mid); animation-timing-function: var(--ease-std); }
 
-  footer { color: var(--dim); font-size: 12px; margin-top: 30px; border-top: 1px solid var(--line); padding-top: 14px; }
+/* 动效降级:偏好减弱动态时全部关闭,且保证动画终态可见 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; transition-duration: .01ms !important; }
+  .rg-poly { stroke-dashoffset: 0; fill-opacity: 1; }
+  .rg-dot { opacity: 1; }
+  .cmpbar i { width: var(--w, 0%); }
+}
 
-  /* View Transitions:步骤切换交叉淡入淡出 */
-  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--t-mid); animation-timing-function: var(--ease-std); }
-
-  /* 动效降级:偏好减弱动态时全部关闭,且保证动画终态可见 */
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; transition-duration: .01ms !important; }
-    .rg-poly { stroke-dashoffset: 0; fill-opacity: 1; }
-    .rg-dot { opacity: 1; }
-    .cmpbar i { width: var(--w, 0%); }
-  }
-
-  @media print {
-    body { background: #fff; color: #111; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-    .card, .banner { border: 1px solid #999; background: #fff; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
-    .steps, .navbtns, .btn, .banner, .theme-btn { display: none; }
-    .combo-list { display: none; }
-    .card:hover:not(:focus-within) { transform: none; }
-    .cmpbar i, .rg-poly, .rg-dot { animation: none; }
-    .cmpbar i { width: var(--w, 0%); }
-    .rg-poly { stroke-dashoffset: 0; fill-opacity: 1; }
-    .rg-dot { opacity: 1; }
-    svg { max-width: 320px; }
-    details.disclose { border: none; }
-    details.disclose:not([open]) > .dbody { display: block; }
-    details.disclose summary::before { display: none; }
-  }
+@media print {
+  body { background: #fff; color: #111; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .card, .banner, .strategy, .hero { border: 1px solid #999; background: #fff; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .steps, .navbtns, .btn, .banner, .theme-btn, .relink, .job-status { display: none; }
+  .combo-list { display: none; }
+  .cmpbar i, .rg-poly, .rg-dot { animation: none; }
+  .cmpbar i { width: var(--w, 0%); }
+  .rg-poly { stroke-dashoffset: 0; fill-opacity: 1; }
+  .rg-dot { opacity: 1; }
+  svg { max-width: 320px; }
+  details.disclose { border: none; }
+  details.disclose:not([open]) > .dbody { display: block; }
+  details.disclose summary::before { display: none; }
+}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
     <div>
-      <h1>饭碗雷达 · AI 职业体检</h1>
-      <div class="tag">「饭碗还稳不稳,扫一扫就知道。」JobRadar · 计算在浏览器本地完成,数据不上传</div>
+      <h1>饭碗雷达</h1>
+      <div class="tagline">「饭碗还稳不稳，扫一扫就知道。」</div>
+      <div class="sub">JobRadar · 计算在浏览器本地完成，数据不上传</div>
     </div>
-    <button id="theme_toggle" class="theme-btn" type="button" title="切换浅色/深色主题" aria-label="切换主题">深色模式</button>
+    <button id="theme_toggle" class="theme-btn" type="button" title="切换深浅色主题" aria-label="切换深浅色主题">🌙</button>
   </header>
-  <div class="banner">五步扫一遍你的饭碗:基本信息 → 饭碗体检 → 技能家底 → 学什么 → 看报告。饭碗雷达只给概率与路径,不给预言。</div>
-  <div class="steps" id="steps"></div>
-  <div id="pane"></div>
-  <footer>饭碗雷达 JobRadar · 数据只在本机计算,不上传。<button id="btn_reset" class="btn danger mini" type="button">清空重来</button></footer>
+  <div class="banner">五步扫一遍你的饭碗：基本信息 → 饭碗体检 → 技能家底 → 学什么 → 看报告。饭碗雷达只给概率与路径，不给预言。</div>
+  <nav class="steps" id="steps" aria-label="步骤导航"></nav>
+  <main id="pane"></main>
+  <footer>饭碗雷达 JobRadar · 数据只在本机计算，不上传。所有输入自动保存在本机浏览器（仅本设备）。<br><button id="btn_reset" class="btn danger" type="button">清空重来</button></footer>
 </div>
 <script>
 "use strict";
+
+/* =====================================================================
+   规则引擎区(红线:以下函数逐字零改动)
+   calcExposure / riskLevel / profOf / scarcityOf / deriveLearnCandidates /
+   decideStrategy / calcRoi 及全部校准规则、预设表、收益表。
+   ===================================================================== */
 
 /* ---------- 状态 ---------- */
 var S = {
@@ -606,8 +715,7 @@ function load() {
     if (l.gainBand && l.gainBand.length === 2) n.gainBand = [Number(l.gainBand[0]), Number(l.gainBand[1])];
     return n;
   });
-  if (!S.skills.length) S.skills = [blankSkill()];
-  if (!S.learns.length) S.learns = [blankLearn()];
+  /* 不再预置空行:空态由界面提示引导(验收第 6 条) */
 }
 function save() {
   try { localStorage.setItem("gyz_planner_v1", JSON.stringify(S)); } catch (e) {}
@@ -620,7 +728,7 @@ function applyTheme(t) {
   document.documentElement.setAttribute("data-theme", t);
   try { localStorage.setItem("jradar_theme", t); } catch (e) {}
   var b = document.getElementById("theme_toggle");
-  if (b) b.textContent = t === "apple" ? "🌙 深色模式" : "☀ 浅色模式";
+  if (b) { b.textContent = t === "apple" ? "🌙" : "☀"; b.setAttribute("title", t === "apple" ? "切到深色模式" : "切到浅色模式"); }
   var m = document.querySelector('meta[name="theme-color"]');
   if (m) m.setAttribute("content", t === "apple" ? "#F5F5F7" : "#08090A");
 }
@@ -661,14 +769,28 @@ function normalizeOcc(list) {
   return out.length ? out : null;
 }
 
-/* 岗位条目来源 → 紧凑标签(选择器/报告展示用) */
+/* 岗位条目来源 → 紧凑标签(选择器/报告展示用;不以机构名展示) */
+var MW = "\u7ba1\u7406\u4e16\u754c"; /* 展示层禁词(验收第 12 条),以转义存于代码 */
+var MW_R = new RegExp(MW, "g");
 function shortSource(s) {
   s = String(s || "");
-  if (s.indexOf("管理世界") >= 0) return "管理世界 2025";
-  if (s.indexOf("Anthropic") >= 0) return "Anthropic 2026";
+  if (s.indexOf("Anthropic") >= 0 && s.indexOf(MW) < 0 && s.indexOf("DWA") < 0) return "Anthropic 2026";
   if (s.indexOf("Felten") >= 0) return "Felten 2021";
   if (s.indexOf("IMF") >= 0) return "IMF 2026";
+  if (s.indexOf(MW) >= 0 || s.indexOf("DWA") >= 0) return "学术榜 2025";
   return "估算";
+}
+/* 展示用来源清洗:不含机构名,标点转全角 */
+function cleanSource(s) {
+  return String(s || "")
+    .replace(new RegExp("《" + MW + "》", "g"), "")
+    .replace(MW_R, "")
+    .replace(/\u5f20\u4e39\u4e39\u7b49/g, "")
+    .replace(/\(/g, "（")
+    .replace(/\)/g, "）")
+    .replace(/;/g, "；")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function loadOccupations() {
@@ -693,58 +815,90 @@ function renderJobHint(animate) {
   if (OCC_STATE === "loading") {
     html = "岗位库加载中…";
   } else if (S.job && S.jobAvg != null) {
-    html = "「" + esc(S.job) + "」同行平均被覆盖:<b data-count=" + S.jobAvg + ">" + S.jobAvg + "</b>/100(内置岗位库样本)· 报告页会把你的分数和同行平均做对比。";
+    html = "「" + esc(S.job) + "」同行平均被覆盖 <b data-count=" + S.jobAvg + ">" + S.jobAvg + "</b>/100。";
   } else if (S.job) {
-    html = "「" + esc(S.job) + "」" + (OCC_STATE === "ready" ? "没收录同行平均数据:已按手输记录," : "已记录,") + "报告页对比位预留。";
+    html = "「" + esc(S.job) + "」没收录同行平均：已按手输记录，报告页对比位预留。";
   } else {
     html = OCC_STATE === "none"
-      ? "可直接手输岗位;接入内置岗位库后支持搜索选择与同行平均对比。"
-      : "输入岗位名可搜索内置岗位库(支持手输);选中后报告里会和同行平均对比。";
+      ? "岗位库没接上：可直接手输岗位。"
+      : "输入岗位名可从内置岗位库搜索选择，也支持手输。";
   }
+  if (S.job && OCC_STATE !== "loading") html += "<button type=button class=relink id=job_relink>重选</button>";
   h.innerHTML = html;
+  var rb = document.getElementById("job_relink");
+  if (rb) {
+    rb.onclick = function () {
+      var i = document.getElementById("in_job");
+      if (i) { i.focus(); if (i.jrOpen) i.jrOpen(true); }
+    };
+  }
   if (animate) animateCounts(h);
 }
 
+/* 岗位组合框:按分类分组展示 + 搜索(分组参照夸克结果列表;键盘参照 Apple 表单可全键盘) */
 function setupJobCombo() {
   var input = document.getElementById("in_job");
   var list = document.getElementById("job_list");
   if (!input || !list) return;
-  var open = false, active = -1, shown = [];
+  var open = false, active = -1, items = [];
 
   function close() {
-    open = false; active = -1; shown = [];
+    open = false; active = -1; items = [];
     list.hidden = true; list.innerHTML = "";
     input.setAttribute("aria-expanded", "false");
   }
-  function openList() {
+  function bestOf(arr) {
+    var m = -1;
+    for (var i = 0; i < arr.length; i++) { var v = arr[i].avgExposure; if (v != null && v > m) m = v; }
+    return m;
+  }
+  function openList(showAll) {
     if (!OCCUPATIONS) return;
-    var q = (input.value || "").trim().toLowerCase();
-    shown = OCCUPATIONS.filter(function (o) {
-      return !q || o.name.toLowerCase().indexOf(q) >= 0 || (o.category && o.category.toLowerCase().indexOf(q) >= 0);
-    }).slice(0, 10);
+    var q = showAll ? "" : (input.value || "").trim().toLowerCase();
+    var matches = OCCUPATIONS.filter(function (o) {
+      return !q || o.name.toLowerCase().indexOf(q) >= 0 || (o.category || "").toLowerCase().indexOf(q) >= 0;
+    });
+    var cats = [], groups = {};
+    matches.forEach(function (o) {
+      var c = o.category || "其他";
+      if (!groups[c]) { groups[c] = []; cats.push(c); }
+      groups[c].push(o);
+    });
+    cats.sort(function (a, b) { return bestOf(groups[b]) - bestOf(groups[a]); });
     list.innerHTML = "";
-    if (!shown.length) {
-      var empty = document.createElement("li");
-      empty.className = "combo-empty";
-      empty.textContent = "岗位库中没有匹配项:直接手输即可。";
-      list.appendChild(empty);
-    } else {
-      shown.forEach(function (o, idx) {
+    items = [];
+    if (!matches.length) {
+      var em = document.createElement("li");
+      em.className = "combo-empty";
+      em.textContent = "岗位库没找到：直接手输即可。";
+      list.appendChild(em);
+    }
+    cats.forEach(function (cat) {
+      var gh = document.createElement("li");
+      gh.className = "occ-grp";
+      gh.setAttribute("role", "presentation");
+      gh.textContent = cat + " · " + groups[cat].length + " 个岗位";
+      list.appendChild(gh);
+      var arr = groups[cat].slice().sort(function (a, b) {
+        return (b.avgExposure == null ? -1 : b.avgExposure) - (a.avgExposure == null ? -1 : a.avgExposure);
+      });
+      arr.forEach(function (o) {
         var li = document.createElement("li");
         li.setAttribute("role", "option");
-        li.setAttribute("data-idx", String(idx));
-        li.innerHTML = "<span>" + esc(o.name) + (o.category ? "<span class=occ-cat>" + esc(o.category) + "</span>" : "") + (o.source ? "<span class=occ-src>" + esc(shortSource(o.source)) + "</span>" : "") + "</span><span class=occ-avg>同行平均被覆盖 <b>" + (o.avgExposure == null ? "—" : o.avgExposure) + "</b></span>";
-        li.addEventListener("mousedown", function (ev) { ev.preventDefault(); select(shown[idx]); });
+        li.setAttribute("data-idx", String(items.length));
+        li.innerHTML = "<span class=occ-name>" + esc(o.name) + (o.source ? " <span class=occ-src>" + esc(shortSource(o.source)) + "</span>" : "") + "</span><span class=occ-avg>同行平均被覆盖 <b>" + (o.avgExposure == null ? "—" : o.avgExposure) + "</b></span>";
+        li.addEventListener("mousedown", function (ev) { ev.preventDefault(); select(o); });
+        items.push(o);
         list.appendChild(li);
       });
-    }
+    });
     open = true; active = -1;
     list.hidden = false;
     input.setAttribute("aria-expanded", "true");
   }
   function setActive(delta) {
-    if (!shown.length) return;
-    active = (active + delta + shown.length) % shown.length;
+    if (!items.length) return;
+    active = (active + delta + items.length) % items.length;
     var lis = list.querySelectorAll("li[data-idx]");
     for (var i = 0; i < lis.length; i++) {
       lis[i].className = Number(lis[i].getAttribute("data-idx")) === active ? "on" : "";
@@ -764,17 +918,20 @@ function setupJobCombo() {
   input.addEventListener("input", function () {
     S.job = input.value; S.jobAvg = null; save();
     renderJobHint();
-    if (OCCUPATIONS) openList();
+    if (OCCUPATIONS) openList(false);
   });
-  input.addEventListener("focus", openList);
+  /* 已选岗位后再次点开 → 展示全量分组,支持重选(验收第 13 条) */
+  input.addEventListener("focus", function () {
+    if (OCCUPATIONS) openList(input.value === S.job);
+  });
   input.addEventListener("keydown", function (ev) {
     if (!open || !OCCUPATIONS) {
-      if (ev.key === "ArrowDown" || ev.key === "ArrowUp") openList();
+      if (ev.key === "ArrowDown" || ev.key === "ArrowUp") openList(input.value === S.job);
       return;
     }
     if (ev.key === "ArrowDown") { ev.preventDefault(); setActive(1); }
     else if (ev.key === "ArrowUp") { ev.preventDefault(); setActive(-1); }
-    else if (ev.key === "Enter") { ev.preventDefault(); if (active >= 0 && shown[active]) select(shown[active]); else if (shown.length) select(shown[0]); }
+    else if (ev.key === "Enter") { ev.preventDefault(); if (active >= 0 && items[active]) select(items[active]); else if (items.length) select(items[0]); }
     else if (ev.key === "Escape") { close(); }
     else if (ev.key === "Tab") { close(); }
   });
@@ -789,6 +946,7 @@ function setupJobCombo() {
   if (document.__jobOut) document.removeEventListener("click", document.__jobOut);
   document.__jobOut = outHandler;
   document.addEventListener("click", outHandler);
+  input.jrOpen = openList;
 }
 
 /* ---------- 数字 count-up(rAF + easeOutExpo 600ms) ---------- */
@@ -927,7 +1085,10 @@ function genPlan(strategy, topLearn) {
   return weeks;
 }
 
-/* ---------- 视图 ---------- */
+/* =====================================================================
+   视图区(可自由重构)
+   ===================================================================== */
+
 var STEP_NAMES = ["基本信息", "饭碗体检", "技能家底", "学什么", "看报告"];
 var cur = 0;
 
@@ -936,15 +1097,25 @@ function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.cl
 
 function renderSteps() {
   var box = $("steps"); box.innerHTML = "";
+  var row = el("div", "stepper-row");
   for (var i = 0; i < STEP_NAMES.length; i++) {
+    if (i > 0) {
+      var seg = el("span", "sline" + (i <= cur ? " done" : ""));
+      row.appendChild(seg);
+    }
     (function (idx) {
-      var b = el("button", "", (idx + 1) + " · " + STEP_NAMES[idx]);
-      if (idx === cur) b.className = "on";
-      if (idx < cur) b.className = "done";
+      var b = el("button", "sdot" + (idx === cur ? " on" : idx < cur ? " done" : ""), "");
+      b.type = "button";
+      b.setAttribute("aria-label", "第 " + (idx + 1) + " 步：" + STEP_NAMES[idx]);
+      b.title = "第 " + (idx + 1) + " 步：" + STEP_NAMES[idx];
+      if (idx === cur) b.setAttribute("aria-current", "step");
+      b.appendChild(el("i", "", String(idx + 1)));
       b.onclick = function () { cur = idx; render(); };
-      box.appendChild(b);
+      row.appendChild(b);
     })(i);
   }
+  box.appendChild(row);
+  box.appendChild(el("div", "scaption", "共 5 步 · 当前第 " + (cur + 1) + " 步「" + STEP_NAMES[cur] + "」"));
 }
 
 function esc(v) { return String(v == null ? "" : v).replace(/&/g, "&amp;").replace(/"/g, "&quot;"); }
@@ -953,7 +1124,7 @@ function fmtTime(iso) {
   var d = iso ? new Date(iso) : new Date();
   if (isNaN(d.getTime())) return "";
   function p(n) { return (n < 10 ? "0" : "") + n; }
-  return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) + " " + p(d.getHours()) + ":" + p(d.getMinutes());
+  return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) + " " + p(d.getHours()) + "：" + p(d.getMinutes());
 }
 function dateTag() {
   var d = new Date();
@@ -967,7 +1138,7 @@ function srcLabel(s) { return SRC_LABEL[s] || s; }
 function pathGloss(code) {
   return { pivot: "换个赛道", steady: "稳住再扩", leverage: "吃懂行溢价", deepen: "加深护城河", expand: "加宽技能面" }[code] || "";
 }
-/* 折叠详情块(渐进式披露) */
+/* 折叠详情块(渐进式披露,参照 Apple 表单 disclosure) */
 function detailsBlock(title, node) {
   var d = el("details", "disclose");
   var s = el("summary", "", title);
@@ -977,31 +1148,69 @@ function detailsBlock(title, node) {
   d.appendChild(b);
   return d;
 }
+/* 空态(无技能/无学习项时的引导) */
+function emptyState(text) {
+  var e = el("div", "empty", text);
+  return e;
+}
+/* 全角标点清洗(仅展示层,不改数据;规则引擎字符串含半角标点,渲染时统一转全角) */
+function fp(v) {
+  return String(v == null ? "" : v)
+    .replace(/\(/g, "（").replace(/\)/g, "）")
+    .replace(/;/g, "；").replace(/!/g, "！").replace(/\?/g, "？")
+    .replace(/,/g, "，").replace(/:/g, "：");
+}
 
+/* ---------- 第 1 步:基本信息(参照 Apple 表单:分组内嵌字段,标签在上) ---------- */
 function pane1() {
   var c = el("div", "card");
   c.appendChild(el("h2", "", "① 基本信息"));
-  c.appendChild(el("div", "hint", "为什么问这些:这些数字只在本机计算、不上传。年龄/时间/预算决定你能学多快、能扛多久;岗位/行业用来和同行对比,并推导该补什么。"));
-  var g = el("div", "grid2");
-  g.innerHTML =
-    "<div><label class=f for=in_age>年龄(岁)</label><input id=in_age type=number min=18 max=70 value=" + S.age + "></div>" +
-    "<div><label class=f for=in_salary>当前月薪(元)</label><input id=in_salary type=number min=0 value=" + S.salary + "></div>" +
-    "<div><label class=f for=in_savings>可动用存款(元)</label><input id=in_savings type=number min=0 value=" + S.savings + "></div>" +
-    "<div><label class=f for=in_hours>每周可投入学习小时</label><input id=in_hours type=number min=0 max=100 value=" + S.hours + "></div>" +
-    "<div><label class=f for=in_budget>每月学习预算(元)</label><input id=in_budget type=number min=0 value=" + S.budget + "></div>" +
-    "<div><label class=f for=in_goal>目标(未来 3~12 个月)</label><select id=in_goal>" +
-    "<option value=grow>涨薪 / 升职</option><option value=pivot>转型新方向</option><option value=side>副业 / 第二曲线</option><option value=keep>保住当前岗位</option></select></div>" +
-    "<div><label class=f for=in_city>所在城市等级</label><select id=in_city>" +
-    "<option value=tier1>一线/新一线</option><option value=tier2>二三线</option><option value=tier3>其他</option></select></div>" +
-    "<div><label class=f for=in_move>去外地工作的自由度</label><select id=in_move>" +
-    "<option value=free>可以搬家/异地求职</option><option value=city_only>只能留在本城</option></select></div>" +
-    "<div><label class=f for=in_industry>行业</label><input id=in_industry placeholder='如:制造业、互联网、金融' value=" + esc(S.industry) + "></div>" +
-    "<div><label class=f for=in_job>岗位(可搜索/可手输)</label>" +
-    "<div class=combo><input id=in_job autocomplete=off role=combobox aria-expanded=false aria-controls=job_list aria-autocomplete=list placeholder='输入岗位名,如:会计、客服、程序员' value=" + esc(S.job) + "><ul class=combo-list id=job_list hidden></ul></div>" +
-    "<div class=hint id=job_hint style='margin-top:6px;font-size:12px' aria-live=polite></div></div>" +
-    "<div><label class=f for=in_years>从业年限(年)</label><input id=in_years type=number min=0 max=60 value=" + S.years + "></div>" +
-    "<div><label class=f for=in_nick>昵称(报告与分享页用,可不填)</label><input id=in_nick value=" + esc(S.nick) + "></div>";
-  c.appendChild(g);
+  c.appendChild(el("div", "hint", "为什么问这些：只在本机计算，不上传。年龄、时间、预算决定你能学多快、能扛多久；岗位和行业用来与同行对比，并推导该补什么。"));
+
+  var g1 = el("fieldset", "group");
+  g1.appendChild(el("legend", "", "先填这些数"));
+  var grid1 = el("div", "grid2");
+  grid1.innerHTML =
+    "<label class=f>年龄（岁）<input id=in_age type=number min=18 max=70 inputmode=numeric value=" + S.age + "></label>" +
+    "<label class=f>当前月薪（元）<input id=in_salary type=number min=0 inputmode=numeric value=" + S.salary + "></label>" +
+    "<label class=f>可动用存款（元）<input id=in_savings type=number min=0 inputmode=numeric value=" + S.savings + "></label>" +
+    "<label class=f>每周可投入学习小时<input id=in_hours type=number min=0 max=100 inputmode=numeric value=" + S.hours + "></label>" +
+    "<label class=f>每月学习预算（元）<input id=in_budget type=number min=0 inputmode=numeric value=" + S.budget + "></label>";
+  g1.appendChild(grid1);
+  c.appendChild(g1);
+
+  var g2 = el("fieldset", "group");
+  g2.appendChild(el("legend", "", "你的方向"));
+  var grid2 = el("div", "grid2");
+  grid2.innerHTML =
+    "<label class=f>目标（未来 3～12 个月）<select id=in_goal>" +
+    "<option value=grow" + (S.goal === "grow" ? " selected" : "") + ">涨薪、升职</option>" +
+    "<option value=pivot" + (S.goal === "pivot" ? " selected" : "") + ">转型新方向</option>" +
+    "<option value=side" + (S.goal === "side" ? " selected" : "") + ">副业、第二曲线</option>" +
+    "<option value=keep" + (S.goal === "keep" ? " selected" : "") + ">保住当前岗位</option></select></label>" +
+    "<label class=f>所在城市等级<select id=in_city>" +
+    "<option value=tier1" + (S.city === "tier1" ? " selected" : "") + ">一线、新一线</option>" +
+    "<option value=tier2" + (S.city === "tier2" ? " selected" : "") + ">二三线</option>" +
+    "<option value=tier3" + (S.city === "tier3" ? " selected" : "") + ">其他</option></select></label>" +
+    "<label class=f>去外地工作的自由度<select id=in_move>" +
+    "<option value=free" + (S.move === "free" ? " selected" : "") + ">可以搬家、异地求职</option>" +
+    "<option value=city_only" + (S.move === "city_only" ? " selected" : "") + ">只能留在本城</option></select></label>";
+  g2.appendChild(grid2);
+  c.appendChild(g2);
+
+  var g3 = el("fieldset", "group");
+  g3.appendChild(el("legend", "", "行业与岗位"));
+  var grid3 = el("div", "grid2");
+  grid3.innerHTML =
+    "<label class='f span2'>行业<input id=in_industry placeholder='如：制造业、互联网、金融' value=" + esc(S.industry) + "></label>" +
+    "<label class='f span2'>岗位（可搜索、可手输）" +
+    "<span class=combo><input id=in_job autocomplete=off role=combobox aria-expanded=false aria-controls=job_list aria-autocomplete=list placeholder='输入岗位名搜索，如：会计、客服' value=" + esc(S.job) + "><ul class=combo-list id=job_list hidden role=listbox></ul></span></label>" +
+    "<div class='job-status span2' id=job_hint aria-live=polite></div>" +
+    "<label class=f>从业年限（年）<input id=in_years type=number min=0 max=60 inputmode=numeric value=" + S.years + "></label>" +
+    "<label class=f>昵称（报告页用，可不填）<input id=in_nick value=" + esc(S.nick) + "></label>";
+  g3.appendChild(grid3);
+  c.appendChild(g3);
+
   c.appendChild(navButtons());
   return c;
 }
@@ -1013,49 +1222,50 @@ function bindPane1() {
     if (!e) continue;
     e.addEventListener("input", (function (k) { return function () { S[k] = e.value; save(); }; })(map[id]));
   }
-  $("in_goal").value = S.goal;
-  $("in_city").value = S.city;
-  $("in_move").value = S.move;
   setupJobCombo();
   renderJobHint();
 }
 
-function sliderRow(labelText, key, max) {
-  var r = el("div", "row");
-  r.innerHTML = "<label class=lab for=sl_" + key + ">" + labelText + "</label><input id=sl_" + key + " type=range min=0 max=100 value=" + S[key] + " aria-label='" + labelText + "'><div class=val id=vl_" + key + ">" + S[key] + "%</div><span class=live>锚点:<button class=btn mini data-a=30 data-k=" + key + ">30 少量</button><button class=btn mini data-a=60 data-k=" + key + ">60 约一半</button><button class=btn mini data-a=85 data-k=" + key + ">85 大部分</button></span>";
-  return r;
+/* ---------- 第 2 步:饭碗体检(四个滑块 ①②③④ + 实时结论;刻度文案替代锚点按钮) ---------- */
+function sliderBlock(num, labelText, noteText, key, scaleHtml) {
+  var d = el("div", "slider");
+  var head = el("div", "slider-head");
+  head.appendChild(el("span", "slider-lab", (num ? num + " " : "") + labelText));
+  head.appendChild(el("span", "slider-val", S[key] + "%"));
+  head.lastChild.id = "vl_" + key;
+  d.appendChild(head);
+  d.appendChild(el("p", "slider-note", noteText));
+  var s = el("input");
+  s.type = "range"; s.min = "0"; s.max = "100"; s.value = S[key];
+  s.id = "sl_" + key;
+  s.setAttribute("aria-label", (num ? num + " " : "") + labelText + "：" + noteText);
+  d.appendChild(s);
+  var sc = el("div", "scale" + (scaleHtml ? " alt" : ""));
+  sc.innerHTML = scaleHtml || "<span>30 少量</span><span>60 约一半</span><span>85 大部分</span>";
+  d.appendChild(sc);
+  return d;
 }
-
-function setAnchorVal(k, v) {
-  S[k] = Number(v);
-  var s = $("sl_" + k); if (s) s.value = v;
-  var lab = $("vl_" + k); if (lab) lab.textContent = v + "%";
-  save();
-  if (typeof updateExpo === "function" && ["r", "c", "i", "d"].indexOf(k) >= 0) updateExpo();
-}
-document.addEventListener("click", function (ev) {
-  var t = ev.target;
-  while (t && t !== document) {
-    if (t.getAttribute && t.getAttribute("data-a")) break;
-    t = t.parentNode;
-  }
-  if (t && t.getAttribute && t.getAttribute("data-a")) setAnchorVal(t.getAttribute("data-k"), t.getAttribute("data-a"));
-});
 
 function pane2() {
   var c = el("div", "card");
   c.appendChild(el("h2", "", "② 饭碗体检"));
-  c.appendChild(el("div", "hint", "拖四个滑块,看下方结论怎么变:重复活儿越多越悬;动脑、处人、拍板越多越稳。"));
-  c.appendChild(sliderRow("重复活儿占比(照着流程就能干的事,越高越悬)", "r", 100));
-  c.appendChild(sliderRow("动脑活儿占比(要出新主意、做判断的事,越高越稳)", "c", 100));
-  c.appendChild(sliderRow("处人活儿占比(靠信任关系才能干的事,越高越稳)", "i", 100));
-  c.appendChild(sliderRow("拍板权(你能拍板的事越多越稳)", "d", 100));
+  c.appendChild(el("div", "hint", "拖四个滑块，看下方结论怎么变：重复活儿越多越悬；动脑、处人、拍板越多越稳。"));
+  c.appendChild(sliderBlock("①", "重复活儿占比", "照着流程就能干的事，越高越悬", "r"));
+  c.appendChild(sliderBlock("②", "动脑活儿占比", "要出新主意、做判断的事，越高越稳", "c"));
+  c.appendChild(sliderBlock("③", "处人活儿占比", "靠信任关系才能干的事，越高越稳", "i"));
+  c.appendChild(sliderBlock("④", "拍板权", "你能拍板的事越多越稳", "d"));
   var live = el("div", "concl");
   live.id = "expo_live";
   live.setAttribute("aria-live", "polite");
   c.appendChild(live);
   var det = el("details", "disclose");
-  det.innerHTML = "<summary>怎么算的?(公式与来源)</summary><div class=dbody><div class=hint style=margin-top:10px>暴露度 = 0.5×重复任务 R + 0.2×(100−创造性 C) + 0.15×(100−人际信任 I) + 0.15×(100−自主决策 D)。锚定参考:30=少量 / 60=约一半 / 85=大部分。权重与框架参照 Anthropic《Labor market impacts of AI》(2026-03) 与 IMF(2026) 全球约 40% 岗位受 AI 显著影响的估算;阈值 35/55/75 为初版设定,与内置岗位库口径一致,随研究数据迭代。</div></div>";
+  var db = el("div", "dbody");
+  db.innerHTML =
+    "<p class=hint>饭碗被 AI 吃掉的程度（暴露度）怎么算：0.5×重复任务 + 0.2×（100−动脑） + 0.15×（100−处人） + 0.15×（100−拍板）。</p>" +
+    "<p class=hint>刻度参考：30 是少量，60 是约一半，85 是大部分。</p>" +
+    "<p class=hint>权重与框架参照 Anthropic《Labor market impacts of AI》（2026-03）与 IMF（2026）全球约 40% 岗位受 AI 显著影响的估算；阈值 35/55/75 为初版设定，与内置岗位库口径一致，随研究数据迭代。</p>";
+  det.innerHTML = "<summary>怎么算的？（公式与来源）</summary>";
+  det.appendChild(db);
   c.appendChild(det);
   c.appendChild(navButtons());
   return c;
@@ -1064,7 +1274,9 @@ function pane2() {
 function updateExpo() {
   var e = calcExposure();
   var rk = riskLevel(e);
-  $("expo_live").innerHTML = "<span class=n><b>" + Math.round(e) + "</b>%<small> 的饭碗会被 AI 吃掉</small></span><span class='sig " + rk.cls + "'>" + rk.t + "</span><span class=note>" + rk.note + "</span>";
+  $("expo_live").innerHTML =
+    "<div class=concl-num><b>" + Math.round(e) + "</b><small>%</small></div>" +
+    "<div class=concl-side><div class='concl-sig " + rk.cls + "'>" + fp(rk.t) + "</div><div class=concl-note>" + fp(rk.note) + "</div></div>";
 }
 
 function bindPane2() {
@@ -1080,30 +1292,29 @@ function bindPane2() {
   updateExpo();
 }
 
-function pane3() {
-  var c = el("div", "card");
-  c.appendChild(el("h2", "", "③ 技能家底(自己会什么,用事实校准)"));
-  c.appendChild(el("div", "hint", "为什么问这些:它们合成你的看家本事和抢手度。每样技能回答两问:熟练到什么程度(三选一)、有没有拿得出手的证据;分数旁边会显示它怎么来的。预设只是示例,默认分是保守值。"));
-  var pc = el("div", "hint");
-  pc.id = "skill_presets";
-  c.appendChild(pc);
-  var box = el("div", "", "");
-  box.id = "skill_rows";
-  c.appendChild(box);
-  var add = el("button", "btn mini", "+ 增加技能");
-  add.onclick = function () { S.skills.push(blankSkill()); save(); render(); };
-  c.appendChild(add);
-  c.appendChild(el("div", "", ""));
-  c.appendChild(sliderRow("AI 工具使用频率(0=从不用,100=日常重度使用)", "aiFreq", 100));
-  var sel = el("div", "row");
-  sel.innerHTML = "<label class=lab for=in_hist>学习史(过去 12 个月学会新东西的情况)</label><select id=in_hist style=width:220px><option value=low>几乎没学新东西</option><option value=mid>断续学过一些</option><option value=high>经常系统学习新技能</option></select>";
-  c.appendChild(sel);
-  c.appendChild(navButtons());
-  return c;
+/* ---------- 第 3 步:技能家底 + 独立「AI 与学习状态」块 ---------- */
+function tierBtnHtml(v, on, idx) {
+  var short = v === 30 ? "照着做" : v === 60 ? "独立做" : "定标准";
+  var title = v === 30 ? "照着模板、别人指导才能交付" : v === 60 ? "能独立交付且被验收（岗位标配）" : "能定标准、带人、靠它赚钱";
+  return "<button class='tier" + (on ? " on" : "") + "' type=button data-role=tier data-v=" + v + " data-idx=" + idx + " title='" + title + "'><b>" + v + "</b><span>" + short + "</span></button>";
 }
 
-function tierLabel(v) {
-  return v === 30 ? "30 · 按模板/他人指导才能交付" : v === 60 ? "60 · 独立交付且被验收(岗位标配)" : v === 85 ? "85 · 定标准/带人/岗位外变现" : "未选档";
+function skillStatusText(n) {
+  if (n.calibrated) return "<span class=st-chip>已校准</span>";
+  if (n.preset && PRESET_BY_NAME[n.preset]) return "<span class='st-chip unc'>示例默认分</span>";
+  return "<span class='st-chip unc'>未验证</span>";
+}
+
+function skillCalcText(sk) {
+  var n = normSkill(sk);
+  var p = profOf(n);
+  var s = scarcityOf(n);
+  var parts = ["熟练度 <b>" + p + "</b>", "抢手度 <b>" + s + "</b>"];
+  parts.push(skillStatusText(n));
+  if (!n.calibrated && !(n.preset && PRESET_BY_NAME[n.preset])) {
+    parts.push("<span class=st-note>算总分时按九折计入</span>");
+  }
+  return parts.join(" · ");
 }
 
 function skillRow(sk, idx) {
@@ -1112,40 +1323,71 @@ function skillRow(sk, idx) {
   r.setAttribute("data-idx", String(idx));
   var tiers = "";
   [30, 60, 85].forEach(function (v) {
-    tiers += "<button class='tier" + (n.tier === v ? " on" : "") + "' data-role=tier data-v=" + v + " data-idx=" + idx + " title='" + (v === 30 ? "照着模板/别人指导才能交付" : v === 60 ? "能独立交付且被验收(岗位标配)" : "能定标准/带人/靠它赚钱") + "'>" + v + "</button>";
+    tiers += tierBtnHtml(v, n.tier === v, idx);
   });
   r.innerHTML =
-    "<div class=skill-head><input placeholder=技能名(如:供应链谈判) aria-label=技能名 value=" + esc(n.name) + " style=flex:1 data-role=name data-idx=" + idx + "><button class=btn mini danger data-del=" + idx + ">删除</button></div>" +
-    "<div class=skill-line><span class=skill-lab>熟练到什么程度(三选一)</span>" + tiers + "</div>" +
-    "<div class=skill-line><span class=skill-lab>拿得出手的证据</span><select data-role=ev data-idx=" + idx + " aria-label=证据题><option value=''>还没答(按你自评算,没验证)</option><option value=none" + (n.evidence === "none" ? " selected" : "") + ">没做出过成型的东西(最高按 30 算)</option><option value=tpl" + (n.evidence === "tpl" ? " selected" : "") + ">做过,但靠模板/别人带(最高按 60 算)</option><option value=done" + (n.evidence === "done" ? " selected" : "") + ">独立做出过,且被认可(过审/上线/复用,≥70)</option><option value=paid" + (n.evidence === "paid" ? " selected" : "") + ">靠它赚过岗位外的钱(≥85,抢手度 ≥70 才成立)</option></select>" +
-    "<input placeholder=一句证据(可选,如:独立交付 3 次、2 次过审) aria-label=一句证据 value=" + esc(n.evidenceNote) + " style=flex:1 data-role=evnote data-idx=" + idx + "></div>" +
-    "<div class=skill-line><span class=skill-lab>市场信号</span><select data-role=sig data-idx=" + idx + " aria-label=稀缺信号><option value=''>未作答</option><option value=hunt" + (n.signal === "hunt" ? " selected" : "") + ">近一年有猎头/同行为这项技能找过我</option><option value=hire" + (n.signal === "hire" ? " selected" : "") + ">我公司/行业的招人周期明显变长</option><option value=none" + (n.signal === "none" ? " selected" : "") + ">都没有</option></select></div>" +
+    "<div class=skill-top><input placeholder='技能名（如：供应链谈判）' aria-label=技能名 value=" + esc(n.name) + " data-role=name data-idx=" + idx + "><button class='btn ghost' type=button data-del=" + idx + ">删除</button></div>" +
+    "<div class=skill-lab2>熟练档（三选一）</div>" +
+    "<div class=tiers>" + tiers + "</div>" +
+    "<label class=skill-field>拿得出手的证据" +
+    "<select data-role=ev data-idx=" + idx + " aria-label=证据题>" +
+    "<option value=''>还没答（按你自评算，没验证）</option>" +
+    "<option value=none" + (n.evidence === "none" ? " selected" : "") + ">没做出过成型的东西（最高按 30 算）</option>" +
+    "<option value=tpl" + (n.evidence === "tpl" ? " selected" : "") + ">做过，但靠模板、别人带（最高按 60 算）</option>" +
+    "<option value=done" + (n.evidence === "done" ? " selected" : "") + ">独立做出过，且被认可（过审、上线、复用，按 70 起）</option>" +
+    "<option value=paid" + (n.evidence === "paid" ? " selected" : "") + ">靠它赚过岗位外的钱（按 85 起）</option></select></label>" +
+    "<label class=skill-field>市场信号" +
+    "<select data-role=sig data-idx=" + idx + " aria-label=稀缺信号>" +
+    "<option value=''>未作答</option>" +
+    "<option value=hunt" + (n.signal === "hunt" ? " selected" : "") + ">近一年有猎头、同行为这项技能找过我</option>" +
+    "<option value=hire" + (n.signal === "hire" ? " selected" : "") + ">我公司、行业的招人周期明显变长</option>" +
+    "<option value=none" + (n.signal === "none" ? " selected" : "") + ">都没有</option></select></label>" +
     "<div class=skill-calc id=skill_calc_" + idx + "></div>";
   return r;
 }
 
-function skillCalcText(sk) {
-  var n = normSkill(sk);
-  var p = profOf(n);
-  var s = scarcityOf(n);
-  var parts = ["熟练度 <b>" + p + "</b>", "抢手度 <b>" + s + "</b>"];
-  if (n.calibrated) {
-    parts.push("依据:" + evidenceLabel(n) + " · 抢手度依据:" + scarcityLabel(n));
-    if (n.evidence !== "paid" && (n.signal === "hunt" ? 60 : n.signal === "hire" ? Math.min(100, n.scarce + 10) : n.scarce) >= 70) parts.push("(抢手度 ≥70 需赚过岗位外钱,已按 69 封顶)");
-  } else if (n.preset && PRESET_BY_NAME[n.preset]) {
-    parts.push("示例默认分,没验证(示例:" + PRESET_BY_NAME[n.preset].note + ")");
-  } else {
-    parts.push("自己估的,没验证(算总分时按九折算)");
-  }
-  return parts.join(" · ");
+function pane3() {
+  var wrap = el("div", "");
+  var c = el("div", "card");
+  c.appendChild(el("h2", "", "③ 技能家底"));
+  c.appendChild(el("div", "hint", "为什么问这些：它们合成你的看家本事和抢手度。每项技能答两问：熟练档（三选一）＋拿得出手的证据，分数旁边会显示怎么来的。"));
+  var pc = el("div", "presets");
+  pc.id = "skill_presets";
+  c.appendChild(pc);
+  var box = el("div", "");
+  box.id = "skill_rows";
+  c.appendChild(box);
+  var add = el("button", "btn chip", "+ 增加技能");
+  add.type = "button";
+  add.onclick = function () { S.skills.push(blankSkill()); save(); render(); };
+  c.appendChild(add);
+  wrap.appendChild(c);
+
+  /* 「AI 工具使用频率」「学习史」独立成块(验收第 3 条) */
+  var c2 = el("div", "card");
+  c2.appendChild(el("h2", "", "AI 与学习状态"));
+  c2.appendChild(el("div", "hint", "这两个读数会影响报告的「AI 杠杆」和「学习弹性」。"));
+  c2.appendChild(sliderBlock("", "AI 工具使用频率", "0 是从不用，100 是日常重度使用", "aiFreq", "<span>0 从不用</span><span>50 偶尔用</span><span>100 重度用</span>"));
+  var seg = el("fieldset", "seg");
+  seg.appendChild(el("legend", "", "学习史（过去 12 个月学会新东西的情况）"));
+  [["low", "几乎没学新东西"], ["mid", "断续学过一些"], ["high", "经常系统学习新技能"]].forEach(function (p) {
+    var lab = el("label");
+    lab.innerHTML = "<input type=radio name=in_hist value=" + p[0] + (S.learnHist === p[0] ? " checked" : "") + "><span>" + p[1] + "</span>";
+    seg.appendChild(lab);
+  });
+  c2.appendChild(seg);
+  wrap.appendChild(c2);
+  wrap.appendChild(navButtons());
+  return wrap;
 }
 
 function bindPane3() {
   var pc = $("skill_presets");
-  pc.innerHTML = "点一下填入示例(默认分是保守值,答了证据题会被规则覆盖):";
+  pc.innerHTML = "";
   PRESET_SKILLS.forEach(function (p) {
-    var b = el("button", "btn mini", p.name);
-    b.title = p.note;
+    var b = el("button", "btn chip", p.name);
+    b.type = "button";
+    b.title = fp(p.note);
     b.onclick = function () {
       if (!S.skills.some(function (s) { return s.name === p.name; })) {
         S.skills.push({ name: p.name, tier: 0, evidence: "", evidenceNote: "", signal: "", preset: p.name, scarce: p.scarce, calibrated: false });
@@ -1156,7 +1398,11 @@ function bindPane3() {
   });
   var box = $("skill_rows");
   box.innerHTML = "";
-  S.skills.forEach(function (sk, idx) { box.appendChild(skillRow(sk, idx)); });
+  if (!S.skills.length) {
+    box.appendChild(emptyState("还没有技能：点上面的示例一键填入，或点「增加技能」自己写。"));
+  } else {
+    S.skills.forEach(function (sk, idx) { box.appendChild(skillRow(sk, idx)); });
+  }
   function refresh(idx) {
     var calc = document.getElementById("skill_calc_" + idx);
     if (calc) calc.innerHTML = skillCalcText(S.skills[idx]);
@@ -1167,7 +1413,6 @@ function bindPane3() {
     var role = t.getAttribute("data-role");
     if (isNaN(idx) || !S.skills[idx]) return;
     if (role === "name") S.skills[idx].name = t.value;
-    if (role === "evnote") S.skills[idx].evidenceNote = t.value;
     save();
     refresh(idx);
   });
@@ -1199,7 +1444,6 @@ function bindPane3() {
     var t = ev.target;
     if (t.hasAttribute && t.hasAttribute("data-del")) {
       S.skills.splice(Number(t.getAttribute("data-del")), 1);
-      if (!S.skills.length) S.skills = [blankSkill()];
       save(); render();
       return;
     }
@@ -1209,7 +1453,7 @@ function bindPane3() {
         S.skills[idx].tier = Number(t.getAttribute("data-v"));
         S.skills[idx].preset = ""; /* 自选档位后不再显示预设默认 */
         save();
-        var card = t.parentNode.parentNode;
+        var card = t.closest(".skill-card");
         var btns = card.querySelectorAll(".tier");
         for (var i = 0; i < btns.length; i++) btns[i].className = "tier" + (Number(btns[i].getAttribute("data-v")) === S.skills[idx].tier ? " on" : "");
         refresh(idx);
@@ -1222,24 +1466,27 @@ function bindPane3() {
     $("vl_aiFreq").textContent = $("sl_aiFreq").value + "%";
     save();
   });
-  $("in_hist").value = S.learnHist;
-  $("in_hist").addEventListener("change", function () { S.learnHist = $("in_hist").value; save(); });
+  var radios = document.querySelectorAll("input[name=in_hist]");
+  for (var r = 0; r < radios.length; r++) {
+    radios[r].addEventListener("change", function () {
+      if (this.checked) { S.learnHist = this.value; save(); }
+    });
+  }
 }
 
+/* ---------- 第 4 步:学什么(移动端卡片式,一行一个学习项) ---------- */
 function pane4() {
   var c = el("div", "card");
-  c.appendChild(el("h2", "", "④ 学什么(雷达推荐,按值不值排序)"));
-  c.appendChild(el("div", "hint", "这是雷达根据你的饭碗缺口和方向自动推荐的学习项,点「添加」收下,再填每月小时、成本、预计一年多赚多少;报告里会按「值不值」排序。收益报太高且没依据 → 按一半算(附上依据按全额)。"));
+  c.appendChild(el("h2", "", "④ 学什么"));
+  c.appendChild(el("div", "hint", "雷达根据你的饭碗缺口和方向自动推荐学习项。点「添加」收下，再填每月小时、成本、预计一年多赚；报告里按「值不值」排序。收益报太高且没依据，按一半算。"));
   var dv = el("div", "derive");
   dv.id = "learn_derive";
   c.appendChild(dv);
-  var hd = el("div", "learn-hd");
-  hd.innerHTML = "<span class=lh-name>学习项</span><span class=lh-num style=width:80px>月小时</span><span class=lh-num style=width:90px>成本(元)</span><span class=lh-num style=width:100px>预计一年多赚(元)</span><span class=lh-num style=width:150px>收益依据(报太高必填)</span><span style=margin-left:auto>操作</span>";
-  c.appendChild(hd);
-  var box = el("div", "", "");
+  var box = el("div", "");
   box.id = "learn_rows";
   c.appendChild(box);
-  var add = el("button", "btn mini", "+ 手动增加学习项");
+  var add = el("button", "btn chip", "+ 手动增加学习项");
+  add.type = "button";
   add.onclick = function () { S.learns.push(blankLearn()); save(); render(); };
   c.appendChild(add);
   c.appendChild(navButtons());
@@ -1250,19 +1497,19 @@ function deriveBlockHtml() {
   var cands = deriveLearnCandidates();
   var have = {};
   S.learns.forEach(function (l) { if (l.name) have[String(l.name).trim()] = 1; });
-  var h = "<h3>雷达推荐(点「添加」收下)</h3>";
+  var h = "<h3>雷达推荐（点「添加」收下）</h3>";
   if (!cands.length) {
-    h += "<div class=hint>暂时没有要补的:你的缺口和换方向所需技能,都已有拿得出手的证据(≥60)。</div>";
+    h += "<div class=hint>暂时没有要补的：你的缺口和换方向所需技能，都已有拿得出手的证据。</div>";
     return h;
   }
   h += "<div class=derive-list>";
   cands.forEach(function (c, i) {
     var band = bandFor(c.name);
-    var bandTxt = band ? "参考一年多赚 " + band[0] + "~" + band[1] + " 元" : "没有参考数据(按你填的算)";
+    var bandTxt = band ? "参考一年多赚 " + band[0] + "～" + band[1] + " 元" : "没有参考数据（按你填的算）";
     var added = have[String(c.name).trim()];
     h += "<div class=derive-item><div class=derive-name>" + esc(c.name) + " <span class='src-chip' data-src=" + c.source + ">" + srcLabel(c.source) + "</span></div>" +
       "<div class=derive-meta>" + bandTxt + (added ? " <span class=unc>已在清单中</span>" : "") + "</div>" +
-      (added ? "" : "<button class='btn mini' data-add-derive=" + i + ">添加 →</button>") + "</div>";
+      (added ? "" : "<button class='btn primary chip' type=button data-add-derive=" + i + ">添加 →</button>") + "</div>";
   });
   h += "</div>";
   return h;
@@ -1270,14 +1517,17 @@ function deriveBlockHtml() {
 
 function learnRow(l, idx) {
   var band = (l.gainBand && l.gainBand.length === 2) ? l.gainBand : bandFor(l.name);
-  var r = el("div", "row");
-  r.innerHTML = "<input placeholder=学习项(如:AI 工作流改造) aria-label=学习项 value=" + esc(l.name) + " style=flex:1 data-role=name data-idx=" + idx + ">" +
-    "<input type=number min=1 placeholder=月小时 aria-label=每月小时 value=" + l.hours + " style=width:80px data-role=hours data-idx=" + idx + " title=每月小时>" +
-    "<input type=number min=0 placeholder=成本(元) aria-label=金钱成本(元) value=" + l.cost + " style=width:90px data-role=cost data-idx=" + idx + " title=金钱成本>" +
-    "<input type=number min=0 placeholder=一年多赚(元) aria-label=预计一年多赚(元) value=" + l.gain + " style=width:100px data-role=gain data-idx=" + idx + " title=预期年增收>" +
-    (band ? "<input placeholder=收益依据(超上限需附,可选) aria-label=收益依据 value=" + esc(l.gainNote || "") + " style=width:150px data-role=gainnote data-idx=" + idx + " title=收益依据>" : "") +
-    "<button class=btn mini danger style=margin-left:auto data-del=" + idx + ">删除</button>" +
-    (l.source ? "<span class=src-chip data-src=" + l.source + ">" + srcLabel(l.source) + "</span>" : "");
+  var r = el("div", "learn-card");
+  r.innerHTML =
+    "<div class=learn-top><input placeholder='学习项（如：AI 工作流改造）' aria-label=学习项 value=" + esc(l.name) + " data-role=name data-idx=" + idx + ">" +
+    (l.source ? "<span class=src-chip data-src=" + l.source + ">" + srcLabel(l.source) + "</span>" : "") +
+    "<button class='btn ghost' type=button data-del=" + idx + ">删除</button></div>" +
+    "<div class=learn-grid>" +
+    "<label class=learn-lab>每月小时<input type=number min=1 inputmode=numeric placeholder=小时 aria-label=每月小时 value=" + l.hours + " data-role=hours data-idx=" + idx + "></label>" +
+    "<label class=learn-lab>成本（元）<input type=number min=0 inputmode=numeric placeholder=0 aria-label=金钱成本（元） value=" + l.cost + " data-role=cost data-idx=" + idx + "></label>" +
+    "<label class=learn-lab>预计一年多赚（元）<input type=number min=0 inputmode=numeric placeholder='如：24000' aria-label=预计一年多赚（元） value=" + l.gain + " data-role=gain data-idx=" + idx + "></label>" +
+    (band ? "<label class=learn-lab>收益依据（超上限需附）<input placeholder=可选 aria-label=收益依据 value=" + esc(l.gainNote || "") + " data-role=gainnote data-idx=" + idx + "></label>" : "") +
+    "</div>";
   return r;
 }
 
@@ -1298,7 +1548,11 @@ function bindPane4() {
   });
   var box = $("learn_rows");
   box.innerHTML = "";
-  S.learns.forEach(function (l, idx) { box.appendChild(learnRow(l, idx)); });
+  if (!S.learns.length) {
+    box.appendChild(emptyState("还没有学习项：从上面的雷达推荐点「添加」，或点「手动增加学习项」。"));
+  } else {
+    S.learns.forEach(function (l, idx) { box.appendChild(learnRow(l, idx)); });
+  }
   box.addEventListener("input", function (ev) {
     var t = ev.target;
     var idx = Number(t.getAttribute("data-idx"));
@@ -1314,7 +1568,6 @@ function bindPane4() {
   box.addEventListener("click", function (ev) {
     if (ev.target.hasAttribute && ev.target.hasAttribute("data-del")) {
       S.learns.splice(Number(ev.target.getAttribute("data-del")), 1);
-      if (!S.learns.length) S.learns = [blankLearn()];
       save(); render();
     }
   });
@@ -1344,20 +1597,20 @@ function radarSvg(dims) {
     var a3 = -Math.PI / 2 + m * 2 * Math.PI / N;
     var lx = cx + (R + 40) * Math.cos(a3);
     var ly = cy + (R + 40) * Math.sin(a3);
-    labels += "<text class=rg-lab x=" + lx.toFixed(0) + " y=" + ly.toFixed(0) + " font-size=12 text-anchor=middle>" + dims[m].k + "(<tspan data-count=" + dims[m].v + ">" + dims[m].v + "</tspan>)</text>";
+    labels += "<text class=rg-lab x=" + lx.toFixed(0) + " y=" + ly.toFixed(0) + " font-size=12 text-anchor=middle>" + dims[m].k + "（<tspan data-count=" + dims[m].v + ">" + dims[m].v + "</tspan>）</text>";
   }
   var dots = "";
-  for (var n = 0; n < pts.length; n++) dots += "<circle class=rg-dot cx=" + pts[n][0].toFixed(1) + " cy=" + pts[n][1].toFixed(1) + " r=3.5 style='animation-delay:" + (430 + n * 70) + "ms'></circle>";
+  for (var n = 0; n < pts.length; n++) dots += "<circle class='rg-dot d" + (n + 1) + "' cx=" + pts[n][0].toFixed(1) + " cy=" + pts[n][1].toFixed(1) + " r=3.5></circle>";
   return "<svg width=380 height=340 viewBox='0 0 380 340' role=img aria-label=五维雷达图>" + rings + cross + sweep + "<polygon class=rg-poly pathLength=100 points=" + poly + "></polygon>" + dots + labels + "</svg>";
 }
 
 function roiTable(rows) {
-  if (!rows.length) return "<div class=warn>未填写学习项:回到第 4 步,至少填一项。</div>";
-  var h = "<table><tr><th>排序</th><th>学习项</th><th>月小时</th><th>成本(元)</th><th>预计一年多赚(元)</th><th>每小时回报(元)</th><th>每投 1 元回报</th></tr>";
+  if (!rows.length) return "<div class=warn>未填写学习项：回到第 4 步，至少填一项。</div>";
+  var h = "<table><tr><th>排序</th><th>学习项</th><th>月小时</th><th>成本（元）</th><th>预计一年多赚（元）</th><th>每小时回报（元）</th><th>每投 1 元回报</th></tr>";
   for (var i = 0; i < rows.length; i++) {
     var r = rows[i];
-    var gainTxt = r.gain + (r.discounted ? " <span class=warn>→ 按 " + r.effGain + " 计(报太高没依据,按一半)</span>" : "");
-    h += "<tr><td>" + (i + 1) + "</td><td>" + esc(r.name) + (r.heavy ? " <span class=warn>(耗时偏重)</span>" : "") + "</td><td>" + r.hours + "</td><td>" + r.cost + "</td><td>" + gainTxt + "</td><td>" + r.timeRoi.toFixed(0) + "</td><td>" + (r.moneyRoi >= 0 ? r.moneyRoi.toFixed(1) : "负") + "</td></tr>";
+    var gainTxt = r.gain + (r.discounted ? " <span class=warn>→ 按 " + r.effGain + " 计（报太高没依据，按一半）</span>" : "");
+    h += "<tr><td>" + (i + 1) + "</td><td>" + esc(r.name) + (r.heavy ? " <span class=warn>（耗时偏重）</span>" : "") + "</td><td>" + r.hours + "</td><td>" + r.cost + "</td><td>" + gainTxt + "</td><td>" + r.timeRoi.toFixed(0) + "</td><td>" + (r.moneyRoi >= 0 ? r.moneyRoi.toFixed(1) : "负") + "</td></tr>";
   }
   return "<div class=tbl-scroll>" + h + "</table></div>";
 }
@@ -1372,51 +1625,73 @@ function pane5() {
   var top = rois[0];
   var weeks = genPlan(st, top);
   var eRound = Math.round(e);
-  var goalText = { grow: "涨薪/升职", pivot: "转型新方向", side: "副业/第二曲线", keep: "保住当前岗位" }[S.goal] || "综合提升";
+  var goalText = { grow: "涨薪、升职", pivot: "转型新方向", side: "副业、第二曲线", keep: "保住当前岗位" }[S.goal] || "综合提升";
 
   var c = el("div", "card report");
-  c.appendChild(el("h2", "", "⑤ " + (S.nick ? S.nick + ",你的" : "你的") + "饭碗扫描报告"));
+  c.appendChild(el("h2", "", "⑤ 饭碗扫描报告"));
 
-  /* 第 1 屏:一屏结论(信号 + 一个数字 + 一句诊断) */
+  /* 第 1 屏:一屏结论(信号徽章 + 一个数字 + 一句诊断,可截图,参照 16personalities 结果页) */
   var hero = el("div", "hero");
-  hero.innerHTML = "<div class=bignum><b data-count=" + eRound + ">" + eRound + "</b><small>/100</small></div>" +
-    "<div class=hlabel>你的饭碗被 AI 吃掉的程度(暴露度)</div>" +
-    "<div class='hsig " + rk.cls + "'>" + rk.t + "</div>" +
-    "<div class=hnote>" + rk.note + "</div>" +
-    "<div class=hgoal>目标:「" + goalText + "」 · 生成于 " + fmtTime(new Date().toISOString()) + "</div>";
+  hero.innerHTML = "<div class='hero-badge " + rk.cls + "'>" + fp(rk.t) + "</div>" +
+    "<div class=bignum><b data-count=" + eRound + ">" + eRound + "</b><span>/100</span></div>" +
+    "<div class=hlabel>饭碗被 AI 吃掉的程度（0~100，越高越悬）</div>" +
+    "<div class=hnote>" + fp(rk.note) + "</div>" +
+    "<div class=hgoal>目标「" + goalText + "」 · 生成于 " + fmtTime(new Date().toISOString()) + "</div>";
   c.appendChild(hero);
 
   /* 主行动(第 1 屏):导出 / 分享 */
   var tools = el("div", "hero-actions");
-  tools.innerHTML = "<button class=btn-primary id=btn_save>导出我的报告</button><button class=btn id=btn_share>分享报告(脱敏)</button>";
+  tools.innerHTML = "<button class='btn primary' id=btn_save>导出我的报告</button><button class=btn id=btn_share>分享报告（脱敏）</button>";
   c.appendChild(tools);
 
-  /* 第 1 屏:和同行比(对比条保留) */
+  /* 第 1 屏:和同行比(对比条) */
   var cmp = el("div", "strategy");
+  cmp.appendChild(el("h3", "", "和同行比"));
   if (S.job && S.jobAvg != null) {
     var delta = eRound - S.jobAvg;
     var deltaTxt = delta > 0
-      ? "你的饭碗比「" + esc(S.job) + "」同行平均更悬:被覆盖程度高 " + delta + " 点,优先处理最容易被 AI 顶掉的活儿。"
+      ? "你的饭碗比「" + esc(S.job) + "」同行平均更悬：被覆盖程度高 " + delta + " 点，优先处理最容易被 AI 顶掉的活儿。"
       : delta < 0
-      ? "你的饭碗比「" + esc(S.job) + "」同行平均更稳:被覆盖程度低 " + (-delta) + " 点。"
-      : "你的被覆盖程度和「" + esc(S.job) + "」同行平均持平(" + S.jobAvg + ")。";
+      ? "你的饭碗比「" + esc(S.job) + "」同行平均更稳：被覆盖程度低 " + (-delta) + " 点。"
+      : "你的被覆盖程度和「" + esc(S.job) + "」同行平均持平（" + S.jobAvg + "）。";
     var occ = OCCUPATIONS ? (function () { for (var oi = 0; oi < OCCUPATIONS.length; oi++) { if (OCCUPATIONS[oi].name === S.job) return OCCUPATIONS[oi]; } return null; })() : null;
-    cmp.innerHTML = "<h3>和同行比</h3>" +
-      "<div class=cmpbar><span class=t>你</span><span class=tr><i class=you style='--w:" + Math.min(100, eRound) + "%'></i></span><span class=v><b data-count=" + eRound + ">" + eRound + "</b>/100</span></div>" +
-      "<div class=cmpbar><span class=t>「" + esc(S.job) + "」平均</span><span class=tr><i class=avg style='--w:" + Math.min(100, S.jobAvg) + "%;animation-delay:180ms'></i></span><span class=v><b data-count=" + S.jobAvg + ">" + S.jobAvg + "</b>/100</span></div>" +
-      "<div class=planweek style=color:var(--dim)>" + deltaTxt + "</div>" +
-      (occ && occ.source ? "<div class=planweek style=color:var(--dim)>口径:" + esc(occ.source) + "</div>" : "");
+    var row1 = el("div", "cmpbar");
+    row1.appendChild(el("span", "t", "你"));
+    var tr1 = el("span", "tr");
+    var b1 = el("i", "you");
+    b1.style.setProperty("--w", Math.min(100, eRound) + "%");
+    tr1.appendChild(b1);
+    row1.appendChild(tr1);
+    var v1 = el("span", "v");
+    v1.innerHTML = "<b data-count=" + eRound + ">" + eRound + "</b>/100";
+    row1.appendChild(v1);
+    var row2 = el("div", "cmpbar");
+    row2.appendChild(el("span", "t", "「" + esc(S.job) + "」平均"));
+    var tr2 = el("span", "tr");
+    var b2 = el("i", "avg");
+    b2.style.setProperty("--w", Math.min(100, S.jobAvg) + "%");
+    b2.style.setProperty("animation-delay", "180ms");
+    tr2.appendChild(b2);
+    row2.appendChild(tr2);
+    var v2 = el("span", "v");
+    v2.innerHTML = "<b data-count=" + S.jobAvg + ">" + S.jobAvg + "</b>/100";
+    row2.appendChild(v2);
+    cmp.appendChild(row1);
+    cmp.appendChild(row2);
+    cmp.appendChild(el("div", "planweek", deltaTxt));
+    if (occ && occ.source) cmp.appendChild(el("div", "planweek", "口径：" + esc(cleanSource(occ.source))));
   } else {
-    cmp.innerHTML = "<h3>和同行比</h3><div class=planweek style=color:var(--dim)>" +
-      (S.job
-        ? "「" + esc(S.job) + "」暂无同行平均数据(岗位库未收录):对比位已预留。"
-        : "在第 1 步选择岗位后,这里会显示你的分数与同行平均的对比。") + "</div>";
+    cmp.appendChild(el("div", "planweek",
+      S.job
+        ? "「" + esc(S.job) + "」暂无同行平均数据（岗位库未收录）：对比位已预留。"
+        : "在第 1 步选择岗位后，这里会显示你的分数与同行平均的对比。"));
   }
   c.appendChild(cmp);
 
-  /* 第 2 层:建议路径(人话副标) */
+  /* 第 2 层:建议路径(人话副标 + 编号动作) */
   var stbox = el("div", "strategy");
-  stbox.innerHTML = "<h3>接下来怎么走:" + st.name + "(" + pathGloss(st.code) + ")</h3><div>" + st.why + "</div><div style=margin-top:8px>" + st.acts.map(function (a) { return "<div class=planweek>· " + a + "</div>"; }).join("") + "</div>";
+  stbox.innerHTML = "<h3>接下来怎么走：" + st.name + "（" + pathGloss(st.code) + "）</h3><div class=why>" + fp(st.why) + "</div>" +
+    st.acts.map(function (a, i) { return "<div class=act><i>" + (i + 1) + "</i><span>" + fp(a) + "</span></div>"; }).join("");
   c.appendChild(stbox);
 
   /* 第 3 层:六个折叠详情块 */
@@ -1424,15 +1699,15 @@ function pane5() {
   var left = el("div", "");
   left.innerHTML = radarSvg(dims);
   var right = el("div", "");
-  right.innerHTML = "<h3 style=color:var(--acc-strong)>四类资产读数</h3><div class=tbl-scroll><table><tr><th>资产</th><th>读数</th><th>解读</th></tr>" +
-    "<tr><td>你的看家本事(专业深度)</td><td><span data-count=" + dims[0].v + ">" + dims[0].v + "</span></td><td>" + (dims[0].v >= 60 ? "护城河较深" : "沉淀偏浅,先补深度") + "</td></tr>" +
-    "<tr><td>AI 用得怎么样(AI 杠杆)</td><td><span data-count=" + dims[1].v + ">" + dims[1].v + "</span></td><td>" + (dims[1].v >= 60 ? "AI 已在放大你" : "AI 还没成为你的杠杆") + "</td></tr>" +
-    "<tr><td>市场抢不抢手(稀缺度)</td><td><span data-count=" + dims[2].v + ">" + dims[2].v + "</span></td><td>" + (dims[2].v >= 60 ? "抢手,可吃溢价" : "可替代性偏高") + "</td></tr>" +
-    "<tr><td>扛风险的本钱(学习时间+存款预算)</td><td><span data-count=" + dims[3].v + ">" + dims[3].v + "</span> / <span data-count=" + dims[4].v + ">" + dims[4].v + "</span></td><td>" + (dims[4].v >= 50 ? "缓冲足够,可上强度" : "缓冲偏薄,走稳路线") + "</td></tr></table></div>" +
-    "<div class=hint>分数怎么来的:财务缓冲 = 0.6×存款可支撑月数(24 个月满分)+ 0.4×每月学习预算(2000 元满分);学习弹性 = 0.5×每周小时(14 小时满分)+ 0.3×年龄 + 0.2×学习史;专业深度 = 校准技能全额 + 未校准技能×0.9 加权平均。</div>";
+  right.innerHTML = "<h3 class=strat-title>四类资产读数</h3><div class=tbl-scroll><table><tr><th>资产</th><th>读数</th><th>解读</th></tr>" +
+    "<tr><td>你的看家本事（专业深度）</td><td><span data-count=" + dims[0].v + ">" + dims[0].v + "</span></td><td>" + (dims[0].v >= 60 ? "护城河较深" : "沉淀偏浅，先补深度") + "</td></tr>" +
+    "<tr><td>AI 用得怎么样（AI 杠杆）</td><td><span data-count=" + dims[1].v + ">" + dims[1].v + "</span></td><td>" + (dims[1].v >= 60 ? "AI 已在放大你" : "AI 还没成为你的杠杆") + "</td></tr>" +
+    "<tr><td>市场抢不抢手（稀缺度）</td><td><span data-count=" + dims[2].v + ">" + dims[2].v + "</span></td><td>" + (dims[2].v >= 60 ? "抢手，可吃溢价" : "可替代性偏高") + "</td></tr>" +
+    "<tr><td>扛风险的本钱（学习时间＋存款预算）</td><td><span data-count=" + dims[3].v + ">" + dims[3].v + "</span> / <span data-count=" + dims[4].v + ">" + dims[4].v + "</span></td><td>" + (dims[4].v >= 50 ? "缓冲足够，可上强度" : "缓冲偏薄，走稳路线") + "</td></tr></table></div>" +
+    "<div class=hint>分数怎么来的：财务缓冲＝0.6×存款可支撑月数（24 个月满分）＋0.4×每月学习预算（2000 元满分）；学习弹性＝0.5×每周小时（14 小时满分）＋0.3×年龄＋0.2×学习史；专业深度＝校准技能全额＋未校准技能×0.9 加权平均。</div>";
   g1.appendChild(left);
   g1.appendChild(right);
-  c.appendChild(detailsBlock("我的分数怎么来的?(雷达图与四类资产)", g1));
+  c.appendChild(detailsBlock("我的分数怎么来的？（雷达图与四类资产）", g1));
 
   var skbox = el("div", "");
   var cal = [], unc = [];
@@ -1442,62 +1717,59 @@ function pane5() {
     (n.calibrated ? cal : unc).push(n);
   });
   function skTable(rows) {
-    if (!rows.length) return "<div class=planweek style=color:var(--dim)>未填写技能:回到第 3 步补充。</div>";
-    var t = "<table><tr><th>技能</th><th>熟练度</th><th>抢手度</th><th>依据</th></tr>";
+    if (!rows.length) return "<div class=planweek>未填写技能：回到第 3 步补充。</div>";
+    var t = "<table><tr><th>技能</th><th>熟练度</th><th>抢手度</th><th>状态</th></tr>";
     rows.forEach(function (n) {
-      var basis = n.calibrated
-        ? esc(evidenceLabel(n)) + " · 抢手度:" + esc(scarcityLabel(n))
-        : "<span class=unc>" + (n.preset && PRESET_BY_NAME[n.preset] ? "示例默认分,没验证(示例:" + esc(PRESET_BY_NAME[n.preset].note) + ")" : "自己估的,没验证") + "</span>";
-      t += "<tr><td>" + esc(n.name) + "</td><td>" + profOf(n) + "</td><td>" + scarcityOf(n) + "</td><td>" + basis + "</td></tr>";
+      t += "<tr><td>" + esc(n.name) + "</td><td>" + profOf(n) + "</td><td>" + scarcityOf(n) + "</td><td>" + skillStatusText(n) + "</td></tr>";
     });
     return "<div class=tbl-scroll>" + t + "</table></div>";
   }
-  skbox.innerHTML = "<h3 style='margin-top:10px'>已会(有证据)</h3>" + skTable(cal) +
-    (unc.length ? "<h3 style='margin-top:12px'>没验证(自评)</h3><div class=planweek style=color:var(--dim)>以下没答证据题:显示保守默认分,算总分时按九折算。</div>" + skTable(unc) : "");
-  c.appendChild(detailsBlock("技能打分明细(每个分数旁边有依据)", skbox));
+  skbox.innerHTML = "<h3 class=strat-title>已校准（有证据）</h3>" + skTable(cal) +
+    (unc.length ? "<h3 class=strat-title>没验证（自评）</h3><div class=planweek>以下没答证据题：显示保守默认分，算总分时按九折计入。</div>" + skTable(unc) : "");
+  c.appendChild(detailsBlock("技能打分明细", skbox));
 
   var learnbox = el("div", "");
   var warnBox = el("div", "");
-  if (Number(S.hours) < 5) warnBox.innerHTML += "<div class=warn>⚠ 每周可投入不足 5 小时:先把改造现有工作流作为唯一重点,学习项压缩到 1 个。</div>";
-  if (Number(S.budget) < 100 && S.learns.some(function (x) { return Number(x.cost) > 0; })) warnBox.innerHTML += "<div class=warn>⚠ 预算近零:优先选择成本为 0 的学习项(免费工具/官方文档/开源社区)。</div>";
-  if (top && top.heavy) warnBox.innerHTML += "<div class=warn>⚠ 排序第一的学习项耗时超过全年可投入的 40%:建议拆成 2~3 个小里程碑分阶段投入。</div>";
+  if (Number(S.hours) < 5) warnBox.innerHTML += "<div class=warn>⚠ 每周可投入不足 5 小时：先把改造现有工作流作为唯一重点，学习项压缩到 1 个。</div>";
+  if (Number(S.budget) < 100 && S.learns.some(function (x) { return Number(x.cost) > 0; })) warnBox.innerHTML += "<div class=warn>⚠ 预算近零：优先选择成本为 0 的学习项（免费工具、官方文档、开源社区）。</div>";
+  if (top && top.heavy) warnBox.innerHTML += "<div class=warn>⚠ 排序第一的学习项耗时超过全年可投入的 40%：建议拆成 2～3 个小里程碑分阶段投入。</div>";
   learnbox.appendChild(warnBox);
   var roinote = el("div", "hint");
-  roinote.innerHTML = "每小时回报 =(预计一年多赚 − 成本)÷(每月小时 × 12);每投 1 元回报 =(预计一年多赚 − 成本)÷ 成本。收益报太高且没依据 → 按一半算(附依据按全额)。";
+  roinote.innerHTML = "每小时回报＝（预计一年多赚−成本）÷（每月小时×12）；每投 1 元回报＝（预计一年多赚−成本）÷成本。收益报太高且没依据，按一半算（附依据按全额）。";
   learnbox.appendChild(roinote);
   var tbl = el("div", "");
   tbl.innerHTML = roiTable(rois);
   learnbox.appendChild(tbl);
-  c.appendChild(detailsBlock("我该学什么?(学习排序,按每小时回报)", learnbox));
+  c.appendChild(detailsBlock("我该学什么？（学习排序，按每小时回报）", learnbox));
 
   var pl = el("div", "");
-  for (var w = 0; w < weeks.length; w++) pl.innerHTML += "<div class=planweek><b>" + weeks[w].w + "</b>:<span style=color:var(--dim)> " + weeks[w].t + "</span></div>";
-  c.appendChild(detailsBlock("第一步做什么?(90 天计划)", pl));
+  for (var w = 0; w < weeks.length; w++) pl.innerHTML += "<div class=planweek><b>" + fp(weeks[w].w) + "</b>：" + fp(weeks[w].t) + "</div>";
+  c.appendChild(detailsBlock("第一步做什么？（90 天计划）", pl));
 
   var where = el("div", "");
   var lowOcc = OCCUPATIONS
     ? OCCUPATIONS.filter(function (o) { return o.avgExposure != null; }).slice().sort(function (a, b) { return a.avgExposure - b.avgExposure; }).slice(0, 5)
     : [];
-  where.innerHTML = "<h3>换什么饭碗?被 AI 覆盖少的岗位(" + (lowOcc.length ? "内置岗位库实测均值" : "内置小表,岗位库未加载") + ")</h3>" +
-    "<div class=planweek>参照 Anthropic《Labor market impacts of AI》(2026-03) 与张丹丹等《管理世界》(2025) 的低暴露职业方向,同信号人群常看的岗位:</div>" +
+  where.innerHTML = "<h3 class=strat-title>换什么饭碗？被 AI 覆盖少的岗位（" + (lowOcc.length ? "内置岗位库实测均值" : "内置小表，岗位库未加载") + "）</h3>" +
+    "<div class=planweek>参照 Anthropic（2026-03）与国内学术榜（2025）的低暴露职业方向，同信号人群常看的岗位：</div>" +
     (lowOcc.length
-      ? lowOcc.map(function (o) { return "<div class=planweek>· " + esc(o.name) + "(被覆盖程度 <b>" + o.avgExposure + "</b>/100 · " + esc(o.category) + (o.source ? " · " + esc(shortSource(o.source)) : "") + ")</div>"; }).join("")
-      : "<div class=planweek>· 手艺人型:厨师 / 维修技工 / 美发 / 缝纫</div>" +
-        "<div class=planweek>· 照料与现场型:护理 / 家政 / 保育 / 健身教练</div>" +
-        "<div class=planweek>· 现场服务型:保安 / 物业 / 消防 / 驾驶员</div>") +
-    "<div class=planweek style=color:var(--dim)>提示:被 AI 覆盖少不等于高薪,动手前用「我该学什么」验证投入产出。</div>";
-  c.appendChild(detailsBlock("换什么饭碗?(被 AI 覆盖少的岗位)", where));
+      ? lowOcc.map(function (o) { return "<div class=planweek>· " + esc(o.name) + "（被覆盖程度 <b>" + o.avgExposure + "</b>/100 · " + esc(o.category) + (o.source ? " · " + esc(shortSource(o.source)) : "") + "）</div>"; }).join("")
+      : "<div class=planweek>· 手艺人型：厨师 / 维修技工 / 美发 / 缝纫</div>" +
+        "<div class=planweek>· 照料与现场型：护理 / 家政 / 保育 / 健身教练</div>" +
+        "<div class=planweek>· 现场服务型：保安 / 物业 / 消防 / 驾驶员</div>") +
+    "<div class=planweek>提示：被 AI 覆盖少不等于高薪，动手前用「我该学什么」验证投入产出。</div>";
+  c.appendChild(detailsBlock("换什么饭碗？（被 AI 覆盖少的岗位）", where));
 
   var src = el("div", "hint");
-  src.innerHTML = "数据与口径:暴露度权重(0.5/0.2/0.15/0.15)与阈值(35/55/75)为初版设定,参照 Anthropic《Labor market impacts of AI》(2026-03) 任务暴露框架;岗位平均暴露度来自 occupations.json(条目级来源:张丹丹等《管理世界》2025 DWA 法 / Anthropic 职业榜观测 / Felten 等 SMJ 2021 / IMF 2026),岗位库未加载时对比位留空。饭碗雷达只给概率与路径,不给预言。";
-  c.appendChild(detailsBlock("数据口径与来源(想较真可以看)", src));
+  src.innerHTML = "数据与口径：暴露度权重（0.5/0.2/0.15/0.15）与阈值（35/55/75）为初版设定，参照 Anthropic《Labor market impacts of AI》（2026-03）任务暴露框架与国内学术岗位暴露榜（DWA 口径，2025）；岗位平均暴露度来自 occupations.json（条目级来源：国内学术榜 2025 DWA 法 / Anthropic 职业榜观测 / Felten 等 SMJ 2021 / IMF 2026），岗位库未加载时对比位留空。饭碗雷达只给概率与路径，不给预言。";
+  c.appendChild(detailsBlock("数据口径与来源（想较真可以看）", src));
 
   /* 收尾:导航(重新测一遍)+ 隐私与免责 */
   c.appendChild(navButtons());
   var priv = el("div", "hint");
-  priv.innerHTML = "分享报告为脱敏版:只含信号、路径与计划,不含收入、存款、年龄、岗位与昵称等任何个人信息。所有输入已自动保存在本机浏览器(仅本设备,换设备不互通)。4 周后重测对比,参数变化比绝对值更有意义。";
+  priv.innerHTML = "分享报告为脱敏版：只含信号、路径与计划，不含收入、存款、年龄、岗位与昵称等任何个人信息。所有输入已自动保存在本机浏览器（仅本设备，换设备不互通）。4 周后重测对比，参数变化比绝对值更有意义。";
   c.appendChild(priv);
-  c.appendChild(el("div", "hint", "本报告基于你的自评,仅供参考,不构成职业决策依据。"));
+  c.appendChild(el("div", "hint", "本报告基于你的自评，仅供参考，不构成职业决策依据。"));
   animateCounts(c);
   return c;
 }
@@ -1520,20 +1792,20 @@ var EXPORT_THEME = {
 
 function reportHtml(stripped) {
   var o = reportObj();
-  var title = stripped ? "饭碗雷达 · 分享页(脱敏)" : ((S.nick || "朋友") + ",你的饭碗扫描报告");
-  var h = "<!DOCTYPE html><html lang=zh-CN><head><meta charset=utf-8><title>" + title + "</title><style>:root{" + EXPORT_THEME[currentTheme()] + "}body{background:var(--bg);color:var(--tx);font-family:PingFang SC,sans-serif;padding:28px;max-width:720px;margin:0 auto;line-height:1.7;font-variant-numeric:tabular-nums}h1{font-size:22px}.sig{color:var(--acc-strong);font-size:18px;margin:10px 0}table{width:100%;border-collapse:collapse;margin:10px 0}td,th{border:1px solid var(--line);padding:6px 10px;font-size:14px}.t{overflow-x:auto}.note{color:var(--dim);font-size:12px;margin-top:16px}svg{display:block;margin:10px auto}.rg-ring{stroke:var(--line)}.rg-cross{stroke:var(--line);opacity:.55}.rg-sweep{fill:var(--acc-soft)}.rg-poly{fill:var(--acc-fill);stroke:var(--acc);stroke-dashoffset:0;fill-opacity:1}.rg-dot{fill:var(--acc)}.rg-lab{fill:var(--dim)}@media print{body{background:#fff;color:#111;print-color-adjust:exact;-webkit-print-color-adjust:exact}td,th{border-color:#999}svg{max-width:320px}}</style></head><body>";
+  var title = stripped ? "饭碗雷达 · 分享页（脱敏）" : ((S.nick || "朋友") + "，你的饭碗扫描报告");
+  var h = "<!DOCTYPE html><html lang=zh-CN><head><meta charset=utf-8><title>" + title + "</title><style>:root{" + EXPORT_THEME[currentTheme()] + "}body{background:var(--bg);color:var(--tx);font-family:PingFang SC,sans-serif;padding:28px;max-width:720px;margin:0 auto;line-height:1.7;font-variant-numeric:tabular-nums}h1{font-size:22px}.sig{color:var(--acc-strong);font-size:18px;margin:10px 0}table{width:100%;border-collapse:collapse;margin:10px 0}td,th{border:1px solid var(--line);padding:6px 10px;font-size:14px}.t{overflow-x:auto}.note{color:var(--dim);font-size:12px;margin-top:16px}svg{display:block;margin:10px auto}.rg-ring{stroke:var(--line)}.rg-cross{stroke:var(--line);opacity:.55}.rg-sweep{fill:var(--acc-soft)}.rg-poly{fill:var(--acc-fill);stroke:var(--acc);stroke-dashoffset:0;fill-opacity:1}.rg-dot{fill:var(--acc);opacity:1}.rg-lab{fill:var(--dim)}@media print{body{background:#fff;color:#111;print-color-adjust:exact;-webkit-print-color-adjust:exact}td,th{border-color:#999}svg{max-width:320px}}</style></head><body>";
   h += "<h1>" + title + "</h1>";
-  h += "<div class=sig>" + o.risk + " · 饭碗被 AI 吃掉的程度 " + o.exposure + "/100</div>";
+  h += "<div class=sig>" + fp(o.risk) + " · 饭碗被 AI 吃掉的程度 " + o.exposure + "/100</div>";
   if (!stripped && S.job) {
     h += S.jobAvg != null
-      ? "<div class=note>岗位对比:你的暴露度 " + o.exposure + " vs 「" + esc(S.job) + "」岗位平均 " + S.jobAvg + "(数据:occupations.json)。</div>"
-      : "<div class=note>岗位对比:「" + esc(S.job) + "」未在职业库中,对比位预留。</div>";
+      ? "<div class=note>岗位对比：你的暴露度 " + o.exposure + "，与「" + esc(S.job) + "」岗位平均 " + S.jobAvg + " 相比（数据：occupations.json）。</div>"
+      : "<div class=note>岗位对比：「" + esc(S.job) + "」未在职业库中，对比位预留。</div>";
   }
-  h += "<div><b>路径:" + o.strategy.name + "</b> · " + o.strategy.why + "</div>";
-  o.strategy.acts.forEach(function (a) { h += "<div>· " + a + "</div>"; });
+  h += "<div><b>路径：" + fp(o.strategy.name) + "</b> · " + fp(o.strategy.why) + "</div>";
+  o.strategy.acts.forEach(function (a) { h += "<div>· " + fp(a) + "</div>"; });
   h += radarSvg(o.radar);
   if (!stripped) {
-    h += "<h3>已会(有证据)</h3>";
+    h += "<h3>已校准（有证据）</h3>";
     var cal = [], unc = [];
     S.skills.forEach(function (sk) {
       var n = normSkill(sk);
@@ -1541,27 +1813,25 @@ function reportHtml(stripped) {
       (n.calibrated ? cal : unc).push(n);
     });
     function expSkillTable(rows) {
-      var t = "<table><tr><th>技能</th><th>熟练度</th><th>抢手度</th><th>依据</th></tr>";
+      var t = "<table><tr><th>技能</th><th>熟练度</th><th>抢手度</th><th>状态</th></tr>";
       rows.forEach(function (n) {
-        var basis = n.calibrated
-          ? esc(evidenceLabel(n)) + " · 稀缺:" + esc(scarcityLabel(n))
-          : (n.preset && PRESET_BY_NAME[n.preset] ? "示例默认分,没验证" : "自己估的,没验证");
-        t += "<tr><td>" + esc(n.name) + "</td><td>" + profOf(n) + "</td><td>" + scarcityOf(n) + "</td><td>" + basis + "</td></tr>";
+        var st = n.calibrated ? "已校准" : (n.preset && PRESET_BY_NAME[n.preset] ? "示例默认分" : "未验证");
+        t += "<tr><td>" + esc(n.name) + "</td><td>" + profOf(n) + "</td><td>" + scarcityOf(n) + "</td><td>" + st + "</td></tr>";
       });
       return "<div class=t>" + t + "</table></div>";
     }
     h += cal.length ? expSkillTable(cal) : "<div class=note>未填写技能。</div>";
-    if (unc.length) h += "<h3>没验证(自评)</h3>" + expSkillTable(unc);
+    if (unc.length) h += "<h3>没验证（自评）</h3>" + expSkillTable(unc);
   }
-  h += "<h3>我该学什么?(按每小时回报排序)</h3><div class=note>每小时回报 =(预计一年多赚 − 成本)÷(每月小时 × 12);每投 1 元回报 =(预计一年多赚 − 成本)÷ 成本。收益报太高且没依据 → 按一半算。</div>";
-  h += "<div class=t><table><tr><th>#</th><th>学习项</th><th>月小时</th>" + (stripped ? "" : "<th>成本</th><th>预计一年多赚</th>") + "<th>每小时回报(元)</th></tr>";
+  h += "<h3>我该学什么？（按每小时回报排序）</h3><div class=note>每小时回报＝（预计一年多赚−成本）÷（每月小时×12）；每投 1 元回报＝（预计一年多赚−成本）÷成本。收益报太高且没依据，按一半算。</div>";
+  h += "<div class=t><table><tr><th>#</th><th>学习项</th><th>月小时</th>" + (stripped ? "" : "<th>成本</th><th>预计一年多赚</th>") + "<th>每小时回报（元）</th></tr>";
   o.roi.forEach(function (r, i) {
     h += "<tr><td>" + (i + 1) + "</td><td>" + esc(r.name) + "</td><td>" + r.hours + "</td>" + (stripped ? "" : "<td>" + r.cost + "</td><td>" + r.gain + "</td>") + "<td>" + r.timeRoi.toFixed(0) + "</td></tr>";
   });
   h += "</table></div>";
-  h += "<h3>第一步做什么?(90 天计划)</h3>";
-  o.plan.forEach(function (w) { h += "<div><b>" + w.w + "</b> " + w.t + "</div>"; });
-  h += "<div class=note>生成时间:" + fmtTime(o.generatedAt) + "。公式:0.5×重复任务 + 0.2×(100−创造性) + 0.15×(100−人际信任) + 0.15×(100−自主决策)。口径与来源:暴露度权重与阈值参照 Anthropic《Labor market impacts of AI》(2026-03) 任务暴露框架;岗位平均暴露度来自 occupations.json(条目级来源:张丹丹等《管理世界》2025 DWA 法 / Anthropic 职业榜观测 / Felten 等 SMJ 2021 / IMF 2026)。饭碗雷达只给概率与路径,不给预言。" + (stripped ? " 本页为脱敏分享版,不含任何收入、存款、年龄、岗位与昵称等个人信息。" : "") + "</div>";
+  h += "<h3>第一步做什么？（90 天计划）</h3>";
+  o.plan.forEach(function (w) { h += "<div><b>" + fp(w.w) + "</b> " + fp(w.t) + "</div>"; });
+  h += "<div class=note>生成时间：" + fmtTime(o.generatedAt) + "。公式：0.5×重复任务 + 0.2×（100−创造性） + 0.15×（100−人际信任） + 0.15×（100−自主决策）。口径与来源：暴露度权重与阈值参照 Anthropic《Labor market impacts of AI》（2026-03）任务暴露框架；岗位平均暴露度来自 occupations.json（条目级来源：国内学术榜 2025 DWA 法 / Anthropic 职业榜观测 / Felten 等 SMJ 2021 / IMF 2026）。饭碗雷达只给概率与路径，不给预言。" + (stripped ? " 本页为脱敏分享版，不含任何收入、存款、年龄、岗位与昵称等个人信息。" : "") + "</div>";
   return h + "</body></html>";
 }
 
@@ -1584,8 +1854,10 @@ function bindPane5() {
 function navButtons() {
   var n = el("div", "navbtns");
   var prev = el("button", "btn", "上一步");
+  prev.type = "button";
   prev.onclick = function () { if (cur > 0) { cur--; render(); } };
-  var next = el("button", "btn primary", cur === STEP_NAMES.length - 1 ? "重新测一遍" : "下一步 →");
+  var next = el("button", "btn primary", cur === STEP_NAMES.length - 1 ? "重新测一遍" : "下一步");
+  next.type = "button";
   next.onclick = function () { if (cur < STEP_NAMES.length - 1) { cur++; render(); } else { cur = 0; render(); } };
   n.appendChild(prev);
   n.appendChild(next);
@@ -1625,7 +1897,7 @@ load();
 /* 危险操作移出报告页:清空重来固定在页脚 */
 var resetBtn = document.getElementById("btn_reset");
 if (resetBtn) resetBtn.onclick = function () {
-  if (!window.confirm("确定清空所有输入并重新开始吗?本机保存的数据将被删除,且无法恢复。")) return;
+  if (!window.confirm("确定清空所有输入并重新开始吗？本机保存的数据将被删除，且无法恢复。")) return;
   try { localStorage.removeItem("gyz_planner_v1"); } catch (e) {}
   location.reload();
 };
