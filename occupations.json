@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "source": "饭碗雷达内置岗位库 v1。口径:M1 公式 E = 0.5×R + 0.2×(100−C) + 0.15×(100−I) + 0.15×(100−D),avgExposure 由 dims 严格计算取整;R 按『可被 AI 标准化的重复任务占比』理解(体力现场岗因具身缺口 R 取低值)。锚定优先级:Anthropic 2026-03 职业榜观测值(程序员 74.5%、客服 70.1% 等)> 张丹丹等《管理世界》2025 DWA 榜(会计 0.904 全样本最高;低暴露含洗碗工/厨师/保洁/保安)> Felten-Raj-Seamans AIOE(SMJ 2021,仅取相对位次)> IMF 2026(全球约 40% 岗位暴露,作中危带参照)> 估算。无学术出处的数值一律标『估算』;Anthropic 观测口径与 DWA 理论口径不同,并存时在条目 source 中注明。分级阈值:<35 低危 / 35–55 中危 / 55–75 高危 / >75 极高危。",
+  "source": "饭碗雷达内置岗位库。口径:M1 公式 E = 0.5×R + 0.2×(100−C) + 0.15×(100−I) + 0.15×(100−D),avgExposure 由 dims 严格计算取整;R 按『可被 AI 标准化的重复任务占比』理解(体力现场岗因具身缺口 R 取低值)。数据源与锚定优先级:Anthropic 2026-03 职业榜观测值(程序员 74.5%、客服 70.1% 等)> Felten-Raj-Seamans AIOE(SMJ 2021,仅取相对位次,不引精确值)> O*NET 目录(岗位分类与技能条目参考)> IMF 2026(全球约 40% 岗位暴露,作中危带参照)> 估算。无学术出处的数值一律标『估算』;Anthropic 观测口径与理论口径不同,并存时在条目 source 中注明。分级阈值:<35 低危 / 35–55 中危 / 55–75 高危 / >75 极高危。",
   "occupations": [
     {
       "name": "会计",
@@ -8,15 +8,23 @@
       "avgExposure": 90,
       "dims": { "r": 92, "c": 10, "i": 15, "d": 10 },
       "keySkills": ["凭证与账务处理", "纳税申报", "报表编制", "财务软件操作"],
-      "source": "张丹丹等《管理世界》2025 DWA 暴露 0.904(全样本最高)/ M1 换算"
+      "source": "估算;Felten-Raj-Seamans AIOE 高位(会计与审计类职业暴露最高之一)/ M1 换算"
+    },
+    {
+      "name": "审计师",
+      "category": "财务",
+      "avgExposure": 88,
+      "dims": { "r": 92, "c": 15, "i": 20, "d": 12 },
+      "keySkills": ["审计程序", "底稿编制", "内控测试", "风险评估"],
+      "source": "估算;Felten-Raj-Seamans AIOE 高位(会计审计类)"
     },
     {
       "name": "编辑",
       "category": "内容创作",
       "avgExposure": 84,
-      "dims": { "r": 90, "c": 35, "i": 20, "d": 10 },
+      "dims": { "r": 90, "c": 34, "i": 20, "d": 11 },
       "keySkills": ["选题策划", "文字加工", "审校", "内容合规"],
-      "source": "张丹丹等《管理世界》2025 高暴露榜(0.78–0.90 区间)/ M1 换算"
+      "source": "估算;Felten-Raj-Seamans AIOE 高位(文字处理与编辑类)/ M1 换算"
     },
     {
       "name": "销售工程师",
@@ -24,7 +32,7 @@
       "avgExposure": 83,
       "dims": { "r": 88, "c": 25, "i": 30, "d": 12 },
       "keySkills": ["技术方案讲解", "客户需求分析", "招投标", "报价谈判"],
-      "source": "张丹丹等《管理世界》2025 高暴露榜(0.78–0.90 区间)/ M1 换算"
+      "source": "估算;Felten-Raj-Seamans AIOE 高位(销售工程师类)/ M1 换算"
     },
     {
       "name": "税务专员",
@@ -32,7 +40,7 @@
       "avgExposure": 81,
       "dims": { "r": 85, "c": 20, "i": 32, "d": 15 },
       "keySkills": ["税务申报", "政策解读", "汇算清缴", "税务筹划"],
-      "source": "估算;张丹丹等《管理世界》2025 高暴露榜含税务类岗位"
+      "source": "估算;Felten-Raj-Seamans AIOE 高位(税务填报类)"
     },
     {
       "name": "电话销售",
@@ -40,7 +48,7 @@
       "avgExposure": 80,
       "dims": { "r": 83, "c": 22, "i": 32, "d": 15 },
       "keySkills": ["话术执行", "客户名单管理", "异议处理", "成交转化"],
-      "source": "估算;张丹丹等《管理世界》2025 高暴露榜含电话销售"
+      "source": "估算;Felten-Raj-Seamans AIOE 高位(电话营销类)"
     },
     {
       "name": "数据录入员",
@@ -51,12 +59,28 @@
       "source": "M1 理论口径;Anthropic 2026-03 观测暴露 67.1% 供参考(观测口径低于理论口径)"
     },
     {
+      "name": "精算师",
+      "category": "金融",
+      "avgExposure": 80,
+      "dims": { "r": 83, "c": 26, "i": 25, "d": 18 },
+      "keySkills": ["精算建模", "准备金评估", "产品定价", "风险量化"],
+      "source": "估算;Felten-Raj-Seamans AIOE 高位(精算类)"
+    },
+    {
       "name": "银行柜员",
       "category": "金融",
       "avgExposure": 77,
       "dims": { "r": 80, "c": 25, "i": 32, "d": 20 },
       "keySkills": ["现金业务", "开户销户", "反洗钱核查", "柜面营销"],
       "source": "估算;对齐 Felten-Raj-Seamans AIOE 高位(未取精确值)"
+    },
+    {
+      "name": "出纳",
+      "category": "财务",
+      "avgExposure": 76,
+      "dims": { "r": 77, "c": 25, "i": 30, "d": 20 },
+      "keySkills": ["现金收付", "银行对账", "票据管理", "日记账登记"],
+      "source": "估算;Felten-Raj-Seamans AIOE 高位(簿记出纳类)"
     },
     {
       "name": "程序员",
@@ -67,12 +91,36 @@
       "source": "Anthropic 2026-03 职业榜观测暴露 74.5% / M1 换算"
     },
     {
+      "name": "保险理赔专员",
+      "category": "金融",
+      "avgExposure": 72,
+      "dims": { "r": 72, "c": 30, "i": 30, "d": 22 },
+      "keySkills": ["查勘定损", "理赔审核", "条款解读", "客户沟通"],
+      "source": "估算;Felten-Raj-Seamans AIOE 高位(理赔定损类)"
+    },
+    {
       "name": "客服",
       "category": "客服",
       "avgExposure": 70,
       "dims": { "r": 73, "c": 32, "i": 38, "d": 30 },
       "keySkills": ["工单处理", "话术应答", "客诉安抚", "知识库检索"],
       "source": "Anthropic 2026-03 职业榜观测暴露 70.1% / M1 换算"
+    },
+    {
+      "name": "采购专员",
+      "category": "采购供应链",
+      "avgExposure": 70,
+      "dims": { "r": 70, "c": 32, "i": 35, "d": 25 },
+      "keySkills": ["供应商管理", "询价比价", "订单跟进", "成本核算"],
+      "source": "估算;Felten-Raj-Seamans AIOE 高位(采购代理类)"
+    },
+    {
+      "name": "算法工程师",
+      "category": "技术",
+      "avgExposure": 68,
+      "dims": { "r": 68, "c": 42, "i": 25, "d": 28 },
+      "keySkills": ["模型训练", "算法设计", "数据处理", "实验评估"],
+      "source": "估算(较程序员创造与决策占比更高)"
     },
     {
       "name": "翻译",
@@ -99,12 +147,52 @@
       "source": "Anthropic 2026-03 职业榜观测暴露 62.8% / M1 换算"
     },
     {
+      "name": "数据库管理员",
+      "category": "技术",
+      "avgExposure": 63,
+      "dims": { "r": 58, "c": 40, "i": 28, "d": 25 },
+      "keySkills": ["数据库调优", "备份恢复", "SQL 优化", "权限管理"],
+      "source": "估算"
+    },
+    {
+      "name": "文案策划",
+      "category": "内容创作",
+      "avgExposure": 62,
+      "dims": { "r": 60, "c": 48, "i": 32, "d": 22 },
+      "keySkills": ["文案撰写", "创意构思", "品牌调性", "用户洞察"],
+      "source": "估算"
+    },
+    {
       "name": "行政文员",
       "category": "文职行政",
       "avgExposure": 60,
       "dims": { "r": 55, "c": 36, "i": 42, "d": 28 },
       "keySkills": ["公文写作", "会议安排", "档案管理", "报销流程"],
       "source": "估算"
+    },
+    {
+      "name": "平面设计师",
+      "category": "设计",
+      "avgExposure": 58,
+      "dims": { "r": 54, "c": 45, "i": 38, "d": 28 },
+      "keySkills": ["版式设计", "品牌视觉", "图像处理", "印刷规范"],
+      "source": "估算"
+    },
+    {
+      "name": "运维工程师",
+      "category": "技术",
+      "avgExposure": 58,
+      "dims": { "r": 53, "c": 44, "i": 32, "d": 30 },
+      "keySkills": ["部署发布", "监控告警", "故障处理", "自动化脚本"],
+      "source": "估算"
+    },
+    {
+      "name": "药剂师",
+      "category": "医疗健康",
+      "avgExposure": 58,
+      "dims": { "r": 53, "c": 42, "i": 40, "d": 30 },
+      "keySkills": ["处方审核", "药品调配", "用药指导", "库存管理"],
+      "source": "估算;Felten-Raj-Seamans AIOE 中高位(药剂师类)"
     },
     {
       "name": "金融投资分析师",
@@ -115,12 +203,60 @@
       "source": "Anthropic 2026-03 职业榜观测暴露 57.2% / M1 换算"
     },
     {
+      "name": "新媒体运营",
+      "category": "市场",
+      "avgExposure": 56,
+      "dims": { "r": 54, "c": 50, "i": 42, "d": 30 },
+      "keySkills": ["内容选题", "账号运营", "数据复盘", "粉丝互动"],
+      "source": "估算"
+    },
+    {
+      "name": "网络管理员",
+      "category": "技术",
+      "avgExposure": 55,
+      "dims": { "r": 48, "c": 45, "i": 32, "d": 32 },
+      "keySkills": ["网络配置", "设备维护", "故障排除", "安全防护"],
+      "source": "估算"
+    },
+    {
+      "name": "秘书",
+      "category": "文职行政",
+      "avgExposure": 55,
+      "dims": { "r": 48, "c": 40, "i": 45, "d": 30 },
+      "keySkills": ["日程管理", "会议纪要", "公文处理", "沟通协调"],
+      "source": "估算;Felten-Raj-Seamans AIOE 中高位(秘书类)"
+    },
+    {
+      "name": "法务专员",
+      "category": "法律",
+      "avgExposure": 55,
+      "dims": { "r": 47, "c": 40, "i": 38, "d": 33 },
+      "keySkills": ["合同审核", "合规审查", "纠纷处理", "法律意见"],
+      "source": "估算"
+    },
+    {
       "name": "软件测试工程师",
       "category": "技术",
       "avgExposure": 52,
       "dims": { "r": 41, "c": 45, "i": 35, "d": 30 },
       "keySkills": ["用例设计", "自动化脚本", "缺陷管理", "性能测试"],
       "source": "Anthropic 2026-03 职业榜观测暴露 51.9% / M1 换算"
+    },
+    {
+      "name": "医学检验技师",
+      "category": "医疗健康",
+      "avgExposure": 52,
+      "dims": { "r": 42, "c": 42, "i": 40, "d": 33 },
+      "keySkills": ["样本检测", "仪器操作", "结果判读", "质控管理"],
+      "source": "估算"
+    },
+    {
+      "name": "视频剪辑师",
+      "category": "内容创作",
+      "avgExposure": 50,
+      "dims": { "r": 41, "c": 52, "i": 34, "d": 32 },
+      "keySkills": ["剪辑合成", "调色", "字幕包装", "节奏把控"],
+      "source": "估算"
     },
     {
       "name": "信息安全分析师",
@@ -139,6 +275,14 @@
       "source": "估算"
     },
     {
+      "name": "律师",
+      "category": "法律",
+      "avgExposure": 48,
+      "dims": { "r": 40, "c": 48, "i": 42, "d": 40 },
+      "keySkills": ["法律检索", "文书起草", "庭审辩论", "客户咨询"],
+      "source": "估算;Felten-Raj-Seamans AIOE 中位(律师类)"
+    },
+    {
       "name": "计算机用户支持",
       "category": "技术",
       "avgExposure": 47,
@@ -152,6 +296,22 @@
       "avgExposure": 45,
       "dims": { "r": 32, "c": 52, "i": 34, "d": 35 },
       "keySkills": ["SQL 取数", "指标体系", "可视化", "业务洞察"],
+      "source": "估算"
+    },
+    {
+      "name": "UI/UX 设计师",
+      "category": "设计",
+      "avgExposure": 45,
+      "dims": { "r": 33, "c": 58, "i": 35, "d": 33 },
+      "keySkills": ["界面设计", "交互原型", "用户研究", "设计系统"],
+      "source": "估算"
+    },
+    {
+      "name": "前台接待",
+      "category": "文职行政",
+      "avgExposure": 45,
+      "dims": { "r": 32, "c": 38, "i": 58, "d": 33 },
+      "keySkills": ["来访登记", "电话接转", "信息咨询", "环境维护"],
       "source": "估算"
     },
     {
@@ -171,12 +331,92 @@
       "source": "估算;对齐 Felten-Raj-Seamans AIOE 中位(未取精确值)"
     },
     {
+      "name": "保险代理人",
+      "category": "销售",
+      "avgExposure": 42,
+      "dims": { "r": 29, "c": 43, "i": 50, "d": 40 },
+      "keySkills": ["需求分析", "产品讲解", "客户开拓", "续期服务"],
+      "source": "估算;Felten-Raj-Seamans AIOE 中位"
+    },
+    {
       "name": "中小学教师",
       "category": "教育",
       "avgExposure": 40,
       "dims": { "r": 29, "c": 50, "i": 55, "d": 42 },
       "keySkills": ["课程设计", "课堂管理", "作业批改", "家校沟通"],
       "source": "估算(人际信任与课堂管理权重高,文献显示教师暴露中低位)"
+    },
+    {
+      "name": "房产经纪人",
+      "category": "销售",
+      "avgExposure": 40,
+      "dims": { "r": 28, "c": 46, "i": 58, "d": 42 },
+      "keySkills": ["带看讲解", "房源匹配", "合同签署", "客户关系"],
+      "source": "估算;Felten-Raj-Seamans AIOE 中位(地产经纪类)"
+    },
+    {
+      "name": "项目经理",
+      "category": "管理",
+      "avgExposure": 38,
+      "dims": { "r": 26, "c": 50, "i": 50, "d": 50 },
+      "keySkills": ["项目计划", "进度管控", "风险识别", "跨部门协调"],
+      "source": "估算"
+    },
+    {
+      "name": "建筑设计师",
+      "category": "设计",
+      "avgExposure": 38,
+      "dims": { "r": 24, "c": 62, "i": 34, "d": 44 },
+      "keySkills": ["方案设计", "施工图绘制", "规范把控", "现场配合"],
+      "source": "估算"
+    },
+    {
+      "name": "门店导购",
+      "category": "销售",
+      "avgExposure": 35,
+      "dims": { "r": 19, "c": 44, "i": 60, "d": 45 },
+      "keySkills": ["商品介绍", "陈列整理", "收银操作", "顾客接待"],
+      "source": "估算;Felten-Raj-Seamans AIOE 中低位(零售类)"
+    },
+    {
+      "name": "生产线操作工",
+      "category": "制造",
+      "avgExposure": 32,
+      "dims": { "r": 8, "c": 48, "i": 34, "d": 48 },
+      "keySkills": ["设备操作", "工艺执行", "质检自检", "安全规范"],
+      "source": "估算;Anthropic 2026-03 低覆盖(蓝领具身)"
+    },
+    {
+      "name": "幼儿园教师",
+      "category": "教育",
+      "avgExposure": 32,
+      "dims": { "r": 16, "c": 48, "i": 62, "d": 48 },
+      "keySkills": ["保教活动", "游戏设计", "幼儿观察", "家长沟通"],
+      "source": "估算"
+    },
+    {
+      "name": "汽车维修技师",
+      "category": "制造维修",
+      "avgExposure": 30,
+      "dims": { "r": 13, "c": 62, "i": 35, "d": 60 },
+      "keySkills": ["故障诊断", "钣金喷漆", "保养维护", "电路检修"],
+      "source": "Anthropic 2026-03 零覆盖职业族(修理工)/ M1 换算"
+    },
+    {
+      "name": "医生(全科)",
+      "category": "医疗健康",
+      "avgExposure": 30,
+      "dims": { "r": 22, "c": 62, "i": 66, "d": 58 },
+      "keySkills": ["问诊查体", "诊断鉴别", "治疗方案", "病历书写"],
+      "source": "估算;Felten-Raj-Seamans AIOE 低位(医师类)"
+    },
+    {
+      "name": "外卖骑手",
+      "category": "物流运输",
+      "avgExposure": 30,
+      "dims": { "r": 10, "c": 60, "i": 34, "d": 55 },
+      "keySkills": ["路线导航", "接单配送", "沟通服务", "骑行安全"],
+      "source": "估算;Anthropic 2026-03 低覆盖"
     },
     {
       "name": "心理咨询师",
@@ -190,9 +430,17 @@
       "name": "保安",
       "category": "安保",
       "avgExposure": 28,
-      "dims": { "r": 12, "c": 60, "i": 48, "d": 62 },
+      "dims": { "r": 12, "c": 60, "i": 47, "d": 62 },
       "keySkills": ["巡逻值守", "访客登记", "监控查看", "应急处置"],
-      "source": "张丹丹等《管理世界》2025 低暴露榜 / M1 换算"
+      "source": "估算;Felten-Raj-Seamans AIOE 低位;Anthropic 2026-03 低覆盖 / M1 换算"
+    },
+    {
+      "name": "焊工",
+      "category": "制造",
+      "avgExposure": 28,
+      "dims": { "r": 7, "c": 58, "i": 32, "d": 60 },
+      "keySkills": ["焊接操作", "图纸识读", "焊机调试", "质量自检"],
+      "source": "估算;Anthropic 2026-03 零/低覆盖(蓝领具身)"
     },
     {
       "name": "货车驾驶员",
@@ -201,6 +449,14 @@
       "dims": { "r": 10, "c": 75, "i": 35, "d": 65 },
       "keySkills": ["驾驶操作", "路线规划", "车辆检查", "货物交接"],
       "source": "估算;Anthropic 2026-03 零/低覆盖职业族(具身缺口)"
+    },
+    {
+      "name": "家政服务员",
+      "category": "生活服务",
+      "avgExposure": 25,
+      "dims": { "r": 6, "c": 56, "i": 62, "d": 52 },
+      "keySkills": ["清洁收纳", "烹饪照护", "沟通服务", "时间管理"],
+      "source": "估算;Anthropic 2026-03 零/低覆盖(家政保洁)"
     },
     {
       "name": "电工",
@@ -224,7 +480,15 @@
       "avgExposure": 22,
       "dims": { "r": 4, "c": 72, "i": 32, "d": 72 },
       "keySkills": ["烹饪技法", "菜品研发", "火候把控", "厨房管理"],
-      "source": "张丹丹等《管理世界》2025 低暴露榜;Anthropic 2026-03 零覆盖 / M1 换算"
+      "source": "Anthropic 2026-03 零覆盖职业族 / M1 换算"
+    },
+    {
+      "name": "消防员",
+      "category": "应急消防",
+      "avgExposure": 20,
+      "dims": { "r": 3, "c": 62, "i": 58, "d": 70 },
+      "keySkills": ["灭火救援", "体能训练", "器材操作", "应急判断"],
+      "source": "估算;Anthropic 2026-03 零/低覆盖(消防急救)"
     },
     {
       "name": "美发师",
