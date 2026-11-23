@@ -173,7 +173,8 @@ select { appearance: none; -webkit-appearance: none; padding-right: 34px;
 }
 
 /* ---------- 岗位组合框(按分类分组 + 搜索,参照夸克分组结果) ---------- */
-.combo { position: relative; margin-top: 6px; }
+/* display:block 必须:inline 包含块会让绝对定位列表塌成窄条吞掉条目(第三轮 P0) */
+.combo { position: relative; margin-top: 6px; display: block; width: 100%; }
 .combo::after { content: "▾"; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--dim); pointer-events: none; font-size: 12px; }
 .combo input { padding-right: 36px; }
 .combo-list {
@@ -381,7 +382,21 @@ input[type=range]::-moz-range-thumb:active { transform: scale(1.3); }
 .a-val { font-size: 22px; font-weight: 700; color: var(--acc-strong); font-variant-numeric: tabular-nums; }
 .a-note { font-size: 12px; color: var(--dim); margin-top: 2px; }
 
+/* ---------- 学什么:四个推荐方向卡片 ---------- */
+.reco-card { border: 1px solid var(--line); border-radius: var(--r-s); padding: var(--sp3); margin-top: var(--sp2); background: var(--card); }
+.reco-head { display: flex; gap: var(--sp2); align-items: center; font-size: 15px; flex-wrap: wrap; }
+.reco-head i {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: var(--r-pill);
+  background: var(--acc-soft); color: var(--acc-strong);
+  font-style: normal; font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.reco-desc { font-size: 13px; margin-top: var(--sp1); }
+.reco-case { font-size: 12px; color: var(--dim); margin-top: 2px; }
+.reco-act { margin-top: var(--sp2); }
+
 /* ---------- 换什么饭碗:四个推荐方向 ---------- */
+.dir-desc { font-size: 13px; color: var(--dim); font-weight: 400; }
 .dir { border: 1px solid var(--line); border-radius: var(--r-s); padding: var(--sp3); margin-top: var(--sp2); background: var(--card); }
 .dir-head { display: flex; gap: var(--sp2); align-items: baseline; font-size: 14px; }
 .dir-head i {
@@ -1182,8 +1197,15 @@ function dateTag() {
   return "" + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate());
 }
 /* 学习项来源 chip 的人话标签(规则值不变,仅显示翻译) */
-var SRC_LABEL = { "缺口": "补缺口", "迁移": "换方向", "回补": "补基本功", "默认": "兜底推荐" };
+var SRC_LABEL = { "缺口": "补缺口", "迁移": "换方向", "回补": "补基本功", "默认": "兜底推荐", "方向": "推荐方向" };
 function srcLabel(s) { return SRC_LABEL[s] || s; }
+/* 学什么/换什么饭碗共用的四个推荐方向(结合 2026 AI 时代个人技能图谱与一人公司趋势) */
+var RECO_DIRS = [
+  { name: "创意与内容", desc: "AI 出稿快，审美与叙事稀缺", cases: "品牌内容策划、短视频编导", why: "AI 一分钟能出十版稿，但选哪一版、讲什么故事，仍然是人的活。" },
+  { name: "全流程个人化", desc: "一个人干一个团队的活", cases: "独立开发者、一人公司", why: "产品、市场、交付全链路可流程化，AI 让一个人跑通一个团队的业务。" },
+  { name: "研究判断", desc: "检索汇总靠 AI，去伪存真靠人", cases: "行业研究员、咨询顾问、研究报告撰写", why: "报告写手会被替代，但看得懂数据、敢下结论的人不会。" },
+  { name: "人机协作工程", desc: "企业不缺模型缺落地", cases: "AI 工作流工程师、企业 AI 落地顾问", why: "企业不缺模型，缺能把 AI 编排进业务、并对结果负责的人。" }
+];
 /* 建议路径的人话副标 */
 function pathGloss(code) {
   return { pivot: "换个赛道", steady: "稳住再扩", leverage: "吃懂行溢价", deepen: "加深护城河", expand: "加宽技能面" }[code] || "";
@@ -1203,6 +1225,14 @@ function emptyState(text) {
   var e = el("div", "empty", text);
   return e;
 }
+/* 信号诊断文案润色(仅渲染层;引擎 riskLevel 字符串零改动,四档节奏一致、不用冒号接句号) */
+var RISK_NOTE_POLISH = {
+  "饭碗稳,把雷达扫出来的优势再放大。": "饭碗还稳。把雷达扫出来的优势再放大。",
+  "出现干扰,时间窗 2~3 年,提前动手。": "出现干扰，时间窗 2～3 年。提前动手。",
+  "裂缝已经出现:先补最容易被覆盖的那一块。": "裂缝已经出现。先补最容易被覆盖的那一块。",
+  "这碗饭正在被重构,别恋战:最短路径换碗。": "饭碗正在重构。别恋战——走最短的路，换一碗。"
+};
+function polishRiskNote(note) { return RISK_NOTE_POLISH[note] || fp(note); }
 /* 全角标点清洗(仅展示层,不改数据;规则引擎字符串含半角标点与括号,渲染时统一转全角、括号转逗号短语) */
 function fp(v) {
   return String(v == null ? "" : v)
@@ -1331,7 +1361,7 @@ function updateExpo() {
   var rk = riskLevel(e);
   $("expo_live").innerHTML =
     "<div class=concl-num><b>" + Math.round(e) + "</b><small>%</small></div>" +
-    "<div class=concl-side><div class='concl-sig " + rk.cls + "'>" + fp(rk.t) + "</div><div class=concl-note>" + fp(rk.note) + "</div></div>";
+    "<div class=concl-side><div class='concl-sig " + rk.cls + "'>" + fp(rk.t) + "</div><div class=concl-note>" + polishRiskNote(rk.note) + "</div></div>";
 }
 
 function bindPane2() {
@@ -1533,7 +1563,7 @@ function bindPane3() {
 function pane4() {
   var c = el("div", "card");
   c.appendChild(el("h2", "", "④ 学什么"));
-  c.appendChild(el("div", "hint", "雷达根据你的饭碗缺口和方向自动推荐学习项。点「添加」收下，再填每月小时、成本、预计一年多赚；报告里按「值不值」排序。收益报太高且没依据，按一半算。"));
+  c.appendChild(el("div", "hint", "雷达按四个方向给出推荐。点「添加」收下，再填每月小时、成本、预计一年多赚；报告里按「值不值」排序。收益报太高且没依据，按一半算。"));
   var dv = el("div", "derive");
   dv.id = "learn_derive";
   c.appendChild(dv);
@@ -1549,22 +1579,16 @@ function pane4() {
 }
 
 function deriveBlockHtml() {
-  var cands = deriveLearnCandidates();
   var have = {};
   S.learns.forEach(function (l) { if (l.name) have[String(l.name).trim()] = 1; });
-  var h = "<h3>雷达推荐（点「添加」收下）</h3>";
-  if (!cands.length) {
-    h += "<div class=hint>暂时没有要补的：你的缺口和换方向所需技能，都已有拿得出手的证据。</div>";
-    return h;
-  }
+  var h = "<h3>雷达推荐（四个方向，点「添加」收下）</h3>";
   h += "<div class=derive-list>";
-  cands.forEach(function (c, i) {
-    var band = bandFor(c.name);
-    var bandTxt = band ? "参考一年多赚 " + band[0] + "～" + band[1] + " 元" : "没有参考数据（按你填的算）";
-    var added = have[String(c.name).trim()];
-    h += "<div class=derive-item><div class=derive-name>" + esc(c.name) + " <span class='src-chip' data-src=" + c.source + ">" + srcLabel(c.source) + "</span></div>" +
-      "<div class=derive-meta>" + bandTxt + (added ? " <span class=unc>已在清单中</span>" : "") + "</div>" +
-      (added ? "" : "<button class='btn primary chip' type=button data-add-derive=\"" + i + "\">添加 →</button>") + "</div>";
+  RECO_DIRS.forEach(function (d, i) {
+    var added = have[String(d.name).trim()];
+    h += "<div class=reco-card><div class=reco-head><i>" + (i + 1) + "</i><b>" + esc(d.name) + "</b><span class='src-chip' data-src=\"方向\">" + srcLabel("方向") + "</span></div>" +
+      "<div class=reco-desc>" + esc(d.desc) + "</div>" +
+      "<div class=reco-case>职业举例：" + esc(d.cases) + "</div>" +
+      "<div class=reco-act>" + (added ? "<span class=unc>已在清单中</span>" : "<button class='btn primary chip' type=button data-add-reco=\"" + i + "\">添加 →</button>") + "</div></div>";
   });
   h += "</div>";
   return h;
@@ -1591,12 +1615,11 @@ function bindPane4() {
   dv.innerHTML = deriveBlockHtml();
   dv.addEventListener("click", function (ev) {
     var t = ev.target;
-    var k = t.getAttribute && t.getAttribute("data-add-derive");
+    var k = t.getAttribute && t.getAttribute("data-add-reco");
     if (k != null) {
-      var c = deriveLearnCandidates()[Number(k)];
-      if (c && !S.learns.some(function (l) { return l.name === c.name; })) {
-        var band = bandFor(c.name);
-        S.learns.push({ name: c.name, hours: 10, cost: 0, gain: band ? band[0] : 12000, source: c.source, gainBand: band, gainNote: "" });
+      var d = RECO_DIRS[Number(k)];
+      if (d && !S.learns.some(function (l) { return l.name === d.name; })) {
+        S.learns.push({ name: d.name, hours: 10, cost: 0, gain: 12000, source: "方向", gainBand: null, gainNote: "" });
         save(); render();
       }
     }
@@ -1717,7 +1740,7 @@ function pane5() {
     "<div class=hook>你的饭碗 <b data-count=" + eRound + ">" + eRound + "</b>% 会被 AI 吃掉</div>" +
     gaugeSvg(eRound) +
     "<div class='hero-badge " + rk.cls + "'>" + fp(rk.t) + "</div>" +
-    "<div class=hnote>" + fp(rk.note) + "</div>" +
+    "<div class=hnote>" + polishRiskNote(rk.note) + "</div>" +
     (metaParts.length ? "<div class=hmeta>" + metaParts.join(" · ") + "</div>" : "");
   c.appendChild(hero);
 
@@ -1834,16 +1857,10 @@ function pane5() {
 
   /* 换什么饭碗:四个推荐方向,结合 AI 最新进展,无公式 */
   var where = el("div", "");
-  var dirs = [
-    { t: "创意与内容类：AI 放大审美与叙事", cases: "品牌内容策划、短视频编导", why: "AI 能快速出稿出图，但审美判断与叙事节奏仍然稀缺。" },
-    { t: "全流程个人化：一个人干一个团队的活", cases: "独立开发者、一人公司主理人", why: "产品、市场、交付全链路可流程化，AI 让超级个体真正跑通。" },
-    { t: "研究判断类：研究报告与复杂信息整合", cases: "行业研究员、咨询顾问", why: "AI 能检索与汇总，去伪存真、下判断仍靠人。" },
-    { t: "人机协作工程类：把 AI 编排进真实业务流程", cases: "AI 工作流工程师、企业 AI 落地顾问", why: "企业不缺模型，缺能把 AI 落进业务的人。" }
-  ];
   where.innerHTML = "<h3 class=strat-title>换什么饭碗？</h3>" +
     "<div class=planweek>AI 正在重排牌桌。结合最新进展，这四个方向更值得重点看：</div>" +
-    dirs.map(function (d, i) {
-      return "<div class=dir><div class=dir-head><i>" + (i + 1) + "</i><b>" + d.t + "</b></div><div class=dir-case>职业举例：" + d.cases + "</div><div class=dir-why>" + d.why + "</div></div>";
+    RECO_DIRS.map(function (d, i) {
+      return "<div class=dir><div class=dir-head><i>" + (i + 1) + "</i><b>" + d.name + "</b><span class=dir-desc>" + d.desc + "</span></div><div class=dir-case>职业举例：" + d.cases + "</div><div class=dir-why>" + d.why + "</div></div>";
     }).join("") +
     "<div class=planweek>提醒：先最小成本验证，再谈全职投入。</div>";
   c.appendChild(detailsBlock("换什么饭碗？", where));
