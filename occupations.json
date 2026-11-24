@@ -5,10 +5,10 @@
     {
       "name": "会计",
       "category": "财务",
-      "avgExposure": 90,
-      "dims": { "r": 92, "c": 10, "i": 15, "d": 10 },
+      "avgExposure": 88,
+      "dims": { "r": 91, "c": 14, "i": 20, "d": 12 },
       "keySkills": ["凭证与账务处理", "纳税申报", "报表编制", "财务软件操作"],
-      "source": "估算;Felten-Raj-Seamans AIOE 高位(会计与审计类职业暴露最高之一)/ M1 换算"
+      "source": "估算;Felten-Raj-Seamans AIOE 高位(会计与审计类职业暴露最高档)/ M1 换算"
     },
     {
       "name": "审计师",
